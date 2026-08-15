@@ -18,15 +18,15 @@ h1{font-size:1.8rem;margin-bottom:4px;color:#fff}
 .grid-7{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:20px}
 .card{background:linear-gradient(135deg,#111827,#0f1729);border:1px solid #1e2a4a;border-radius:12px;padding:20px;position:relative;overflow:hidden;transition:opacity 0.3s, transform 0.3s}
 .card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0}
-.card.ferran::before{background:linear-gradient(90deg,#a50044,#004d98)}
-.card.mika::before{background:linear-gradient(90deg,#ffd700,#004d98)}
-.card.undav::before{background:linear-gradient(90deg,#ff4444,#cc0000)}
-.card.oskarsson::before{background:linear-gradient(90deg,#0060a8,#002e5c)}
-.card.tresoldi::before{background:linear-gradient(90deg,#006bb3,#003f66)}
-.card.asllani::before{background:linear-gradient(90deg,#00529b,#e41a1c)}
-.card.cdk::before{background:linear-gradient(90deg,#000000,#2e6db4)}
-.card.bro::before{background:linear-gradient(90deg,#66ccff,#003366)}
-.card.jackson::before{background:linear-gradient(90deg,#dc052d,#0066b2)}
+.card.ferran::before{background:linear-gradient(90deg,#1f77b4,#0d3a5c)}
+.card.mika::before{background:linear-gradient(90deg,#ffd700,#8f7200)}
+.card.undav::before{background:linear-gradient(90deg,#d62728,#7a1213)}
+.card.oskarsson::before{background:linear-gradient(90deg,#2ca02c,#145214)}
+.card.tresoldi::before{background:linear-gradient(90deg,#9467bd,#4c3066)}
+.card.asllani::before{background:linear-gradient(90deg,#ff7f0e,#964a06)}
+.card.cdk::before{background:linear-gradient(90deg,#8c564b,#4a2d26)}
+.card.bro::before{background:linear-gradient(90deg,#17becf,#0a5f69)}
+.card.jackson::before{background:linear-gradient(90deg,#e377c2,#9c2d84)}
 .card.hidden{opacity:0.15;transform:scale(0.97);pointer-events:none}
 .player-name{font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:2px}
 .player-club{font-size:0.8rem;color:#8899bb;margin-bottom:4px}
@@ -100,7 +100,7 @@ tr.top-row td{border-top:2px solid #1e2a4a}
 <script>
 const PLAYERS = [
   {
-    id:'ferran', key:'Ferran Torres', cls:'ferran', cl:'#004d98',
+    id:'ferran', key:'Ferran Torres', cls:'ferran', cl:'#1f77b4',
     name:'Ferran Torres', club:'FC Barcelona — La Liga', val:'€38M', age:'26 / 184cm / Right', pos:'ST / RW / LW', app:'33 (23) — 1,976 min',
     stats:[
       ['Goals (G/90)','16 (0.73)','good'],
@@ -126,7 +126,7 @@ const PLAYERS = [
     ]
   },
   {
-    id:'undav', key:'Undav', cls:'undav', cl:'#ff4444',
+    id:'undav', key:'Undav', cls:'undav', cl:'#d62728',
     name:'Deniz Undav', club:'VfB Stuttgart — Bundesliga', val:'~€20M', age:'28 / 178cm / Right', pos:'ST / SS', app:'29 (25) — 2,249 min',
     stats:[
       ['Goals (G/90)','19 (0.76)','good'],
@@ -139,7 +139,7 @@ const PLAYERS = [
     ]
   },
   {
-    id:'oskarsson', key:'Óskarsson', cls:'oskarsson', cl:'#0060a8',
+    id:'oskarsson', key:'Óskarsson', cls:'oskarsson', cl:'#2ca02c',
     name:'Orri Óskarsson', club:'Real Sociedad — La Liga', val:'~€10M', age:'21 / 186cm / Right', pos:'ST (CF)', app:'20 (8) — 829 min',
     stats:[
       ['Goals (G/90)','9 (0.98)*','good'],
@@ -152,7 +152,7 @@ const PLAYERS = [
     ]
   },
   {
-    id:'tresoldi', key:'Tresoldi', cls:'tresoldi', cl:'#006bb3',
+    id:'tresoldi', key:'Tresoldi', cls:'tresoldi', cl:'#9467bd',
     name:'Nicolò Tresoldi', club:'Club Brugge — Belgian Pro League', val:'~€12M', age:'21 / 183cm / Right', pos:'ST (CF)', app:'40 (30) — 2,500 min',
     stats:[
       ['Goals (G/90)','19 (0.68)','good'],
@@ -165,7 +165,7 @@ const PLAYERS = [
     ]
   },
   {
-    id:'asllani', key:'Asllani', cls:'asllani', cl:'#e41a1c',
+    id:'asllani', key:'Asllani', cls:'asllani', cl:'#ff7f0e',
     name:'Fisnik Asllani', club:'Hoffenheim — Bundesliga', val:'€30.7M', age:'23 / 188cm / Both', pos:'ST / AM', app:'33 (31) — 2,354 min',
     stats:[
       ['Goals (G/90)','10 (0.38)','bad'],
@@ -178,7 +178,7 @@ const PLAYERS = [
     ]
   },
   {
-    id:'cdk', key:'CDK', cls:'cdk', cl:'#2e6db4',
+    id:'cdk', key:'CDK', cls:'cdk', cl:'#8c564b',
     name:'Charles De Ketelaere', club:'Atalanta — Serie A', val:'€35.7M', age:'25 / 192cm / Left', pos:'AM / LW / RW / ST', app:'31 (26) — 2,188 min',
     stats:[
       ['Goals (G/90)','3 (0.12)','bad'],
@@ -191,7 +191,7 @@ const PLAYERS = [
     ]
   },
   {
-    id:'jackson', key:'Jackson', cls:'jackson', cl:'#dc052d',
+    id:'jackson', key:'Jackson', cls:'jackson', cl:'#e377c2',
     name:'Nicolas Jackson', club:'Bayern Munich (loan from Chelsea) — Bundesliga', val:'Loan (obl. ~€65M)', age:'25 / 187cm / Right', pos:'ST (CF)', app:'23 (16) — ~1,000 min',
     stats:[
       ['Goals (G/90)','8 (0.72)','ok'],
@@ -204,7 +204,7 @@ const PLAYERS = [
     ]
   },
   {
-    id:'bro', key:'Bro Hansen', cls:'bro', cl:'#66ccff',
+    id:'bro', key:'Bro Hansen', cls:'bro', cl:'#17becf',
     name:'Mikkel Bro Hansen', club:'Bodø/Glimt — Eliteserien', val:'~€0.9M', age:'17 / 188cm / Right', pos:'ST (CF)', app:'11 (0) — 99 min*',
     stats:[
       ['Goals (G/90)','2 (1.82)*','good'],
