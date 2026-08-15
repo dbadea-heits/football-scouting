@@ -26,6 +26,7 @@ h1{font-size:1.8rem;margin-bottom:4px;color:#fff}
 .card.asllani::before{background:linear-gradient(90deg,#00529b,#e41a1c)}
 .card.cdk::before{background:linear-gradient(90deg,#000000,#2e6db4)}
 .card.bro::before{background:linear-gradient(90deg,#66ccff,#003366)}
+.card.jackson::before{background:linear-gradient(90deg,#dc052d,#0066b2)}
 .card.hidden{opacity:0.15;transform:scale(0.97);pointer-events:none}
 .player-name{font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:2px}
 .player-club{font-size:0.8rem;color:#8899bb;margin-bottom:4px}
@@ -89,6 +90,7 @@ tr.top-row td{border-top:2px solid #1e2a4a}
 <p><strong>High-Risk/High-Reward: Orri Óskarsson</strong> — Most clinical finisher in the data set: 70.4% shot accuracy (99th %ile), 33.3% conversion (99th %ile), +3.23 xG overperformance. 9 goals in just 829 min. 21 years old, 186cm. Barcelona-bound rumors make sense — he's already in La Liga. The caveat: tiny sample, no assists, raw hold-up play.</p>
 <p><strong>Nicolò Tresoldi</strong> — 19G, 5A in Belgian Pro League at 21. Strong aerial presence (183cm), intelligent movement, elite pressing. G-xG of +2.15 is solid but not elite. Belgian league context matters — step-up risk. Intriguing long-term project.</p>
 <p><strong>Igor Thiago (Brentford)</strong> — 22 PL goals, +3.28 xG, 6'2", aerial dominant. The closest physical/tactical comp to prime Lewandowski. Recently named in Brazil's WC squad. Likely expensive after that breakout.</p>
+<p><strong>Nicolas Jackson</strong> — Proven top-5-league pedigree, but a rotational role at Bayern (~1,000 league min) caps the sample. 0.72 G/90 is strong, yet he's the only striker here underperforming xG (-0.23) — chronic finishing volatility persists. Expensive obligation (~€65M) means Bayern doubts his ceiling too. Not an upgrade over Undav at that price.</p>
 <p><strong>Georges Mikautadze</strong> — Solid like-for-like Ferran replacement already in La Liga. 0.55 G/90, 6 assists, 75.5% pass accuracy.</p>
 <p><strong>Charles De Ketelaere</strong> — Different profile entirely. 0.12 G/90 won't replace goals but offers elite creative output (8.75 xA). Tactical evolution, not like-for-like swap.</p>
 </div>
@@ -189,6 +191,19 @@ const PLAYERS = [
     ]
   },
   {
+    id:'jackson', key:'Jackson', cls:'jackson', cl:'#dc052d',
+    name:'Nicolas Jackson', club:'Bayern Munich (loan from Chelsea) — Bundesliga', val:'Loan (obl. ~€65M)', age:'25 / 187cm / Right', pos:'ST (CF)', app:'23 (16) — ~1,000 min',
+    stats:[
+      ['Goals (G/90)','8 (0.72)','ok'],
+      ['Assists','1','bad'],
+      ['G+A per 90','0.81','ok'],
+      ['Shots / On Target','38 / 21 (55.3%)',''],
+      ['xG (non-pen)','8.23',''],
+      ['G - xG','-0.23','bad'],
+      ['Role','Impact sub at Bayern','']
+    ]
+  },
+  {
     id:'bro', key:'Bro Hansen', cls:'bro', cl:'#66ccff',
     name:'Mikkel Bro Hansen', club:'Bodø/Glimt — Eliteserien', val:'~€0.9M', age:'17 / 188cm / Right', pos:'ST (CF)', app:'11 (0) — 99 min*',
     stats:[
@@ -208,25 +223,25 @@ const ALL_COLORS = Object.fromEntries(PLAYERS.map(p=>[p.key,p.cl]));
 
 const TABLE_ROWS = {
   'GOALSCORING': [
-    ['Goals', p=>({ferran:'16',mika:'13',undav:'19',oskarsson:'9',tresoldi:'19',asllani:'10',cdk:'3',bro:'2*'})[p.id]],
-    ['G/90', p=>({ferran:'0.73',mika:'0.55',undav:'0.76',oskarsson:'0.98',tresoldi:'0.68',asllani:'0.38',cdk:'0.12',bro:'1.82*'})[p.id]],
-    ['Shot Accuracy', p=>({ferran:'55.2%',mika:'49.2%',undav:'55.7%',oskarsson:'70.4%',tresoldi:'41.6%',asllani:'38.4%',cdk:'83%*‡',bro:'33.3%*'})[p.id]],
-    ['Conversion Rate', p=>({ferran:'23.9%',mika:'20.0%',undav:'15.6%',oskarsson:'33.3%',tresoldi:'19.6%',asllani:'13.7%',cdk:'n/a',bro:'66.7%*'})[p.id]],
-    ['xG', p=>({ferran:'14.02',mika:'11.42',undav:'15.94',oskarsson:'5.77',tresoldi:'16.85',asllani:'8.28',cdk:'n/a',bro:'0.4*'})[p.id]],
-    ['G - xG', p=>({ferran:'+1.98',mika:'+1.58',undav:'+3.06',oskarsson:'+3.23',tresoldi:'+2.15',asllani:'+1.72',cdk:'n/a',bro:'+1.6*'})[p.id]],
+    ['Goals', p=>({ferran:'16',mika:'13',undav:'19',oskarsson:'9',tresoldi:'19',asllani:'10',cdk:'3',jackson:'8',bro:'2*'})[p.id]],
+    ['G/90', p=>({ferran:'0.73',mika:'0.55',undav:'0.76',oskarsson:'0.98',tresoldi:'0.68',asllani:'0.38',cdk:'0.12',jackson:'0.72',bro:'1.82*'})[p.id]],
+    ['Shot Accuracy', p=>({ferran:'55.2%',mika:'49.2%',undav:'55.7%',oskarsson:'70.4%',tresoldi:'41.6%',asllani:'38.4%',cdk:'83%*‡',jackson:'55.3%',bro:'33.3%*'})[p.id]],
+    ['Conversion Rate', p=>({ferran:'23.9%',mika:'20.0%',undav:'15.6%',oskarsson:'33.3%',tresoldi:'19.6%',asllani:'13.7%',cdk:'n/a',jackson:'21.1%',bro:'66.7%*'})[p.id]],
+    ['xG', p=>({ferran:'14.02',mika:'11.42',undav:'15.94',oskarsson:'5.77',tresoldi:'16.85',asllani:'8.28',cdk:'n/a',jackson:'8.23†',bro:'0.4*'})[p.id]],
+    ['G - xG', p=>({ferran:'+1.98',mika:'+1.58',undav:'+3.06',oskarsson:'+3.23',tresoldi:'+2.15',asllani:'+1.72',cdk:'n/a',jackson:'-0.23',bro:'+1.6*'})[p.id]],
   ],
   'LINK-UP & CREATIVITY': [
-    ['Assists', p=>({ferran:'2',mika:'6',undav:'7',oskarsson:'0',tresoldi:'5',asllani:'7',cdk:'5',bro:'1*'})[p.id]],
-    ['Key Passes', p=>({ferran:'n/a',mika:'14*',undav:'39',oskarsson:'5*',tresoldi:'23',asllani:'19*',cdk:'24',bro:'2*'})[p.id]],
-    ['Pass Success', p=>({ferran:'70.4%',mika:'75.5%',undav:'69.9%',oskarsson:'64.0%',tresoldi:'74.0%',asllani:'68.6%',cdk:'78.8%',bro:'64%*'})[p.id]],
+    ['Assists', p=>({ferran:'2',mika:'6',undav:'7',oskarsson:'0',tresoldi:'5',asllani:'7',cdk:'5',jackson:'1',bro:'1*'})[p.id]],
+    ['Key Passes', p=>({ferran:'n/a',mika:'14*',undav:'39',oskarsson:'5*',tresoldi:'23',asllani:'19*',cdk:'24',jackson:'n/a',bro:'2*'})[p.id]],
+    ['Pass Success', p=>({ferran:'70.4%',mika:'75.5%',undav:'69.9%',oskarsson:'64.0%',tresoldi:'74.0%',asllani:'68.6%',cdk:'78.8%',jackson:'n/a',bro:'64%*'})[p.id]],
   ],
   'HOLD-UP & PHYSICAL': [
-    ['Aerial Duels Won', p=>({ferran:'n/a',mika:'10',undav:'27*',oskarsson:'n/a',tresoldi:'63*',asllani:'24',cdk:'13*‡',bro:'n/a'})[p.id]],
-    ['Touches Opp Box', p=>({ferran:'n/a',mika:'140',undav:'174*',oskarsson:'n/a',tresoldi:'n/a',asllani:'149',cdk:'n/a',bro:'n/a'})[p.id]],
+    ['Aerial Duels Won', p=>({ferran:'n/a',mika:'10',undav:'27*',oskarsson:'n/a',tresoldi:'63*',asllani:'24',cdk:'13*‡',jackson:'n/a',bro:'n/a'})[p.id]],
+    ['Touches Opp Box', p=>({ferran:'n/a',mika:'140',undav:'174*',oskarsson:'n/a',tresoldi:'n/a',asllani:'149',cdk:'n/a',jackson:'n/a',bro:'n/a'})[p.id]],
   ],
   'PRESSING': [
-    ['Duels Won %', p=>({ferran:'n/a',mika:'45.4%',undav:'44.1%',oskarsson:'41.8%',tresoldi:'50.7%',asllani:'37.0%',cdk:'53.1%',bro:'n/a'})[p.id]],
-    ['Recoveries', p=>({ferran:'n/a',mika:'40',undav:'135*',oskarsson:'n/a',tresoldi:'172*',asllani:'76',cdk:'9*‡',bro:'n/a'})[p.id]],
+    ['Duels Won %', p=>({ferran:'n/a',mika:'45.4%',undav:'44.1%',oskarsson:'41.8%',tresoldi:'50.7%',asllani:'37.0%',cdk:'53.1%',jackson:'n/a',bro:'n/a'})[p.id]],
+    ['Recoveries', p=>({ferran:'n/a',mika:'40',undav:'135*',oskarsson:'n/a',tresoldi:'172*',asllani:'76',cdk:'9*‡',jackson:'n/a',bro:'n/a'})[p.id]],
   ]
 };
 
@@ -239,6 +254,7 @@ const RADAR_DATA = {
   'Tresoldi':[0.68,0.18,41.6,19.6,2.15],
   'Asllani':[0.38,0.27,38.4,13.7,1.72],
   'CDK':[0.12,0.21,83.0,0.0,0.00],
+  'Jackson':[0.72,0.09,55.3,21.1,-0.23],
   'Bro Hansen':[1.82,0.91,33.3,66.7,1.60]
 };
 
@@ -271,7 +287,7 @@ function renderCards() {
   grid.innerHTML = '';
   PLAYERS.forEach(p => {
     const div = document.createElement('div');
-    div.className = `card ${p.cl}` + (visible.has(p.key) ? '' : ' hidden');
+    div.className = `card ${p.cls}` + (visible.has(p.key) ? '' : ' hidden');
     div.innerHTML = `
       <div class="player-name">${p.name}</div>
       <div class="player-club">${p.club} | Value: ${p.val}</div>
@@ -324,7 +340,7 @@ function renderTable() {
   const footTd = document.createElement('td');
   footTd.colSpan = visPlayers.length + 1;
   footTd.style.cssText = 'color:#667799;font-size:0.75rem;padding-top:8px';
-  footTd.textContent = '* Extremely small sample. Bro Hansen: 99 Eliteserien min across 2 seasons. Óskarsson: 829 min. ‡ CDK from WC 2026 (353 min).';
+  footTd.textContent = '* Extremely small sample. Bro Hansen: 99 Eliteserien min across 2 seasons. Óskarsson: 829 min. ‡ CDK from WC 2026 (353 min). † Jackson: non-penalty xG, league only (~1,000 min) — limited rotation role at Bayern.';
   foot.appendChild(footTd);
   body.appendChild(foot);
 }
@@ -350,7 +366,7 @@ function renderRadar() {
   c.fillStyle='#aabbdd';c.font='11px sans-serif';c.textAlign='center';
   L.forEach((l,i)=>{const a=Math.PI*2/L.length*i-Math.PI/2;c.fillText(l,cx+(R+20)*Math.cos(a),cy+(R+20)*Math.sin(a));});
   const Mx=L.map((_,i)=>Math.max(...Object.values(P).map(p=>p[i]),1));
-  const N=p=>p.map((v,i)=>(v/Mx[i])*100);
+  const N=p=>p.map((v,i)=>(Math.max(v,0)/Mx[i])*100);
   Object.entries(P).forEach(([n,v])=>{
     const m=N(v);c.beginPath();
     m.forEach((v,i)=>{const a=Math.PI*2/L.length*i-Math.PI/2,x=cx+(R*v/100)*Math.cos(a),y=cy+(R*v/100)*Math.sin(a);i?c.lineTo(x,y):c.moveTo(x,y);});

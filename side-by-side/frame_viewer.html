@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html><head><title>Busquets vs Rodri Frame Comparison</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:sans-serif; background:#111; color:#fff; padding:20px; }
+h1 { text-align:center; margin-bottom:20px; color:#ffd700; }
+.row { display:flex; gap:10px; margin-bottom:30px; align-items:flex-start; justify-content:center; flex-wrap:wrap; }
+.col { flex:1; min-width:300px; max-width:600px; }
+.col h2 { text-align:center; padding:8px; }
+.col.b h2 { color:#ff6b6b; }
+.col.r h2 { color:#4ecdc4; }
+.frame-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(140px,1fr)); gap:4px; }
+.frame-grid img { width:100%; height:auto; border-radius:4px; cursor:pointer; border:2px solid transparent; transition:border-color .2s; }
+.frame-grid img:hover { border-color:#ffd700; }
+.selected { border-color:#ffd700 !important; }
+.controls { text-align:center; margin:20px 0; }
+.controls button { padding:10px 24px; margin:0 8px; font-size:16px; cursor:pointer; border:none; border-radius:6px; background:#333; color:#fff; }
+.controls button:hover { background:#555; }
+.info { text-align:center; font-size:14px; color:#aaa; margin-top:10px; }
+</style></head><body>
+<h1>Busquets vs Rodri — Frame Selection</h1>
+
+<div class="row">
+<div class="col b">
+<h2>Busquets</h2>
+<div class="frame-grid" id="busquets-grid"></div>
+</div>
+<div class="col r">
+<h2>Rodri</h2>
+<div class="frame-grid" id="rodri-grid"></div>
+</div>
+</div>
+
+<script>
+const busquetsFrames = [];
+const rodriFrames = [];
+// Generate frame filenames
+for(let i=1; i<=104; i++) busquetsFrames.push(`frames/busquets_${String(i).padStart(4,'0')}.jpg`);
+for(let i=1; i<=169; i++) rodriFrames.push(`frames/rodri_${String(i).padStart(4,'0')}.jpg`);
+
+const bGrid = document.getElementById('busquets-grid');
+const rGrid = document.getElementById('rodri-grid');
+
+busquetsFrames.forEach((src, i) => {
+  const img = document.createElement('img');
+  img.src = src;
+  img.dataset.idx = i;
+  img.onclick = () => {
+    document.querySelectorAll('#busquets-grid img').forEach(x => x.classList.remove('selected'));
+    img.classList.add('selected');
+  };
+  bGrid.appendChild(img);
+});
+
+rodriFrames.forEach((src, i) => {
+  const img = document.createElement('img');
+  img.src = src;
+  img.dataset.idx = i;
+  img.onclick = () => {
+    document.querySelectorAll('#rodri-grid img').forEach(x => x.classList.remove('selected'));
+    img.classList.add('selected');
+  };
+  rGrid.appendChild(img);
+});
+</script>
+</body></html>
