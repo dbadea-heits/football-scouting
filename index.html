@@ -25,6 +25,7 @@ h1{font-size:1.8rem;margin-bottom:4px;color:#fff}
 .card.tresoldi::before{background:linear-gradient(90deg,#006bb3,#003f66)}
 .card.asllani::before{background:linear-gradient(90deg,#00529b,#e41a1c)}
 .card.cdk::before{background:linear-gradient(90deg,#000000,#2e6db4)}
+.card.bro::before{background:linear-gradient(90deg,#66ccff,#003366)}
 .card.hidden{opacity:0.15;transform:scale(0.97);pointer-events:none}
 .player-name{font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:2px}
 .player-club{font-size:0.8rem;color:#8899bb;margin-bottom:4px}
@@ -90,11 +91,6 @@ tr.top-row td{border-top:2px solid #1e2a4a}
 <p><strong>Igor Thiago (Brentford)</strong> — 22 PL goals, +3.28 xG, 6'2", aerial dominant. The closest physical/tactical comp to prime Lewandowski. Recently named in Brazil's WC squad. Likely expensive after that breakout.</p>
 <p><strong>Georges Mikautadze</strong> — Solid like-for-like Ferran replacement already in La Liga. 0.55 G/90, 6 assists, 75.5% pass accuracy.</p>
 <p><strong>Charles De Ketelaere</strong> — Different profile entirely. 0.12 G/90 won't replace goals but offers elite creative output (8.75 xA). Tactical evolution, not like-for-like swap.</p>
-</div>
-
-<div class="verdict-box" style="margin-top:12px;border-color:#1a3355">
-<h2>Future Watch — Mikkel Bro Hansen</h2>
-<p><strong>Bodø/Glimt — 17yo · 188cm · Danish striker</strong> — Extremely raw prospect. 1G in 29 Eliteserien minutes (2026). Mostly U17 international football (2G in 3 apps at U17 Euros). Notable offer: 188cm frame, right-footed, youth goal-scoring instincts. <strong>Status:</strong> Not enough senior data for reliable scouting. Revisit in 2027 after a full senior season.</p>
 </div>
 
 </div>
@@ -191,6 +187,19 @@ const PLAYERS = [
       ['Pass Success','78.8%','ok'],
       ['Serie A Rank','#60+','bad']
     ]
+  },
+  {
+    id:'bro', key:'Bro Hansen', cls:'bro', cl:'#66ccff',
+    name:'Mikkel Bro Hansen', club:'Bodø/Glimt — Eliteserien', val:'~€0.9M', age:'17 / 188cm / Right', pos:'ST (CF)', app:'11 (0) — 99 min*',
+    stats:[
+      ['Goals (G/90)','2 (1.82)*','good'],
+      ['Assists','1','ok'],
+      ['G+A per 90','2.73*','good'],
+      ['U17 Intl Goals','13 in 16 caps','good'],
+      ['Senior Career','15 apps, 8 goals',''],
+      ['2025 Cup Goals','6 in 3 apps','good'],
+      ['Status','Youth prospect','bad']
+    ]
   }
 ];
 
@@ -199,25 +208,25 @@ const ALL_COLORS = Object.fromEntries(PLAYERS.map(p=>[p.key,p.cl]));
 
 const TABLE_ROWS = {
   'GOALSCORING': [
-    ['Goals', p=>({ferran:'16',mika:'13',undav:'19',oskarsson:'9',tresoldi:'19',asllani:'10',cdk:'3'})[p.id]],
-    ['G/90', p=>({ferran:'0.73',mika:'0.55',undav:'0.76',oskarsson:'0.98',tresoldi:'0.68',asllani:'0.38',cdk:'0.12'})[p.id]],
-    ['Shot Accuracy', p=>({ferran:'55.2%',mika:'49.2%',undav:'55.7%',oskarsson:'70.4%',tresoldi:'41.6%',asllani:'38.4%',cdk:'83%*‡'})[p.id]],
-    ['Conversion Rate', p=>({ferran:'23.9%',mika:'20.0%',undav:'15.6%',oskarsson:'33.3%',tresoldi:'19.6%',asllani:'13.7%',cdk:'n/a'})[p.id]],
-    ['xG', p=>({ferran:'14.02',mika:'11.42',undav:'15.94',oskarsson:'5.77',tresoldi:'16.85',asllani:'8.28',cdk:'n/a'})[p.id]],
-    ['G - xG', p=>({ferran:'+1.98',mika:'+1.58',undav:'+3.06',oskarsson:'+3.23',tresoldi:'+2.15',asllani:'+1.72',cdk:'n/a'})[p.id]],
+    ['Goals', p=>({ferran:'16',mika:'13',undav:'19',oskarsson:'9',tresoldi:'19',asllani:'10',cdk:'3',bro:'2*'})[p.id]],
+    ['G/90', p=>({ferran:'0.73',mika:'0.55',undav:'0.76',oskarsson:'0.98',tresoldi:'0.68',asllani:'0.38',cdk:'0.12',bro:'1.82*'})[p.id]],
+    ['Shot Accuracy', p=>({ferran:'55.2%',mika:'49.2%',undav:'55.7%',oskarsson:'70.4%',tresoldi:'41.6%',asllani:'38.4%',cdk:'83%*‡',bro:'33.3%*'})[p.id]],
+    ['Conversion Rate', p=>({ferran:'23.9%',mika:'20.0%',undav:'15.6%',oskarsson:'33.3%',tresoldi:'19.6%',asllani:'13.7%',cdk:'n/a',bro:'66.7%*'})[p.id]],
+    ['xG', p=>({ferran:'14.02',mika:'11.42',undav:'15.94',oskarsson:'5.77',tresoldi:'16.85',asllani:'8.28',cdk:'n/a',bro:'0.4*'})[p.id]],
+    ['G - xG', p=>({ferran:'+1.98',mika:'+1.58',undav:'+3.06',oskarsson:'+3.23',tresoldi:'+2.15',asllani:'+1.72',cdk:'n/a',bro:'+1.6*'})[p.id]],
   ],
   'LINK-UP & CREATIVITY': [
-    ['Assists', p=>p.stats[1][1]],
-    ['Key Passes', p=>({ferran:'n/a',mika:'14*',undav:'39',oskarsson:'5*',tresoldi:'23',asllani:'19*',cdk:'24'})[p.id]],
-    ['Pass Success', p=>({ferran:'70.4%',mika:'75.5%',undav:'69.9%',oskarsson:'64.0%',tresoldi:'74.0%',asllani:'68.6%',cdk:'78.8%'})[p.id]],
+    ['Assists', p=>({ferran:'2',mika:'6',undav:'7',oskarsson:'0',tresoldi:'5',asllani:'7',cdk:'5',bro:'1*'})[p.id]],
+    ['Key Passes', p=>({ferran:'n/a',mika:'14*',undav:'39',oskarsson:'5*',tresoldi:'23',asllani:'19*',cdk:'24',bro:'2*'})[p.id]],
+    ['Pass Success', p=>({ferran:'70.4%',mika:'75.5%',undav:'69.9%',oskarsson:'64.0%',tresoldi:'74.0%',asllani:'68.6%',cdk:'78.8%',bro:'64%*'})[p.id]],
   ],
   'HOLD-UP & PHYSICAL': [
-    ['Aerial Duels Won', p=>({ferran:'n/a',mika:'10',undav:'27*',oskarsson:'n/a',tresoldi:'63*',asllani:'24',cdk:'13*‡'})[p.id]],
-    ['Touches Opp Box', p=>({ferran:'n/a',mika:'140',undav:'174*',oskarsson:'n/a',tresoldi:'n/a',asllani:'149',cdk:'n/a'})[p.id]],
+    ['Aerial Duels Won', p=>({ferran:'n/a',mika:'10',undav:'27*',oskarsson:'n/a',tresoldi:'63*',asllani:'24',cdk:'13*‡',bro:'n/a'})[p.id]],
+    ['Touches Opp Box', p=>({ferran:'n/a',mika:'140',undav:'174*',oskarsson:'n/a',tresoldi:'n/a',asllani:'149',cdk:'n/a',bro:'n/a'})[p.id]],
   ],
   'PRESSING': [
-    ['Duels Won %', p=>({ferran:'n/a',mika:'45.4%',undav:'44.1%',oskarsson:'41.8%',tresoldi:'50.7%',asllani:'37.0%',cdk:'53.1%'})[p.id]],
-    ['Recoveries', p=>({ferran:'n/a',mika:'40',undav:'135*',oskarsson:'n/a',tresoldi:'172*',asllani:'76',cdk:'9*‡'})[p.id]],
+    ['Duels Won %', p=>({ferran:'n/a',mika:'45.4%',undav:'44.1%',oskarsson:'41.8%',tresoldi:'50.7%',asllani:'37.0%',cdk:'53.1%',bro:'n/a'})[p.id]],
+    ['Recoveries', p=>({ferran:'n/a',mika:'40',undav:'135*',oskarsson:'n/a',tresoldi:'172*',asllani:'76',cdk:'9*‡',bro:'n/a'})[p.id]],
   ]
 };
 
@@ -229,7 +238,8 @@ const RADAR_DATA = {
   'Óskarsson':[0.98,0.00,70.4,33.3,3.23],
   'Tresoldi':[0.68,0.18,41.6,19.6,2.15],
   'Asllani':[0.38,0.27,38.4,13.7,1.72],
-  'CDK':[0.12,0.21,83.0,0.0,0.00]
+  'CDK':[0.12,0.21,83.0,0.0,0.00],
+  'Bro Hansen':[1.82,0.91,33.3,66.7,1.60]
 };
 
 let visible = new Set(ALL_KEYS);
@@ -314,7 +324,7 @@ function renderTable() {
   const footTd = document.createElement('td');
   footTd.colSpan = visPlayers.length + 1;
   footTd.style.cssText = 'color:#667799;font-size:0.75rem;padding-top:8px';
-  footTd.textContent = '* Óskarsson based on small sample (829 min). Tresoldi stats from Belgian Pro League. ‡ CDK from WC 2026 (353 min).';
+  footTd.textContent = '* Extremely small sample. Bro Hansen: 99 Eliteserien min across 2 seasons. Óskarsson: 829 min. ‡ CDK from WC 2026 (353 min).';
   foot.appendChild(footTd);
   body.appendChild(foot);
 }
