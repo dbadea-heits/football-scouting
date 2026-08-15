@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forwards Scouting Report</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0e1a;color:#e0e6f0;padding:20px}
+.container{max-width:1400px;margin:0 auto}
+h1{font-size:1.8rem;margin-bottom:4px;color:#fff}
+.subtitle{color:#8899bb;margin-bottom:16px;font-size:0.95rem}
+.section-title{font-size:1.2rem;margin:24px 0 12px;color:#aabbdd;border-bottom:1px solid #1a2240;padding-bottom:8px}
+.toggles{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.toggle-btn{padding:6px 14px;border-radius:20px;border:1px solid #1e2a4a;background:#111827;color:#8899bb;cursor:pointer;font-size:0.8rem;font-weight:600;transition:all 0.2s}
+.toggle-btn:hover{background:#1a2240}
+.toggle-btn.active{background:var(--cl,#1e2a4a);color:#fff;border-color:var(--cl,#1e2a4a)}
+.grid-7{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:20px}
+.card{background:linear-gradient(135deg,#111827,#0f1729);border:1px solid #1e2a4a;border-radius:12px;padding:20px;position:relative;overflow:hidden;transition:opacity 0.3s, transform 0.3s}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0}
+.card.ferran::before{background:linear-gradient(90deg,#a50044,#004d98)}
+.card.mika::before{background:linear-gradient(90deg,#ffd700,#004d98)}
+.card.undav::before{background:linear-gradient(90deg,#ff4444,#cc0000)}
+.card.oskarsson::before{background:linear-gradient(90deg,#0060a8,#002e5c)}
+.card.tresoldi::before{background:linear-gradient(90deg,#006bb3,#003f66)}
+.card.asllani::before{background:linear-gradient(90deg,#00529b,#e41a1c)}
+.card.cdk::before{background:linear-gradient(90deg,#000000,#2e6db4)}
+.card.hidden{opacity:0.15;transform:scale(0.97);pointer-events:none}
+.player-name{font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:2px}
+.player-club{font-size:0.8rem;color:#8899bb;margin-bottom:4px}
+.player-stat-label{font-size:0.7rem;color:#667799;margin-bottom:8px}
+.stat-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #161e36;font-size:0.85rem}
+.stat-row:last-child{border-bottom:none}
+.stat-label{color:#8899bb}
+.stat-value{color:#fff;font-weight:600}
+.stat-value.good{color:#4ade80}
+.stat-value.ok{color:#facc15}
+.stat-value.bad{color:#f87171}
+.chart-container{background:#111827;border:1px solid #1e2a4a;border-radius:12px;padding:20px;margin-bottom:20px}
+.radar-wrap{width:100%;max-width:500px;margin:0 auto}
+table{width:100%;border-collapse:collapse;font-size:0.82rem}
+th{background:#1a2240;color:#aabbdd;padding:10px 8px;text-align:center;font-weight:600;position:sticky;top:0}
+th:first-child{text-align:left;padding-left:14px}
+td{padding:8px;text-align:center;border-bottom:1px solid #161e36}
+td:first-child{text-align:left;padding-left:14px;color:#8899bb;font-weight:500}
+tr:hover td{background:#0f1729}
+tr.top-row td{border-top:2px solid #1e2a4a}
+.col-hidden{display:none}
+.rank-badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:0.7rem;font-weight:700}
+.rank-best{background:#14532d;color:#4ade80}
+.rank-mid{background:#713f12;color:#facc15}
+.rank-worst{background:#7f1d1d;color:#f87171}
+.verdict-box{background:linear-gradient(135deg,#111827,#0f1729);border:1px solid #1e2a4a;border-radius:12px;padding:24px;margin-top:20px}
+.verdict-box h2{color:#fff;margin-bottom:12px;font-size:1.1rem}
+.verdict-box p{color:#c0cce0;line-height:1.7;font-size:0.9rem;margin-bottom:8px}
+.verdict-box strong{color:#fff}
+@media(max-width:700px){.grid-7{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>Forwards Scouting Report</h1>
+<p class="subtitle">2025/2026 Season | Click toggles to compare subsets</p>
+
+<div class="toggles" id="toggles"></div>
+
+<div class="grid-7" id="cards"></div>
+
+<div class="chart-container">
+<h2 class="section-title" style="margin-top:0;border-bottom:none;padding-bottom:0">Radar: Goal-Scoring Efficiency Profile</h2>
+<p style="color:#8899bb;font-size:0.82rem;margin-bottom:12px">Per 90 min values scaled within visible set</p>
+<div class="radar-wrap">
+<canvas id="radarChart" width="500" height="500"></canvas>
+</div>
+</div>
+
+<h2 class="section-title">Detailed Metrics</h2>
+<div style="overflow-x:auto">
+<table>
+<thead><tr id="tableHead"></tr></thead>
+<tbody id="tableBody"></tbody>
+</table>
+</div>
+
+<div class="verdict-box" id="verdict">
+<h2>Scouting Verdict</h2>
+<p><strong>Recommended: Deniz Undav</strong> — Best prime-Lewa profile in the hidden gem market. 19G (0.76/90), 7A, +3.06 xG overperformance. Strong link-up play (1.7 key passes/90), elite shot volume (4.9/90), holds ball up, presses hard. At ~€20M and entering his peak at 28, he's criminally undervalued.</p>
+<p><strong>High-Risk/High-Reward: Orri Óskarsson</strong> — Most clinical finisher in the data set: 70.4% shot accuracy (99th %ile), 33.3% conversion (99th %ile), +3.23 xG overperformance. 9 goals in just 829 min. 21 years old, 186cm. Barcelona-bound rumors make sense — he's already in La Liga. The caveat: tiny sample, no assists, raw hold-up play.</p>
+<p><strong>Nicolò Tresoldi</strong> — 19G, 5A in Belgian Pro League at 21. Strong aerial presence (183cm), intelligent movement, elite pressing. G-xG of +2.15 is solid but not elite. Belgian league context matters — step-up risk. Intriguing long-term project.</p>
+<p><strong>Igor Thiago (Brentford)</strong> — 22 PL goals, +3.28 xG, 6'2", aerial dominant. The closest physical/tactical comp to prime Lewandowski. Recently named in Brazil's WC squad. Likely expensive after that breakout.</p>
+<p><strong>Georges Mikautadze</strong> — Solid like-for-like Ferran replacement already in La Liga. 0.55 G/90, 6 assists, 75.5% pass accuracy.</p>
+<p><strong>Charles De Ketelaere</strong> — Different profile entirely. 0.12 G/90 won't replace goals but offers elite creative output (8.75 xA). Tactical evolution, not like-for-like swap.</p>
+</div>
+
+</div>
+
+<script>
+const PLAYERS = [
+  {
+    id:'ferran', key:'Ferran Torres', cls:'ferran', cl:'#004d98',
+    name:'Ferran Torres', club:'FC Barcelona — La Liga', val:'€38M', age:'26 / 184cm / Right', pos:'ST / RW / LW', app:'33 (23) — 1,976 min',
+    stats:[
+      ['Goals (G/90)','16 (0.73)','good'],
+      ['Assists','2',''],
+      ['G+A per 90','0.82','good'],
+      ['Shots / On Target','67 / 37 (55.2%)',''],
+      ['xG','14.02',''],
+      ['G - xG','+1.98','good'],
+      ['La Liga Rank','#5','good']
+    ]
+  },
+  {
+    id:'mika', key:'Mikautadze', cls:'mika', cl:'#ffd700',
+    name:'Georges Mikautadze', club:'Villarreal — La Liga', val:'€25.2M', age:'25 / 176cm / Right', pos:'ST (CF)', app:'32 (23) — 2,117 min',
+    stats:[
+      ['Goals (G/90)','13 (0.55)','ok'],
+      ['Assists','6','good'],
+      ['G+A per 90','0.81','ok'],
+      ['Shots / On Target','65 / 32 (49.2%)',''],
+      ['xG','11.42',''],
+      ['G - xG','+1.58','ok'],
+      ['La Liga Rank','#13','ok']
+    ]
+  },
+  {
+    id:'undav', key:'Undav', cls:'undav', cl:'#ff4444',
+    name:'Deniz Undav', club:'VfB Stuttgart — Bundesliga', val:'~€20M', age:'28 / 178cm / Right', pos:'ST / SS', app:'29 (25) — 2,249 min',
+    stats:[
+      ['Goals (G/90)','19 (0.76)','good'],
+      ['Assists','7','good'],
+      ['G+A per 90','1.04','good'],
+      ['Shots / On Target','122 / 68 (55.7%)',''],
+      ['xG','15.94',''],
+      ['G - xG','+3.06','good'],
+      ['Bundesliga Rank','#3','good']
+    ]
+  },
+  {
+    id:'oskarsson', key:'Óskarsson', cls:'oskarsson', cl:'#0060a8',
+    name:'Orri Óskarsson', club:'Real Sociedad — La Liga', val:'~€10M', age:'21 / 186cm / Right', pos:'ST (CF)', app:'20 (8) — 829 min',
+    stats:[
+      ['Goals (G/90)','9 (0.98)*','good'],
+      ['Assists','0','bad'],
+      ['G+A per 90','0.98','good'],
+      ['Shots / On Target','27 / 19 (70.4%)',''],
+      ['xG','5.77',''],
+      ['G - xG','+3.23','good'],
+      ['La Liga Rank','#20','ok']
+    ]
+  },
+  {
+    id:'tresoldi', key:'Tresoldi', cls:'tresoldi', cl:'#006bb3',
+    name:'Nicolò Tresoldi', club:'Club Brugge — Belgian Pro League', val:'~€12M', age:'21 / 183cm / Right', pos:'ST (CF)', app:'40 (30) — 2,500 min',
+    stats:[
+      ['Goals (G/90)','19 (0.68)','good'],
+      ['Assists','5','ok'],
+      ['G+A per 90','0.86','good'],
+      ['Shots / On Target','101 / 42 (41.6%)',''],
+      ['xG','16.85',''],
+      ['G - xG','+2.15','ok'],
+      ['Pro League Rank','#1','good']
+    ]
+  },
+  {
+    id:'asllani', key:'Asllani', cls:'asllani', cl:'#e41a1c',
+    name:'Fisnik Asllani', club:'Hoffenheim — Bundesliga', val:'€30.7M', age:'23 / 188cm / Both', pos:'ST / AM', app:'33 (31) — 2,354 min',
+    stats:[
+      ['Goals (G/90)','10 (0.38)','bad'],
+      ['Assists','7','good'],
+      ['G+A per 90','0.65','ok'],
+      ['Shots / On Target','73 / 28 (38.4%)',''],
+      ['xG','8.28',''],
+      ['G - xG','+1.72','ok'],
+      ['Bundesliga Rank','#16','ok']
+    ]
+  },
+  {
+    id:'cdk', key:'CDK', cls:'cdk', cl:'#2e6db4',
+    name:'Charles De Ketelaere', club:'Atalanta — Serie A', val:'€35.7M', age:'25 / 192cm / Left', pos:'AM / LW / RW / ST', app:'31 (26) — 2,188 min',
+    stats:[
+      ['Goals (G/90)','3 (0.12)','bad'],
+      ['Assists','5','good'],
+      ['G+A per 90','0.33','bad'],
+      ['Rating','7.12 (FotMob)','ok'],
+      ['xA','8.75','ok'],
+      ['Pass Success','78.8%','ok'],
+      ['Serie A Rank','#60+','bad']
+    ]
+  }
+];
+
+const ALL_KEYS = PLAYERS.map(p=>p.key);
+const ALL_COLORS = Object.fromEntries(PLAYERS.map(p=>[p.key,p.cl]));
+
+const TABLE_ROWS = {
+  'GOALSCORING': [
+    ['Goals', p=>({ferran:'16',mika:'13',undav:'19',oskarsson:'9',tresoldi:'19',asllani:'10',cdk:'3'})[p.id]],
+    ['G/90', p=>({ferran:'0.73',mika:'0.55',undav:'0.76',oskarsson:'0.98',tresoldi:'0.68',asllani:'0.38',cdk:'0.12'})[p.id]],
+    ['Shot Accuracy', p=>({ferran:'55.2%',mika:'49.2%',undav:'55.7%',oskarsson:'70.4%',tresoldi:'41.6%',asllani:'38.4%',cdk:'83%*‡'})[p.id]],
+    ['Conversion Rate', p=>({ferran:'23.9%',mika:'20.0%',undav:'15.6%',oskarsson:'33.3%',tresoldi:'19.6%',asllani:'13.7%',cdk:'n/a'})[p.id]],
+    ['xG', p=>({ferran:'14.02',mika:'11.42',undav:'15.94',oskarsson:'5.77',tresoldi:'16.85',asllani:'8.28',cdk:'n/a'})[p.id]],
+    ['G - xG', p=>({ferran:'+1.98',mika:'+1.58',undav:'+3.06',oskarsson:'+3.23',tresoldi:'+2.15',asllani:'+1.72',cdk:'n/a'})[p.id]],
+  ],
+  'LINK-UP & CREATIVITY': [
+    ['Assists', p=>p.stats[1][1]],
+    ['Key Passes', p=>({ferran:'n/a',mika:'14*',undav:'39',oskarsson:'5*',tresoldi:'23',asllani:'19*',cdk:'24'})[p.id]],
+    ['Pass Success', p=>({ferran:'70.4%',mika:'75.5%',undav:'69.9%',oskarsson:'64.0%',tresoldi:'74.0%',asllani:'68.6%',cdk:'78.8%'})[p.id]],
+  ],
+  'HOLD-UP & PHYSICAL': [
+    ['Aerial Duels Won', p=>({ferran:'n/a',mika:'10',undav:'27*',oskarsson:'n/a',tresoldi:'63*',asllani:'24',cdk:'13*‡'})[p.id]],
+    ['Touches Opp Box', p=>({ferran:'n/a',mika:'140',undav:'174*',oskarsson:'n/a',tresoldi:'n/a',asllani:'149',cdk:'n/a'})[p.id]],
+  ],
+  'PRESSING': [
+    ['Duels Won %', p=>({ferran:'n/a',mika:'45.4%',undav:'44.1%',oskarsson:'41.8%',tresoldi:'50.7%',asllani:'37.0%',cdk:'53.1%'})[p.id]],
+    ['Recoveries', p=>({ferran:'n/a',mika:'40',undav:'135*',oskarsson:'n/a',tresoldi:'172*',asllani:'76',cdk:'9*‡'})[p.id]],
+  ]
+};
+
+const RADAR_METRICS = ['G/90','A/90','Shot%','Conv%','G-xG'];
+const RADAR_DATA = {
+  'Ferran Torres':[0.73,0.09,55.2,23.9,1.98],
+  'Mikautadze':[0.55,0.26,49.2,20.0,1.58],
+  'Undav':[0.76,0.28,55.7,15.6,3.06],
+  'Óskarsson':[0.98,0.00,70.4,33.3,3.23],
+  'Tresoldi':[0.68,0.18,41.6,19.6,2.15],
+  'Asllani':[0.38,0.27,38.4,13.7,1.72],
+  'CDK':[0.12,0.21,83.0,0.0,0.00]
+};
+
+let visible = new Set(ALL_KEYS);
+
+// build toggles
+const toggleDiv = document.getElementById('toggles');
+PLAYERS.forEach(p => {
+  const btn = document.createElement('button');
+  btn.className = 'toggle-btn active';
+  btn.style.setProperty('--cl', p.cl);
+  btn.textContent = p.key;
+  btn.dataset.key = p.key;
+  btn.onclick = () => {
+    if (visible.has(p.key)) {
+      visible.delete(p.key);
+      btn.classList.remove('active');
+    } else {
+      visible.add(p.key);
+      btn.classList.add('active');
+    }
+    render();
+  };
+  toggleDiv.appendChild(btn);
+});
+
+// build cards
+function renderCards() {
+  const grid = document.getElementById('cards');
+  grid.innerHTML = '';
+  PLAYERS.forEach(p => {
+    const div = document.createElement('div');
+    div.className = `card ${p.cl}` + (visible.has(p.key) ? '' : ' hidden');
+    div.innerHTML = `
+      <div class="player-name">${p.name}</div>
+      <div class="player-club">${p.club} | Value: ${p.val}</div>
+      <div class="player-stat-label">${p.age} · ${p.pos} · ${p.app}</div>
+      ${p.stats.map(s => `<div class="stat-row"><span class="stat-label">${s[0]}</span><span class="stat-value ${s[2]}">${s[1]}</span></div>`).join('')}
+    `;
+    grid.appendChild(div);
+  });
+}
+
+// build table
+function renderTable() {
+  const head = document.getElementById('tableHead');
+  const body = document.getElementById('tableBody');
+  const visPlayers = PLAYERS.filter(p => visible.has(p.key));
+  head.innerHTML = '<th>Metric</th>' + visPlayers.map(p => `<th>${p.key}</th>`).join('');
+  body.innerHTML = '';
+  Object.entries(TABLE_ROWS).forEach(([section, rows]) => {
+    const secRow = document.createElement('tr');
+    secRow.className = 'top-row';
+    const secTd = document.createElement('td');
+    secTd.colSpan = visPlayers.length + 1;
+    secTd.style.cssText = 'color:#aabbdd;font-weight:700;text-align:left;padding-left:14px';
+    secTd.textContent = section;
+    secRow.appendChild(secTd);
+    body.appendChild(secRow);
+    rows.forEach(([label, fn]) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${label}</td>` + visPlayers.map(p => {
+        const v = fn(p);
+        const isBest = visPlayers.length > 1 && (() => {
+          const vals = visPlayers.map(p2 => {
+            const raw = fn(p2);
+            if (!raw || raw === 'n/a' || raw === 'n/a*' || raw === 'n/a*‡') return null;
+            const num = parseFloat(raw.replace(/,/g,''));
+            return isNaN(num) ? null : num;
+          }).filter(v => v !== null);
+          if (vals.length < 2) return false;
+          const vNum = parseFloat(v.replace(/,/g,''));
+          if (isNaN(vNum)) return false;
+          return vNum >= Math.max(...vals);
+        })();
+        return `<td>${isBest?`<span class="rank-badge rank-best">${v}</span>`:v}</td>`;
+      }).join('');
+      body.appendChild(tr);
+    });
+  });
+  // footnote
+  const foot = document.createElement('tr');
+  const footTd = document.createElement('td');
+  footTd.colSpan = visPlayers.length + 1;
+  footTd.style.cssText = 'color:#667799;font-size:0.75rem;padding-top:8px';
+  footTd.textContent = '* Óskarsson based on small sample (829 min). Tresoldi stats from Belgian Pro League. ‡ CDK from WC 2026 (353 min).';
+  foot.appendChild(footTd);
+  body.appendChild(foot);
+}
+
+// radar
+function renderRadar() {
+  const c = document.getElementById('radarChart').getContext('2d');
+  const W=500,H=500,cx=250,cy=250,R=180;
+  const visKeys = ALL_KEYS.filter(k => visible.has(k));
+  const L = RADAR_METRICS;
+  const P = Object.fromEntries(Object.entries(RADAR_DATA).filter(([k])=>visible.has(k)));
+  const CL = Object.fromEntries(Object.entries(ALL_COLORS).filter(([k])=>visible.has(k)));
+  c.clearRect(0,0,W,H);
+  if (visKeys.length === 0) return;
+  for(let r=1;r<=5;r++){
+    const l=R/5*r;c.beginPath();
+    for(let i=0;i<L.length;i++){
+      const a=Math.PI*2/L.length*i-Math.PI/2;
+      const x=cx+l*Math.cos(a),y=cy+l*Math.sin(a);
+      i?c.lineTo(x,y):c.moveTo(x,y);
+    }c.closePath();c.strokeStyle='#1e2a4a';c.stroke();
+  }
+  c.fillStyle='#aabbdd';c.font='11px sans-serif';c.textAlign='center';
+  L.forEach((l,i)=>{const a=Math.PI*2/L.length*i-Math.PI/2;c.fillText(l,cx+(R+20)*Math.cos(a),cy+(R+20)*Math.sin(a));});
+  const Mx=L.map((_,i)=>Math.max(...Object.values(P).map(p=>p[i]),1));
+  const N=p=>p.map((v,i)=>(v/Mx[i])*100);
+  Object.entries(P).forEach(([n,v])=>{
+    const m=N(v);c.beginPath();
+    m.forEach((v,i)=>{const a=Math.PI*2/L.length*i-Math.PI/2,x=cx+(R*v/100)*Math.cos(a),y=cy+(R*v/100)*Math.sin(a);i?c.lineTo(x,y):c.moveTo(x,y);});
+    c.closePath();c.fillStyle=CL[n]+'30';c.fill();c.strokeStyle=CL[n];c.lineWidth=2;c.stroke();
+  });
+  let y=20;
+  Object.entries(CL).forEach(([n,cl])=>{c.fillStyle=cl;c.fillRect(20,y,12,12);c.fillStyle='#e0e6f0';c.font='12px sans-serif';c.textAlign='left';c.fillText(n,38,y+10);y+=20;});
+}
+
+function render() {
+  renderCards();
+  renderTable();
+  renderRadar();
+}
+
+render();
+</script>
+
+</body>
+</html>
