@@ -27,6 +27,8 @@ h1{font-size:1.8rem;margin-bottom:4px;color:#fff}
 .card.cdk::before{background:linear-gradient(90deg,#8c564b,#4a2d26)}
 .card.bro::before{background:linear-gradient(90deg,#17becf,#0a5f69)}
 .card.jackson::before{background:linear-gradient(90deg,#e377c2,#9c2d84)}
+.card.gyokeres::before{background:linear-gradient(90deg,#bcbd22,#6b6e12)}
+.card.suarez::before{background:linear-gradient(90deg,#94a3b8,#47546a)}
 .card.hidden{opacity:0.15;transform:scale(0.97);pointer-events:none}
 .player-name{font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:2px}
 .player-club{font-size:0.8rem;color:#8899bb;margin-bottom:4px}
@@ -91,6 +93,8 @@ tr.top-row td{border-top:2px solid #1e2a4a}
 <p><strong>Nicolò Tresoldi</strong> — 19G, 5A in Belgian Pro League at 21. Strong aerial presence (183cm), intelligent movement, elite pressing. G-xG of +2.15 is solid but not elite. Belgian league context matters — step-up risk. Intriguing long-term project.</p>
 <p><strong>Igor Thiago (Brentford)</strong> — 22 PL goals, +3.28 xG, 6'2", aerial dominant. The closest physical/tactical comp to prime Lewandowski. Recently named in Brazil's WC squad. Likely expensive after that breakout.</p>
 <p><strong>Nicolas Jackson</strong> — Proven top-5-league pedigree, but a rotational role at Bayern (~1,000 league min) caps the sample. 0.72 G/90 is strong, yet he's the only striker here underperforming xG (-0.23) — chronic finishing volatility persists. Expensive obligation (~€65M) means Bayern doubts his ceiling too. Not an upgrade over Undav at that price.</p>
+<p><strong>Luis Suárez (Sporting CP)</strong> — Gyökeres' true heir. Primeira Liga top scorer: 28G/6A, 0.93 G/90, best G-xG in the dataset (+5.05 vs non-pen xG), huge volume (136 shots, 4.53/90). Caveats: Portuguese-step-up risk, 28 years old, and some goals are penalties. If Sporting sells under €40M this is the best value in the report.</p>
+<p><strong>Viktor Gyökeres</strong> — Reference case, not a target: Arsenal already paid €63.5M. Mixed PL debut year — 14G (0.56/90), team top scorer, +3.47 over NP xG, elite shot selection (52.4% accuracy off just 42 shots) but low volume in Arsenal's distributed attack. Confirms Sporting production translates, at a discount rate.</p>
 <p><strong>Georges Mikautadze</strong> — Solid like-for-like Ferran replacement already in La Liga. 0.55 G/90, 6 assists, 75.5% pass accuracy.</p>
 <p><strong>Charles De Ketelaere</strong> — Different profile entirely. 0.12 G/90 won't replace goals but offers elite creative output (8.75 xA). Tactical evolution, not like-for-like swap.</p>
 </div>
@@ -204,6 +208,32 @@ const PLAYERS = [
     ]
   },
   {
+    id:'gyokeres', key:'Gyökeres', cls:'gyokeres', cl:'#bcbd22',
+    name:'Viktor Gyökeres', club:'Arsenal (ex-Sporting CP) — Premier League', val:'€63.5M fee', age:'27 / 187cm / Right', pos:'ST (CF)', app:'36 — 2,230 min',
+    stats:[
+      ['Goals (G/90)','14 (0.56)','ok'],
+      ['Assists','1','bad'],
+      ['G+A per 90','0.61','ok'],
+      ['Shots / On Target','42 / 22 (52.4%)',''],
+      ['xG (non-pen)','10.53',''],
+      ['G - xG','+3.47','good'],
+      ['Premier League Rank','#7 (top AFC scorer)','ok']
+    ]
+  },
+  {
+    id:'suarez', key:'Suárez', cls:'suarez', cl:'#94a3b8',
+    name:'Luis Suárez', club:'Sporting CP — Primeira Liga', val:'€22M fee', age:'28 / 185cm / Right', pos:'ST (CF)', app:'32 (31) — 2,700 min',
+    stats:[
+      ['Goals (G/90)','28 (0.93)','good'],
+      ['Assists','6','good'],
+      ['G+A per 90','1.13','good'],
+      ['Shots / On Target','136 / 60 (44.1%)',''],
+      ['xG (non-pen)','22.95',''],
+      ['G - xG','+5.05','good'],
+      ['Primeira Liga Rank','#1 — Top scorer','good']
+    ]
+  },
+  {
     id:'bro', key:'Bro Hansen', cls:'bro', cl:'#17becf',
     name:'Mikkel Bro Hansen', club:'Bodø/Glimt — Eliteserien', val:'~€0.9M', age:'17 / 188cm / Right', pos:'ST (CF)', app:'11 (0) — 99 min*',
     stats:[
@@ -223,25 +253,25 @@ const ALL_COLORS = Object.fromEntries(PLAYERS.map(p=>[p.key,p.cl]));
 
 const TABLE_ROWS = {
   'GOALSCORING': [
-    ['Goals', p=>({ferran:'16',mika:'13',undav:'19',oskarsson:'9',tresoldi:'19',asllani:'10',cdk:'3',jackson:'8',bro:'2*'})[p.id]],
-    ['G/90', p=>({ferran:'0.73',mika:'0.55',undav:'0.76',oskarsson:'0.98',tresoldi:'0.68',asllani:'0.38',cdk:'0.12',jackson:'0.72',bro:'1.82*'})[p.id]],
-    ['Shot Accuracy', p=>({ferran:'55.2%',mika:'49.2%',undav:'55.7%',oskarsson:'70.4%',tresoldi:'41.6%',asllani:'38.4%',cdk:'83%*‡',jackson:'55.3%',bro:'33.3%*'})[p.id]],
-    ['Conversion Rate', p=>({ferran:'23.9%',mika:'20.0%',undav:'15.6%',oskarsson:'33.3%',tresoldi:'19.6%',asllani:'13.7%',cdk:'n/a',jackson:'21.1%',bro:'66.7%*'})[p.id]],
-    ['xG', p=>({ferran:'14.02',mika:'11.42',undav:'15.94',oskarsson:'5.77',tresoldi:'16.85',asllani:'8.28',cdk:'n/a',jackson:'8.23†',bro:'0.4*'})[p.id]],
-    ['G - xG', p=>({ferran:'+1.98',mika:'+1.58',undav:'+3.06',oskarsson:'+3.23',tresoldi:'+2.15',asllani:'+1.72',cdk:'n/a',jackson:'-0.23',bro:'+1.6*'})[p.id]],
+    ['Goals', p=>({ferran:'16',mika:'13',undav:'19',oskarsson:'9',tresoldi:'19',asllani:'10',cdk:'3',jackson:'8',gyokeres:'14',suarez:'28',bro:'2*'})[p.id]],
+    ['G/90', p=>({ferran:'0.73',mika:'0.55',undav:'0.76',oskarsson:'0.98',tresoldi:'0.68',asllani:'0.38',cdk:'0.12',jackson:'0.72',gyokeres:'0.56',suarez:'0.93',bro:'1.82*'})[p.id]],
+    ['Shot Accuracy', p=>({ferran:'55.2%',mika:'49.2%',undav:'55.7%',oskarsson:'70.4%',tresoldi:'41.6%',asllani:'38.4%',cdk:'83%*‡',jackson:'55.3%',gyokeres:'52.4%',suarez:'44.1%',bro:'33.3%*'})[p.id]],
+    ['Conversion Rate', p=>({ferran:'23.9%',mika:'20.0%',undav:'15.6%',oskarsson:'33.3%',tresoldi:'19.6%',asllani:'13.7%',cdk:'n/a',jackson:'21.1%',gyokeres:'33.3%',suarez:'20.6%',bro:'66.7%*'})[p.id]],
+    ['xG', p=>({ferran:'14.02',mika:'11.42',undav:'15.94',oskarsson:'5.77',tresoldi:'16.85',asllani:'8.28',cdk:'n/a',jackson:'8.23†',gyokeres:'10.53†',suarez:'22.95†',bro:'0.4*'})[p.id]],
+    ['G - xG', p=>({ferran:'+1.98',mika:'+1.58',undav:'+3.06',oskarsson:'+3.23',tresoldi:'+2.15',asllani:'+1.72',cdk:'n/a',jackson:'-0.23',gyokeres:'+3.47',suarez:'+5.05',bro:'+1.6*'})[p.id]],
   ],
   'LINK-UP & CREATIVITY': [
-    ['Assists', p=>({ferran:'2',mika:'6',undav:'7',oskarsson:'0',tresoldi:'5',asllani:'7',cdk:'5',jackson:'1',bro:'1*'})[p.id]],
-    ['Key Passes', p=>({ferran:'n/a',mika:'14*',undav:'39',oskarsson:'5*',tresoldi:'23',asllani:'19*',cdk:'24',jackson:'n/a',bro:'2*'})[p.id]],
-    ['Pass Success', p=>({ferran:'70.4%',mika:'75.5%',undav:'69.9%',oskarsson:'64.0%',tresoldi:'74.0%',asllani:'68.6%',cdk:'78.8%',jackson:'n/a',bro:'64%*'})[p.id]],
+    ['Assists', p=>({ferran:'2',mika:'6',undav:'7',oskarsson:'0',tresoldi:'5',asllani:'7',cdk:'5',jackson:'1',gyokeres:'1',suarez:'6',bro:'1*'})[p.id]],
+    ['Key Passes', p=>({ferran:'n/a',mika:'14*',undav:'39',oskarsson:'5*',tresoldi:'23',asllani:'19*',cdk:'24',jackson:'n/a',gyokeres:'n/a',suarez:'n/a',bro:'2*'})[p.id]],
+    ['Pass Success', p=>({ferran:'70.4%',mika:'75.5%',undav:'69.9%',oskarsson:'64.0%',tresoldi:'74.0%',asllani:'68.6%',cdk:'78.8%',jackson:'n/a',gyokeres:'n/a',suarez:'n/a',bro:'64%*'})[p.id]],
   ],
   'HOLD-UP & PHYSICAL': [
-    ['Aerial Duels Won', p=>({ferran:'n/a',mika:'10',undav:'27*',oskarsson:'n/a',tresoldi:'63*',asllani:'24',cdk:'13*‡',jackson:'n/a',bro:'n/a'})[p.id]],
-    ['Touches Opp Box', p=>({ferran:'n/a',mika:'140',undav:'174*',oskarsson:'n/a',tresoldi:'n/a',asllani:'149',cdk:'n/a',jackson:'n/a',bro:'n/a'})[p.id]],
+    ['Aerial Duels Won', p=>({ferran:'n/a',mika:'10',undav:'27*',oskarsson:'n/a',tresoldi:'63*',asllani:'24',cdk:'13*‡',jackson:'n/a',gyokeres:'n/a',suarez:'n/a',bro:'n/a'})[p.id]],
+    ['Touches Opp Box', p=>({ferran:'n/a',mika:'140',undav:'174*',oskarsson:'n/a',tresoldi:'n/a',asllani:'149',cdk:'n/a',jackson:'n/a',gyokeres:'n/a',suarez:'n/a',bro:'n/a'})[p.id]],
   ],
   'PRESSING': [
-    ['Duels Won %', p=>({ferran:'n/a',mika:'45.4%',undav:'44.1%',oskarsson:'41.8%',tresoldi:'50.7%',asllani:'37.0%',cdk:'53.1%',jackson:'n/a',bro:'n/a'})[p.id]],
-    ['Recoveries', p=>({ferran:'n/a',mika:'40',undav:'135*',oskarsson:'n/a',tresoldi:'172*',asllani:'76',cdk:'9*‡',jackson:'n/a',bro:'n/a'})[p.id]],
+    ['Duels Won %', p=>({ferran:'n/a',mika:'45.4%',undav:'44.1%',oskarsson:'41.8%',tresoldi:'50.7%',asllani:'37.0%',cdk:'53.1%',jackson:'n/a',gyokeres:'n/a',suarez:'n/a',bro:'n/a'})[p.id]],
+    ['Recoveries', p=>({ferran:'n/a',mika:'40',undav:'135*',oskarsson:'n/a',tresoldi:'172*',asllani:'76',cdk:'9*‡',jackson:'n/a',gyokeres:'n/a',suarez:'n/a',bro:'n/a'})[p.id]],
   ]
 };
 
@@ -255,6 +285,8 @@ const RADAR_DATA = {
   'Asllani':[0.38,0.27,38.4,13.7,1.72],
   'CDK':[0.12,0.21,83.0,0.0,0.00],
   'Jackson':[0.72,0.09,55.3,21.1,-0.23],
+  'Gyökeres':[0.56,0.04,52.4,33.3,3.47],
+  'Suárez':[0.93,0.20,44.1,20.6,5.05],
   'Bro Hansen':[1.82,0.91,33.3,66.7,1.60]
 };
 
@@ -340,7 +372,7 @@ function renderTable() {
   const footTd = document.createElement('td');
   footTd.colSpan = visPlayers.length + 1;
   footTd.style.cssText = 'color:#667799;font-size:0.75rem;padding-top:8px';
-  footTd.textContent = '* Extremely small sample. Bro Hansen: 99 Eliteserien min across 2 seasons. Óskarsson: 829 min. ‡ CDK from WC 2026 (353 min). † Jackson: non-penalty xG, league only (~1,000 min) — limited rotation role at Bayern.';
+  footTd.textContent = '* Extremely small sample. Bro Hansen: 99 Eliteserien min across 2 seasons. Óskarsson: 829 min. ‡ CDK from WC 2026 (353 min). † Jackson, Gyökeres & Suárez xG is non-penalty (penalty goals counted in G but not in xG).';
   foot.appendChild(footTd);
   body.appendChild(foot);
 }
