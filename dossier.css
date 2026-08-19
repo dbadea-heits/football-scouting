@@ -1,0 +1,305 @@
+/*
+ * dossier.css — Football Intelligence · The Dossier
+ * Shared stylesheet for all full-profile scout reports (Branch A).
+ * Reports include only this file; no per-report <style> blocks.
+ *
+ * Palette: dark / amber
+ * Typography: Syne (display) · DM Sans (body) · DM Mono (mono/data)
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
+
+/* ── TOKENS ──────────────────────────────────────────────── */
+:root {
+  --paper:    #0b0d0f;
+  --surface:  #111417;
+  --hairline: #1e2329;
+  --border2:  #2a3040;
+  --ink:      #edf0f5;
+  --muted:    #8896a8;
+
+  --accent:   #e8a020;   /* amber — verdict tier, accent chips, bar fill */
+  --strong:   #2ecc71;   /* green — Strong rating */
+  --adequate: #8896a8;   /* same as --muted — Adequate rating */
+  --concern:  #e74c3c;   /* red — Concern rating, divergence */
+}
+
+/* ── RESET ───────────────────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ── BASE ────────────────────────────────────────────────── */
+html { scroll-behavior: smooth; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── LAYOUT ──────────────────────────────────────────────── */
+.col { max-width: 480px; margin: 0 auto; padding: 0 24px 48px; }
+
+/* ── TOPNAV ──────────────────────────────────────────────── */
+.topnav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  height: 48px;
+  border-bottom: 1px solid var(--hairline);
+  background: var(--surface);
+  gap: 24px;
+}
+.topnav a {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  transition: color .15s;
+}
+.topnav a:hover { color: var(--accent); }
+.topnav-brand {
+  font-family: 'Syne', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: .04em;
+}
+.topnav-sep { color: var(--border2); font-family: 'DM Mono', monospace; font-size: 12px; }
+.topnav-crumb { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: .08em; }
+
+/* ── TYPE UTILITIES ──────────────────────────────────────── */
+.mono  { font-family: 'DM Mono', monospace; font-variant-numeric: tabular-nums; }
+.label {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+/* ── STICKY MINI-HEADER ──────────────────────────────────── */
+#mini {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 40px;
+  background: var(--paper);
+  border-bottom: 1px solid var(--hairline);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  z-index: 10;
+  transform: translateY(-100%);
+  transition: transform .15s ease;
+}
+#mini.pinned { transform: translateY(0); }
+#mini .name { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; }
+
+/* ── MASTHEAD ────────────────────────────────────────────── */
+.masthead { padding-top: 32px; color: var(--muted); }
+
+h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: 34px;
+  line-height: 1.1;
+  font-weight: 700;
+  margin-top: 16px;
+}
+
+.posline {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+  margin: 6px 0 16px;
+}
+
+/* ── FACTS GRID ──────────────────────────────────────────── */
+.facts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px 8px;
+  border-top: 1px solid var(--hairline);
+  padding: 14px 0 20px;
+}
+.facts .label { font-size: 10px; color: var(--muted); display: block; margin-bottom: 2px; }
+.facts .val   { font-family: 'DM Mono', monospace; font-size: 14px; font-weight: 500; color: var(--ink); }
+.risk-low  { color: var(--strong);   }
+.risk-med  { color: var(--adequate); }
+.risk-high { color: var(--concern);  }
+
+/* ── VERDICT BAND ────────────────────────────────────────── */
+.verdict {
+  border-top: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+  padding: 18px 0;
+}
+.tier {
+  font-family: 'Syne', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  display: inline-block;
+  padding-bottom: 2px;
+  border-bottom: 3px solid;
+}
+.tier-pass      { color: var(--concern);  border-color: var(--concern);  }
+.tier-watch     { color: var(--adequate); border-color: var(--adequate); }
+.tier-shortlist { color: var(--accent);   border-color: var(--accent);   }
+.tier-recommend { color: var(--ink);      border-color: var(--ink);      }
+
+.nextstep { font-family: 'DM Mono', monospace; font-size: 13px; margin-top: 10px; }
+.liveobs  { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); margin-top: 8px; }
+
+/* ── ACCORDIONS ──────────────────────────────────────────── */
+details { border-bottom: 1px solid var(--hairline); }
+summary {
+  list-style: none;
+  cursor: pointer;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 12px 0;
+}
+summary::-webkit-details-marker { display: none; }
+summary .chev {
+  color: var(--muted);
+  font-size: 14px;
+  display: inline-block;
+  transition: transform .15s ease;
+  flex: none;
+}
+details[open] summary .chev { transform: rotate(90deg); }
+
+.body {
+  padding: 0 0 18px 12px;
+  border-left: 1px solid var(--accent);
+  margin-bottom: 14px;
+}
+details[open] .body { background: var(--surface); }
+.body p { margin-bottom: 10px; }
+.body p:last-child { margin-bottom: 0; }
+.sumright { display: flex; align-items: center; gap: 8px; }
+
+/* ── CHIPS ───────────────────────────────────────────────── */
+.chip {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  border: 1px solid;
+  padding: 2px 6px;
+  white-space: nowrap;
+}
+.chip-strong   { color: var(--strong);   border-color: var(--strong);   }
+.chip-adequate { color: var(--adequate); border-color: var(--adequate); }
+.chip-concern  { color: var(--concern);  border-color: var(--concern);  }
+.chip-accent   { color: var(--accent);   border-color: var(--accent);   }
+.chip-ink      { color: var(--ink);      border-color: var(--ink);      }
+
+/* ── SIGNAL ROW ──────────────────────────────────────────── */
+.signals {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+.signals .num   { font-family: 'DM Mono', monospace; font-size: 24px; font-weight: 600; }
+.signals .label { font-size: 10px; color: var(--muted); margin: 2px 0 6px; display: block; }
+.bar { height: 3px; background: var(--hairline); position: relative; }
+.bar i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--accent); }
+.pctl { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); margin-top: 3px; display: block; }
+
+/* ── FOUR CORNERS ────────────────────────────────────────── */
+.fc-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0 4px;
+}
+.dots { font-size: 13px; letter-spacing: 3px; }
+.dot-strong   { color: var(--strong);   }
+.dot-adequate { color: var(--adequate); }
+.dot-concern  { color: var(--concern);  }
+.srcline { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); margin-top: 6px; }
+
+/* ── METRIC TABLES ───────────────────────────────────────── */
+.mgroup {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--muted);
+  margin: 12px 0 6px;
+}
+.mrow {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  padding: 4px 0;
+}
+.mrow .mv { font-weight: 500; white-space: nowrap; }
+.diverge      { color: var(--concern); }
+.diverge-note { font-size: 12px; color: var(--concern); font-family: 'DM Sans', sans-serif; font-style: italic; padding: 2px 0 6px; }
+.na           { color: var(--muted); }
+
+/* ── EYE TEST ────────────────────────────────────────────── */
+.eyes { font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 600; letter-spacing: 4px; }
+.e-s { color: var(--strong);   }
+.e-a { color: var(--adequate); }
+.e-c { color: var(--concern);  }
+.eyerow { padding: 8px 0; }
+.eyerow .top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.eyerow .obs { font-size: 14px; margin-top: 3px; }
+.cornertag {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+/* ── PHILOSOPHY / CHECKLISTS ─────────────────────────────── */
+.philosophy { font-style: italic; color: var(--ink); }
+.check { display: flex; gap: 10px; padding: 6px 0; font-size: 14px; }
+.check .mark { font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 600; flex: none; }
+.fit    { color: var(--accent);   }
+.misfit { color: var(--concern);  }
+.warn   { color: var(--adequate); }
+
+/* ── SOURCED SIGNAL BULLETS ──────────────────────────────── */
+.sig { font-family: 'DM Mono', monospace; font-size: 12px; padding: 4px 0; display: flex; gap: 8px; }
+.sig .src { color: var(--muted); flex: none; }
+
+/* ── METHODS FOOTER ──────────────────────────────────────── */
+.methods { padding: 20px 0 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.m-on { color: var(--ink);  }
+.m-off { color: var(--muted); }
+.footnote {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 10px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────────── */
+@media (max-width: 700px) {
+  .topnav { padding: 0 16px; }
+  .col    { padding: 0 16px 48px; }
+}
