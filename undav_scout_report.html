@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scout Report — Deniz Undav</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:       #0b0d0f;
+    --surface:  #111417;
+    --border:   #1e2329;
+    --border2:  #2a3040;
+    --text:     #c8cdd6;
+    --muted:    #8896a8;
+    --accent:   #e8a020;
+    --accent2:  #c0392b;
+    --green:    #2ecc71;
+    --yellow:   #f39c12;
+    --red:      #e74c3c;
+    --white:    #edf0f5;
+    --mono:     'DM Mono', monospace;
+    --display:  'Syne', sans-serif;
+    --body:     'DM Sans', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--body);
+    font-size: 14px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ─────────────────────────────────────── */
+  .header {
+    position: relative;
+    border-bottom: 1px solid var(--border2);
+    padding: 48px 64px 40px;
+    overflow: hidden;
+  }
+
+  .header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 85% 50%, rgba(232,160,32,.07) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 10% 20%, rgba(192,57,43,.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  .label-pill {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(232,160,32,.10);
+    border: 1px solid rgba(232,160,32,.25);
+    padding: 4px 12px;
+    border-radius: 2px;
+    display: inline-block;
+    margin-bottom: 16px;
+  }
+
+  .player-name {
+    font-family: var(--display);
+    font-size: clamp(40px, 5vw, 72px);
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1;
+    letter-spacing: -.02em;
+    margin-bottom: 4px;
+  }
+
+  .player-sub {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  .header-meta {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    min-width: 340px;
+    align-self: flex-start;
+  }
+
+  .meta-cell {
+    background: var(--surface);
+    padding: 14px 18px;
+  }
+
+  .meta-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+
+  .meta-value {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--white);
+    font-weight: 500;
+  }
+
+  .meta-value.accent { color: var(--accent); }
+
+  /* ── VERDICT BAR ─────────────────────────────────── */
+  .verdict-bar {
+    margin-top: 36px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .verdict-chip {
+    font-family: var(--display);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    padding: 6px 18px;
+    border-radius: 2px;
+  }
+
+  .verdict-chip.shortlist {
+    background: rgba(232,160,32,.15);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+  }
+
+  .verdict-note {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .observation-badges {
+    display: flex;
+    gap: 8px;
+    margin-left: auto;
+    flex-wrap: wrap;
+  }
+
+  .obs-badge {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 2px;
+    border: 1px solid;
+  }
+
+  .obs-badge.done {
+    color: #4a9f6e;
+    border-color: rgba(74,159,110,.35);
+    background: rgba(74,159,110,.06);
+  }
+
+  .obs-badge.pending {
+    color: var(--muted);
+    border-color: var(--border2);
+    background: transparent;
+  }
+
+  /* ── LAYOUT ──────────────────────────────────────── */
+  .main {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 0;
+    align-items: start;
+  }
+
+  .col-left { border-right: 1px solid var(--border); }
+  .col-right {}
+
+  /* ── SECTION ─────────────────────────────────────── */
+  section {
+    padding: 40px 64px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .col-right section {
+    padding: 32px 28px;
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border2);
+  }
+
+  /* ── METRICS TABLE ───────────────────────────────── */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+
+  .metric-cell {
+    background: var(--surface);
+    padding: 16px 20px;
+    position: relative;
+  }
+
+  .metric-cell.head {
+    background: #0e1115;
+    padding: 10px 20px;
+  }
+
+  .metric-season {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .metric-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .metric-val {
+    font-family: var(--mono);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--white);
+    line-height: 1;
+  }
+
+  .metric-val.small { font-size: 16px; }
+
+  .metric-note {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--accent);
+    margin-top: 4px;
+  }
+
+  /* ── FOUR CORNERS ────────────────────────────────── */
+  .corners-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .corner-card {
+    border: 1px solid var(--border2);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .corner-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .corner-name {
+    font-family: var(--display);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--white);
+  }
+
+  .rating-pill {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 2px;
+    font-weight: 500;
+  }
+
+  .rating-pill.strong {
+    background: rgba(46,204,113,.12);
+    color: var(--green);
+    border: 1px solid rgba(46,204,113,.3);
+  }
+
+  .rating-pill.adequate {
+    background: rgba(243,156,18,.12);
+    color: var(--yellow);
+    border: 1px solid rgba(243,156,18,.3);
+  }
+
+  .rating-pill.concern {
+    background: rgba(231,76,60,.12);
+    color: var(--red);
+    border: 1px solid rgba(231,76,60,.3);
+  }
+
+  .corner-body {
+    padding: 16px 18px;
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--text);
+  }
+
+  .corner-body p + p { margin-top: 10px; }
+
+  .corner-body em {
+    font-style: normal;
+    color: var(--white);
+    font-weight: 500;
+  }
+
+  /* ── SIDEBAR BLOCKS ──────────────────────────────── */
+  .sidebar-block {
+    padding: 24px 28px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sidebar-block:last-child { border-bottom: none; }
+
+  .sidebar-title {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  /* ── PERCENTILE BARS ─────────────────────────────── */
+  .pct-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .pct-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    width: 120px;
+    flex-shrink: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .pct-bar-bg {
+    flex: 1;
+    height: 4px;
+    background: var(--border2);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .pct-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width .6s ease;
+  }
+
+  .pct-bar-fill.high { background: var(--green); }
+  .pct-bar-fill.mid  { background: var(--yellow); }
+  .pct-bar-fill.low  { background: var(--red); }
+
+  .pct-val {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--white);
+    width: 28px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  /* ── INJURY LOG ──────────────────────────────────── */
+  .injury-row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin-bottom: 8px;
+  }
+
+  .injury-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+
+  .injury-dot.high   { background: var(--red); }
+  .injury-dot.medium { background: var(--yellow); }
+  .injury-dot.low    { background: var(--muted); }
+
+  .injury-text {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    line-height: 1.5;
+    color: var(--text);
+  }
+
+  .injury-text strong {
+    color: var(--white);
+    font-weight: 500;
+  }
+
+  /* ── BEHAVIORAL FLAGS ────────────────────────────── */
+  .flag-row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+
+  .flag-icon {
+    font-size: 12px;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  .flag-text {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    line-height: 1.5;
+    color: var(--text);
+  }
+
+  .flag-text strong {
+    color: var(--white);
+    font-weight: 500;
+  }
+
+  /* ── DORMANT POTENTIAL ───────────────────────────── */
+  .potential-row {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .potential-row:last-child { border-bottom: none; }
+
+  .potential-type {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    width: 80px;
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+
+  .potential-type.none { color: var(--muted); }
+
+  .potential-status {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 2px;
+    flex-shrink: 0;
+    height: fit-content;
+    margin-top: 1px;
+  }
+
+  .potential-status.ruled-out {
+    background: rgba(90,96,112,.15);
+    color: var(--muted);
+    border: 1px solid var(--border2);
+  }
+
+  .potential-status.selected {
+    background: rgba(232,160,32,.12);
+    color: var(--accent);
+    border: 1px solid rgba(232,160,32,.3);
+  }
+
+  .potential-evidence {
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--text);
+    flex: 1;
+  }
+
+  /* ── PHILOSOPHY FIT ──────────────────────────────── */
+  .fit-row {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .fit-row:last-child { border-bottom: none; }
+
+  .fit-dim {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--muted);
+    width: 100px;
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+
+  .fit-icon {
+    flex-shrink: 0;
+    font-size: 12px;
+    margin-top: 1px;
+  }
+
+  .fit-text {
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: var(--text);
+    flex: 1;
+  }
+
+  .fit-text strong { color: var(--white); font-weight: 500; }
+
+  /* ── NEXT STEP ───────────────────────────────────── */
+  .next-step-box {
+    margin: 32px 0 0;
+    padding: 20px 24px;
+    border: 1px solid rgba(232,160,32,.25);
+    border-radius: 4px;
+    background: rgba(232,160,32,.04);
+  }
+
+  .next-step-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+
+  .next-step-text {
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--text);
+  }
+
+  .next-step-text strong { color: var(--white); }
+
+  /* ── WARNING BOX ─────────────────────────────────── */
+  .warning-box {
+    display: flex;
+    gap: 12px;
+    padding: 14px 18px;
+    border: 1px solid rgba(231,76,60,.3);
+    background: rgba(231,76,60,.05);
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+
+  .warning-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+
+  .warning-text {
+    font-family: var(--mono);
+    font-size: 11px;
+    line-height: 1.55;
+    color: var(--text);
+  }
+
+  .warning-text strong { color: #e74c3c; }
+
+  /* ── FOOTER ──────────────────────────────────────── */
+  footer {
+    padding: 28px 64px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .footer-left {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  .footer-right {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    text-align: right;
+  }
+
+  /* ── SEASON COMPARE TABLE ─────────────────────────── */
+  .stat-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--mono);
+    font-size: 11.5px;
+  }
+
+  .stat-table th {
+    text-align: left;
+    font-size: 9px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 6px 12px 10px;
+    border-bottom: 1px solid var(--border2);
+    font-weight: 400;
+  }
+
+  .stat-table td {
+    padding: 8px 12px;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .stat-table tr:last-child td { border-bottom: none; }
+
+  .stat-table td:first-child { color: var(--muted); }
+  .stat-table td.highlight { color: var(--white); font-weight: 500; }
+  .stat-table td.accent { color: var(--accent); }
+  .stat-table td.good { color: var(--green); }
+  .stat-table td.bad { color: var(--red); }
+
+  .stat-sup {
+    font-size: 8px;
+    vertical-align: super;
+    color: var(--accent);
+    margin-left: 1px;
+  }
+
+  /* ── DIVIDER ─────────────────────────────────────── */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 24px 0;
+  }
+
+  /* ── RESPONSIVE ───────────────────────────────────── */
+  @media (max-width: 900px) {
+    .main { grid-template-columns: 1fr; }
+    .col-left { border-right: none; }
+    .header { padding: 32px 24px 28px; }
+    section { padding: 28px 24px; }
+    footer { padding: 20px 24px; }
+    .header-meta { min-width: 0; width: 100%; grid-template-columns: repeat(3,1fr); }
+    .corners-grid { grid-template-columns: 1fr; }
+</style>
+<style>
+  .topnav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 48px; height: 48px; border-bottom: 1px solid var(--border);
+    background: var(--bg); position: sticky; top: 0; z-index: 100; gap: 24px;
+  }
+  .topnav a { font-family: var(--mono); font-size: 10px; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--muted); text-decoration: none;
+    display: flex; align-items: center; gap: 7px; transition: color .15s; }
+  .topnav a:hover { color: var(--accent); }
+  .topnav-brand { font-family: var(--display); font-size: 12px; font-weight: 700;
+    color: var(--white); letter-spacing: .04em; }
+  .topnav-sep { color: var(--border2); font-family: var(--mono); font-size: 12px; }
+  .topnav-crumb { font-family: var(--mono); font-size: 10px; color: var(--muted);
+    letter-spacing: .08em; }
+  @media (max-width: 700px) { .topnav { padding: 0 20px; } }
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <a href="index.html">← All Reports</a>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <span class="topnav-brand">Football Intelligence</span>
+    <span class="topnav-sep">·</span>
+    <span class="topnav-crumb">Deniz Undav · Full Profile</span>
+  </div>
+  <div></div>
+</nav>
+
+<!-- ─── HEADER ──────────────────────────────────────────── -->
+<header class="header">
+  <div class="header-top">
+    <div>
+      <div class="label-pill">Scout Report · Full Profile · Branch A</div>
+      <h1 class="player-name">Deniz Undav</h1>
+      <p class="player-sub">CF / #9-½ · VfB Stuttgart · Bundesliga · German</p>
+    </div>
+    <div class="header-meta">
+      <div class="meta-cell">
+        <div class="meta-label">Age</div>
+        <div class="meta-value">30</div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-label">Market Val.</div>
+        <div class="meta-value accent">€22m</div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-label">Contract</div>
+        <div class="meta-value">Jun 2029</div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-label">Height</div>
+        <div class="meta-value">179 cm</div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-label">Foot</div>
+        <div class="meta-value">Both</div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-label">Passport</div>
+        <div class="meta-value">🇩🇪 EU</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="verdict-bar">
+    <div>
+      <div style="font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Verdict</div>
+      <span class="verdict-chip shortlist">Shortlist</span>
+    </div>
+    <div>
+      <div style="font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Dormant Potential</div>
+      <span class="verdict-chip" style="background:rgba(90,96,112,.1);color:var(--muted);border:1px solid var(--border2);">None — Fully Revealed</span>
+    </div>
+    <div class="observation-badges">
+      <span class="obs-badge done">Data</span>
+      <span class="obs-badge done">Video*</span>
+      <span class="obs-badge done">Behavioral</span>
+      <span class="obs-badge done">Background</span>
+      <span class="obs-badge pending">Live (reqd.)</span>
+    </div>
+  </div>
+</header>
+
+<!-- ─── MAIN GRID ─────────────────────────────────────────── -->
+<div class="main">
+
+<!-- ─────────── LEFT COLUMN ─────────────────────────────── -->
+<div class="col-left">
+
+  <!-- METRICS -->
+  <section>
+    <div class="section-label">Season Metrics</div>
+
+    <div class="metrics-grid">
+      <div class="metric-cell head"><div class="metric-season">Season</div></div>
+      <div class="metric-cell head"><div class="metric-season">2023–24</div></div>
+      <div class="metric-cell head"><div class="metric-season">2024–25</div></div>
+      <div class="metric-cell head"><div class="metric-season">2025–26</div></div>
+
+      <div class="metric-cell"><div class="metric-label">Goals</div></div>
+      <div class="metric-cell"><div class="metric-val">18</div></div>
+      <div class="metric-cell"><div class="metric-val">9</div><div class="metric-note">↑ injury miss</div></div>
+      <div class="metric-cell"><div class="metric-val">19</div><div class="metric-note">#2 Bundesliga</div></div>
+
+      <div class="metric-cell"><div class="metric-label">Assists</div></div>
+      <div class="metric-cell"><div class="metric-val">10</div></div>
+      <div class="metric-cell"><div class="metric-val">3</div></div>
+      <div class="metric-cell"><div class="metric-val">6</div></div>
+
+      <div class="metric-cell"><div class="metric-label">G+A / 90</div></div>
+      <div class="metric-cell"><div class="metric-val small">~0.98</div></div>
+      <div class="metric-cell"><div class="metric-val small">~0.70</div></div>
+      <div class="metric-cell"><div class="metric-val small">1.01</div></div>
+
+      <div class="metric-cell"><div class="metric-label">NP-xG / 90</div></div>
+      <div class="metric-cell"><div class="metric-val small">~0.46</div><div class="metric-note">est.</div></div>
+      <div class="metric-cell"><div class="metric-val small">~0.62</div><div class="metric-note">est.</div></div>
+      <div class="metric-cell"><div class="metric-val small">0.80</div></div>
+
+      <div class="metric-cell"><div class="metric-label">Shots / 90</div></div>
+      <div class="metric-cell"><div class="metric-val small">4.6</div><div class="metric-note">#1 BL</div></div>
+      <div class="metric-cell"><div class="metric-val small">n/a</div></div>
+      <div class="metric-cell"><div class="metric-val small">4.95</div><div class="metric-note">#1 BL ①</div></div>
+
+      <div class="metric-cell"><div class="metric-label">SoT / 90</div></div>
+      <div class="metric-cell"><div class="metric-val small">2.2</div><div class="metric-note">#1 Big 5 ②</div></div>
+      <div class="metric-cell"><div class="metric-val small">n/a</div></div>
+      <div class="metric-cell"><div class="metric-val small">n/a</div></div>
+
+      <div class="metric-cell"><div class="metric-label">xA / 90</div></div>
+      <div class="metric-cell"><div class="metric-val small">0.78</div><div class="metric-note">#7 BL</div></div>
+      <div class="metric-cell"><div class="metric-val small">n/a</div></div>
+      <div class="metric-cell"><div class="metric-val small">n/a</div></div>
+    </div>
+
+    <p style="font-family:var(--mono);font-size:10px;color:var(--muted);line-height:1.6;">
+      ① 121 total shots in 2025-26 — league leader · ② Highest shots-on-target/90 among all big-five league forwards (Opta, 2023-24) ·
+      Atk sequence involvements/90: <span style="color:var(--white)">7.8</span> — #1 at Stuttgart (Opta) ·
+      Sprints/90: <span style="color:var(--white)">19.6</span> (PL, Brighton) → <span style="color:var(--green)">26.9</span> (BL) +37%
+    </p>
+  </section>
+
+  <!-- PHILOSOPHY FIT -->
+  <section>
+    <div class="section-label">Philosophy Fit</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:20px;font-style:italic;">
+      Acquiring profile: press-forward CF in 4-3-3 or 4-2-3-1 · Age ≤30 · Ceiling €30–40m · EU passport
+    </p>
+
+    <div class="fit-row">
+      <div class="fit-dim">Role</div>
+      <div class="fit-icon">✅</div>
+      <div class="fit-text"><strong>Strong fit.</strong> Drops between lines, links play, runs in behind — exactly the second-striker archetype. Can operate lone CF or #9-½ in tandem.</div>
+    </div>
+    <div class="fit-row">
+      <div class="fit-dim">System</div>
+      <div class="fit-icon">✅</div>
+      <div class="fit-text"><strong>Strong fit.</strong> Built for high-press, vertical transition football. De Zerbi–trained, Hoeneß–deployed. Passive/deep-block system would suppress his output significantly.</div>
+    </div>
+    <div class="fit-row">
+      <div class="fit-dim">Age</div>
+      <div class="fit-icon">⚠️</div>
+      <div class="fit-text"><strong>At ceiling.</strong> Meets the ≤30 constraint but peak window is 2–3 years. Ready-now acquisition, not a development play.</div>
+    </div>
+    <div class="fit-row">
+      <div class="fit-dim">Value</div>
+      <div class="fit-icon">✅</div>
+      <div class="fit-text">€22m Transfermarkt valuation within €30–40m ceiling. Stuttgart paid €26.7m in 2024; re-sale would require similar outlay + premium for contract length.</div>
+    </div>
+    <div class="fit-row">
+      <div class="fit-dim">Contract</div>
+      <div class="fit-icon">🚫</div>
+      <div class="fit-text"><strong>Hard blocker.</strong> Contracted until June 2029. Publicly committed to spending career at Stuttgart. No transfer rumours active (Aug 2026). No approach possible without a credible €35–40m+ bid.</div>
+    </div>
+    <div class="fit-row">
+      <div class="fit-dim">Passport</div>
+      <div class="fit-icon">✅</div>
+      <div class="fit-text">German. Full EU freedom of movement.</div>
+    </div>
+  </section>
+
+  <!-- FOUR CORNERS -->
+  <section>
+    <div class="section-label">Four Corners</div>
+    <div class="corners-grid">
+
+      <div class="corner-card">
+        <div class="corner-header">
+          <span class="corner-name">Technical</span>
+          <span class="rating-pill strong">Strong</span>
+        </div>
+        <div class="corner-body">
+          <p>Top-decile goal efficiency and chance creation against CF positional cohort (ScoutingStats.ai). Over three Bundesliga seasons his shot volume has led or ranked top-3 in the league — <em>4.6 shots/90 (#1 Bundesliga, 2023–24); 2.2 SoT/90 (#1 big-five leagues); 4.95 shots/90 (#1 Bundesliga, 2025–26)</em>. Both-footed, capable of finishing across his body from tight angles.</p>
+          <p><strong>Weakness:</strong> Lower-third percentile for aerial duels across all sources. Consistent with 179cm stocky frame. Not a dealbreaker for a link-play CF — a dealbreaker if the system relies on long-ball aerial service.</p>
+        </div>
+      </div>
+
+      <div class="corner-card">
+        <div class="corner-header">
+          <span class="corner-name">Tactical</span>
+          <span class="rating-pill strong">Strong</span>
+        </div>
+        <div class="corner-body">
+          <p>Leads Stuttgart in <em>attacking sequence involvements per 90 (7.8 — Opta)</em>, outperforming every teammate. In Stuttgart's 1-4-2-4 build-up shape, drops between lines to force centre-back decisions, then exploits the space created. Adapts movement to partner's positioning (Guirassy partnership was the textbook example).</p>
+          <p>xA/90 of <em>0.78 (7th Bundesliga, 2023–24)</em> confirms he creates as well as converts. Progressive carrying and passing in top percentile. Heatmap data shows significantly wider pitch coverage at Stuttgart vs. Brighton — demonstrable tactical adaptability.</p>
+        </div>
+      </div>
+
+      <div class="corner-card">
+        <div class="corner-header">
+          <span class="corner-name">Physical</span>
+          <span class="rating-pill adequate">Adequate ⚠</span>
+        </div>
+        <div class="corner-body">
+          <p>Documented sprint improvement: <em>19.6 → 26.9 sprints/90</em> (+37%) from PL to Bundesliga, reflecting both role adaptation and conditioning work. Stuttgart is top-3 Bundesliga for defensive pressing actions — he meets that threshold.</p>
+          <p><strong>Injury flag — HIGH RISK.</strong> Recurring soft tissue pattern across three seasons: Knee (Aug–Sep 2023, 6 wks), Thigh+Muscle (Feb 2024, 3 wks), Muscle (Oct 2024, 1 wk), <em>Thigh (Nov 2024–Jan 2025, 9 wks)</em>, Knee (Aug–Oct 2025, 6 wks). Estimated 20%+ matches missed in 2024–25. Recurring muscular injuries in multiple regions = HIGH risk classification. Full medical due-diligence required before any commitment.</p>
+        </div>
+      </div>
+
+      <div class="corner-card">
+        <div class="corner-header">
+          <span class="corner-name">Psychosocial</span>
+          <span class="rating-pill adequate">Adequate ⚠</span>
+        </div>
+        <div class="corner-body">
+          <p><strong>Positives:</strong> Dressing-room leader at Stuttgart — praised by Hoeneß ("must be mentioned first and foremost") and teammates. Deleted personal Instagram for mental clarity. Overcame release from Werder Bremen at ~16, years in Germany's 4th tier, only became professional at 23 — genuine resilience, not narrative. Committed to Stuttgart long-term.</p>
+          <p><strong>Yellow flag:</strong> Public conflict with Germany coach Nagelsmann (March 2026) — Undav challenged his substitute role publicly; Nagelsmann responded dismissively before apologising after widespread criticism. Post-World Cup, Nagelsmann singled him out for a costly error, rejected by fans and teammates. Context: environment-specific (national team politics). No parallel incidents at club level. Probe in interview for response to authority conflict.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- DORMANT POTENTIAL -->
+  <section>
+    <div class="section-label">Dormant Potential Classification</div>
+
+    <div class="potential-row">
+      <div class="potential-type" style="color:var(--muted)">Metric Gap</div>
+      <div class="potential-status ruled-out">Ruled Out</div>
+      <div class="potential-evidence">2025–26: NP-xG/90 0.80 vs goals/90 0.77 — Δ = 0.03, no gap. 2024–25 showed ~2.1 goal underperformance vs xG but injury disruption reduces sample below 20-match threshold. 2023–24: elite finishing likely tracking on or above xG estimates.</div>
+    </div>
+    <div class="potential-row">
+      <div class="potential-type" style="color:var(--muted)">System Gap</div>
+      <div class="potential-status ruled-out">Ruled Out</div>
+      <div class="potential-evidence">Stuttgart top-3 Bundesliga in pressing intensity. Undav leads the club in attacking involvement — he is the system's primary output vehicle, not its victim.</div>
+    </div>
+    <div class="potential-row">
+      <div class="potential-type" style="color:var(--muted)">Age Gap</div>
+      <div class="potential-status ruled-out">N/A</div>
+      <div class="potential-evidence">Age 30 — not U23. Requirement not satisfied.</div>
+    </div>
+    <div class="potential-row">
+      <div class="potential-type" style="color:var(--accent)">Result</div>
+      <div class="potential-status selected">None</div>
+      <div class="potential-evidence">Metrics and reputation are in proportion. Undav is a fully revealed performer at his market rate. You are buying a known, mature commodity — the price reflects what he demonstrably is.</div>
+    </div>
+
+    <div class="next-step-box">
+      <div class="next-step-label">Verdict</div>
+      <div class="next-step-text">
+        <strong>Shortlist (availability blocker active).</strong> Undav satisfies the Technical and Tactical dimensions of the Philosophy with exceptional depth — top-3 Bundesliga striker quality confirmed over three seasons. Primary risks: <strong>age (30, 2–3 year peak window)</strong>, <strong>HIGH injury risk</strong> (recurring soft tissue pattern; ~20% matches missed in 2024–25), and <strong>contract availability</strong> (secured through 2029, verbal long-term commitment). No dormant potential means no discount — you pay market rate for a known performer at the back end of his window.
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ─────────── RIGHT COLUMN ────────────────────────────── -->
+<div class="col-right">
+
+  <!-- PERCENTILE RADAR -->
+  <div class="sidebar-block">
+    <div class="sidebar-title">ScoutingStats.ai — Percentile vs CF Cohort</div>
+
+    <div class="pct-row">
+      <div class="pct-label">Goal Efficiency</div>
+      <div class="pct-bar-bg"><div class="pct-bar-fill high" style="width:93%"></div></div>
+      <div class="pct-val" style="color:var(--green)">~93</div>
+    </div>
+    <div class="pct-row">
+      <div class="pct-label">Chance Creation</div>
+      <div class="pct-bar-bg"><div class="pct-bar-fill high" style="width:91%"></div></div>
+      <div class="pct-val" style="color:var(--green)">~91</div>
+    </div>
+    <div class="pct-row">
+      <div class="pct-label">Progressive Carry</div>
+      <div class="pct-bar-bg"><div class="pct-bar-fill high" style="width:88%"></div></div>
+      <div class="pct-val" style="color:var(--green)">~88</div>
+    </div>
+    <div class="pct-row">
+      <div class="pct-label">Progressive Pass</div>
+      <div class="pct-bar-bg"><div class="pct-bar-fill high" style="width:85%"></div></div>
+      <div class="pct-val" style="color:var(--green)">~85</div>
+    </div>
+    <div class="pct-row">
+      <div class="pct-label">Ball Retention</div>
+      <div class="pct-bar-bg"><div class="pct-bar-fill high" style="width:82%"></div></div>
+      <div class="pct-val" style="color:var(--green)">~82</div>
+    </div>
+    <div class="pct-row">
+      <div class="pct-label">xG Contribution</div>
+      <div class="pct-bar-bg"><div class="pct-bar-fill high" style="width:89%"></div></div>
+      <div class="pct-val" style="color:var(--green)">~89</div>
+    </div>
+    <div class="pct-row">
+      <div class="pct-label">Aerial Duels</div>
+      <div class="pct-bar-bg"><div class="pct-bar-fill low" style="width:24%"></div></div>
+      <div class="pct-val" style="color:var(--red)">~24</div>
+    </div>
+    <div class="pct-row">
+      <div class="pct-label">Duel Win Rate</div>
+      <div class="pct-bar-bg"><div class="pct-bar-fill low" style="width:28%"></div></div>
+      <div class="pct-val" style="color:var(--red)">~28</div>
+    </div>
+
+    <p style="font-family:var(--mono);font-size:9px;color:var(--muted);margin-top:12px;line-height:1.5;">
+      Percentile values are directional estimates from ScoutingStats.ai qualitative descriptions (top-decile / lower-third). Not exact figures.
+    </p>
+  </div>
+
+  <!-- INJURY LOG -->
+  <div class="sidebar-block">
+    <div class="sidebar-title">Injury Log (Transfermarkt)</div>
+
+    <div class="warning-box">
+      <div class="warning-icon">⚠</div>
+      <div class="warning-text"><strong>HIGH RISK</strong> — recurring soft tissue injuries across 3 seasons; &gt;15% matches missed in 2024–25. Medical audit required.</div>
+    </div>
+
+    <div class="injury-row">
+      <div class="injury-dot high"></div>
+      <div class="injury-text"><strong>Thigh — Nov 2024–Jan 2025</strong><br>~9 weeks · ~8 matches missed</div>
+    </div>
+    <div class="injury-row">
+      <div class="injury-dot high"></div>
+      <div class="injury-text"><strong>Knee — Aug–Oct 2025</strong><br>~6 weeks · ~6 matches missed</div>
+    </div>
+    <div class="injury-row">
+      <div class="injury-dot high"></div>
+      <div class="injury-text"><strong>Knee — Aug–Sep 2023</strong><br>~6 weeks · ~4 matches missed</div>
+    </div>
+    <div class="injury-row">
+      <div class="injury-dot medium"></div>
+      <div class="injury-text"><strong>Thigh — Feb 2024</strong><br>~2 weeks</div>
+    </div>
+    <div class="injury-row">
+      <div class="injury-dot medium"></div>
+      <div class="injury-text"><strong>Muscle — Oct 2024</strong><br>~1 week</div>
+    </div>
+    <div class="injury-row">
+      <div class="injury-dot medium"></div>
+      <div class="injury-text"><strong>Muscle — Feb 2024</strong><br>~1 week</div>
+    </div>
+    <div class="injury-row">
+      <div class="injury-dot low"></div>
+      <div class="injury-text"><strong>Illness ×2 — Feb/Apr 2025</strong><br>Minor, 1–2 matches each</div>
+    </div>
+  </div>
+
+  <!-- BEHAVIORAL FLAGS -->
+  <div class="sidebar-block">
+    <div class="sidebar-title">Behavioral Signals</div>
+
+    <div class="flag-row">
+      <div class="flag-icon" style="color:var(--green)">●</div>
+      <div class="flag-text"><strong>Dressing-room leader</strong> at Stuttgart. Praised by Hoeneß, embraced by supporters. Honest, high-energy presence.</div>
+    </div>
+    <div class="flag-row">
+      <div class="flag-icon" style="color:var(--green)">●</div>
+      <div class="flag-text"><strong>Social media absent.</strong> Deleted Instagram proactively — self-aware about pressure management.</div>
+    </div>
+    <div class="flag-row">
+      <div class="flag-icon" style="color:var(--green)">●</div>
+      <div class="flag-text"><strong>Resilient backstory.</strong> Released by Werder at 16, 4th-division Germany until age 23 — genuine psychological grit, not media spin.</div>
+    </div>
+    <div class="flag-row">
+      <div class="flag-icon" style="color:var(--yellow)">▲</div>
+      <div class="flag-text"><strong>Nagelsmann conflict (Mar 2026).</strong> Publicly challenged national team coach over substitute role. Coach eventually apologised; broader consensus sided with Undav. Environment-specific — no club-level parallel. Probe in interview.</div>
+    </div>
+    <div class="flag-row">
+      <div class="flag-icon" style="color:var(--green)">●</div>
+      <div class="flag-text"><strong>No club-level incidents.</strong> No fines, bans, contract disputes, or disciplinary matters at Stuttgart or Brighton.</div>
+    </div>
+  </div>
+
+  <!-- CAREER PATH -->
+  <div class="sidebar-block">
+    <div class="sidebar-title">Career Path — Late Bloomer</div>
+
+    <table class="stat-table">
+      <thead>
+        <tr>
+          <th>Period</th>
+          <th>Club / Level</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Until 2016</td>
+          <td class="highlight">Werder Bremen youth → released</td>
+        </tr>
+        <tr>
+          <td>2016–2020</td>
+          <td>TSV Havelse / SV Meppen<br><span style="font-size:10px;color:var(--muted)">Germany 3rd–4th tier</span></td>
+        </tr>
+        <tr>
+          <td>2020–22</td>
+          <td class="accent">Union SG (BEL)<br><span style="font-size:10px;color:var(--muted)">26 G in 2021–22, Top scorer · Belgian Prof. Player of Year</span></td>
+        </tr>
+        <tr>
+          <td>Jan 2022</td>
+          <td>Brighton signed · €7m · loaned back</td>
+        </tr>
+        <tr>
+          <td>2023–24</td>
+          <td class="good">Stuttgart (loan) · 18 G 10 A</td>
+        </tr>
+        <tr>
+          <td>Aug 2024</td>
+          <td class="accent">Stuttgart permanent · €26.7m</td>
+        </tr>
+        <tr>
+          <td>Jun 2026</td>
+          <td>Contract extended to 2029</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- INTERNATIONAL -->
+  <div class="sidebar-block">
+    <div class="sidebar-title">International — Germany</div>
+    <table class="stat-table">
+      <tr><td>First cap</td><td class="highlight">Mar 2024 (age 27)</td></tr>
+      <tr><td>Caps</td><td class="highlight">12 (as of Jun 2026)</td></tr>
+      <tr><td>Int'l goals</td><td class="accent">9</td></tr>
+      <tr><td>Int'l assists</td><td class="accent">4</td></tr>
+      <tr><td>Role</td><td>Mainly super-sub; pushed for start role</td></tr>
+      <tr><td>Tournaments</td><td>UEFA Euro 2024, WC 2026</td></tr>
+    </table>
+  </div>
+
+  <!-- NEXT STEP SIDEBAR -->
+  <div class="sidebar-block">
+    <div class="sidebar-title">Next Step</div>
+    <div style="font-family:var(--mono);font-size:11px;line-height:1.65;color:var(--text);">
+      <p>1. Add to <strong style="color:var(--white)">5-player Director of Football shortlist</strong>.</p>
+      <p style="margin-top:8px;">2. Commission <strong style="color:var(--white)">full medical audit</strong> — MRI, GPS load data, soft tissue history from Stuttgart's medical team (requires formal interest declaration).</p>
+      <p style="margin-top:8px;">3. <strong style="color:var(--white)">Monitor Stuttgart's financial position</strong> through summer 2027 window for availability signal.</p>
+      <p style="margin-top:8px;">4. Do not approach while current commitment is active without a credible <strong style="color:var(--accent)">€35–40m+ bid</strong>.</p>
+      <p style="margin-top:8px;">5. Re-assess at age 31 whether injury pattern has <strong style="color:var(--white)">stabilised or worsened</strong>.</p>
+    </div>
+  </div>
+
+</div><!-- /col-right -->
+</div><!-- /main -->
+
+<!-- ─── FOOTER ────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-left">
+    Report date: August 2026 · Branch A — Full Profile · Five observation methods<br>
+    * Video: proxy assessment via Bundesliga tactical analysis, Opta heat-map data, match reporting. Direct footage not accessed.
+  </div>
+  <div class="footer-right">
+    Sources: Transfermarkt · FBref · Understat · ScoutingStats.ai · Sofascore · Opta Analyst<br>
+    Bundesliga.com · Total Football Analysis · Coaches' Voice · Breaking The Lines
+  </div>
+</footer>
+
+</body>
+</html>

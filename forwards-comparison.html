@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forwards Scouting 2025/26</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #0b0d0f;
+  --surface: #111417;
+  --border:  #1e2329;
+  --border2: #2a3040;
+  --text:    #c8cdd6;
+  --muted:   #8896a8;
+  --accent:  #e8a020;
+  --green:   #2ecc71;
+  --yellow:  #f39c12;
+  --red:     #e74c3c;
+  --white:   #edf0f5;
+  --mono:    'DM Mono', monospace;
+  --display: 'Syne', sans-serif;
+  --body:    'DM Sans', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 14px;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* ── NAV ──────────────────────────────────────────── */
+.fi-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px; height: 48px; border-bottom: 1px solid var(--border);
+  background: var(--bg); position: sticky; top: 0; z-index: 100; gap: 24px;
+}
+.fi-nav a {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted); text-decoration: none;
+  display: flex; align-items: center; gap: 7px; transition: color .15s;
+}
+.fi-nav a:hover { color: var(--accent); }
+.fi-nav-brand {
+  font-family: var(--display); font-size: 12px; font-weight: 700;
+  color: var(--white); letter-spacing: .04em;
+}
+@media (max-width: 700px) { .fi-nav { padding: 0 20px; } }
+
+/* ── HEADER ──────────────────────────────────────── */
+.header {
+  position: relative;
+  border-bottom: 1px solid var(--border2);
+  padding: 48px 64px 40px;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 80% at 85% 50%, rgba(232,160,32,.07) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 60% at 10% 20%, rgba(46,204,113,.04) 0%, transparent 70%);
+  pointer-events: none;
+}
+.header-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 32px;
+  flex-wrap: wrap;
+  position: relative;
+}
+.label-pill {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: rgba(232,160,32,.10);
+  border: 1px solid rgba(232,160,32,.25);
+  padding: 4px 12px;
+  border-radius: 2px;
+  display: inline-block;
+  margin-bottom: 16px;
+}
+.report-title {
+  font-family: var(--display);
+  font-size: clamp(32px, 4vw, 56px);
+  font-weight: 800;
+  color: var(--white);
+  line-height: 1;
+  letter-spacing: -.02em;
+  margin-bottom: 4px;
+}
+.header-meta {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  min-width: 300px;
+  align-self: flex-start;
+}
+.meta-cell {
+  background: var(--surface);
+  padding: 14px 18px;
+}
+.meta-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.meta-value {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--white);
+}
+.meta-value.accent { color: var(--accent); }
+
+/* ── MAIN ─────────────────────────────────────────── */
+.main {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 48px 64px;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+@media (max-width: 700px) {
+  .header { padding: 32px 20px 28px; }
+  .main   { padding: 32px 20px; }
+}
+
+/* ── SECTION LABEL ────────────────────────────────── */
+.section-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border2);
+}
+
+/* ── TOGGLES ──────────────────────────────────────── */
+.toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.toggle-btn {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  color: var(--muted);
+  padding: 5px 14px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.toggle-btn:hover {
+  color: var(--text);
+  border-color: var(--muted);
+}
+.toggle-btn.active {
+  background: rgba(232,160,32,.12);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+
+/* ── CARDS ────────────────────────────────────────── */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  padding: 20px 22px;
+  position: relative;
+  overflow: hidden;
+  transition: opacity .3s, transform .3s;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+}
+/* per-player color strips */
+.card.ferran::before    { background: linear-gradient(90deg, #1f77b4, #0d3a5c); }
+.card.mika::before      { background: linear-gradient(90deg, #ffd700, #8f7200); }
+.card.undav::before     { background: linear-gradient(90deg, #d62728, #7a1213); }
+.card.oskarsson::before { background: linear-gradient(90deg, #2ca02c, #145214); }
+.card.tresoldi::before  { background: linear-gradient(90deg, #9467bd, #4c3066); }
+.card.asllani::before   { background: linear-gradient(90deg, #ff7f0e, #964a06); }
+.card.cdk::before       { background: linear-gradient(90deg, #8c564b, #4a2d26); }
+.card.bro::before       { background: linear-gradient(90deg, #17becf, #0a5f69); }
+.card.jackson::before   { background: linear-gradient(90deg, #e377c2, #9c2d84); }
+.card.gyokeres::before  { background: linear-gradient(90deg, #bcbd22, #6b6e12); }
+.card.suarez::before    { background: linear-gradient(90deg, #94a3b8, #47546a); }
+.card.ayoze::before     { background: linear-gradient(90deg, #f59e0b, #b45309); }
+.card.watkins::before   { background: linear-gradient(90deg, #7c3aed, #4c1d95); }
+.card.hidden {
+  opacity: 0.08;
+  pointer-events: none;
+}
+.player-name {
+  font-family: var(--display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 2px;
+}
+.player-club {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: .06em;
+  margin-bottom: 4px;
+}
+.player-stat-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--muted);
+  margin-bottom: 10px;
+  letter-spacing: .04em;
+}
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--mono);
+  font-size: 11px;
+}
+.stat-row:last-child { border-bottom: none; }
+.stat-label { color: var(--muted); }
+.stat-value { color: var(--white); font-weight: 500; }
+.stat-value.good { color: var(--green); }
+.stat-value.ok   { color: var(--yellow); }
+.stat-value.bad  { color: var(--red); }
+
+/* ── RADAR ────────────────────────────────────────── */
+.chart-container {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.chart-container canvas {
+  max-width: 500px;
+  width: 100%;
+  height: auto;
+}
+
+/* ── TABLE ────────────────────────────────────────── */
+.table-scroll { overflow-x: auto; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--mono);
+  font-size: 11px;
+}
+th {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border2);
+  background: var(--bg);
+  text-align: left;
+  position: sticky;
+  top: 48px;
+}
+th:first-child { text-align: left; }
+td {
+  padding: 7px 12px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  text-align: center;
+}
+td:first-child { color: var(--muted); text-align: left; }
+tr:hover td { background: var(--surface); }
+.top-row td {
+  color: var(--accent) !important;
+  font-weight: 500;
+  border-top: 2px solid var(--border2);
+  background: var(--surface);
+}
+.col-hidden { display: none; }
+.rank-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 2px;
+  font-size: 10px;
+}
+.rank-badge.rank-best {
+  background: rgba(46,204,113,.12);
+  color: var(--green);
+  border: 1px solid rgba(46,204,113,.3);
+}
+.rank-mid {
+  background: rgba(243,156,18,.12);
+  color: var(--yellow);
+  border: 1px solid rgba(243,156,18,.3);
+  border-radius: 2px;
+}
+.rank-worst {
+  background: rgba(231,76,60,.12);
+  color: var(--red);
+  border: 1px solid rgba(231,76,60,.3);
+  border-radius: 2px;
+}
+
+/* ── VERDICT ──────────────────────────────────────── */
+.verdict-box {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  padding: 28px;
+}
+.verdict-box h2 {
+  font-family: var(--display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 16px;
+}
+.verdict-box p {
+  font-family: var(--body);
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.75;
+  margin-bottom: 12px;
+}
+.verdict-box p:last-child { margin-bottom: 0; }
+.verdict-box strong { color: var(--white); }
+
+/* ── FOOTER ───────────────────────────────────────── */
+footer {
+  padding: 28px 64px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.footer-left {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+}
+.footer-right {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  text-align: right;
+}
+
+@media (max-width: 700px) {
+  .cards-grid { grid-template-columns: 1fr; }
+  footer { padding: 20px; flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<nav class="fi-nav">
+  <a href="index.html#comparisons">← Back</a>
+  <span class="fi-nav-brand">Football Intelligence · Forwards 2025/26</span>
+  <div></div>
+</nav>
+
+<!-- ─── HEADER ──────────────────────────────────────── -->
+<header class="header">
+  <div class="header-top">
+    <div>
+      <div class="label-pill">Comparison · Forwards · 13 Players · 5 Leagues</div>
+      <h1 class="report-title">Forwards Scouting 2025/26</h1>
+    </div>
+    <div class="header-meta">
+      <div class="meta-cell">
+        <div class="meta-label">Players</div>
+        <div class="meta-value">13</div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-label">Leagues</div>
+        <div class="meta-value">5</div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-label">View</div>
+        <div class="meta-value accent">Toggle-Filter Radar</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ─── MAIN ─────────────────────────────────────────── -->
+<div class="main">
+
+  <!-- Filter Players -->
+  <section>
+    <div class="section-label">Filter Players</div>
+    <div id="toggles" class="toggles"></div>
+  </section>
+
+  <!-- Player Cards -->
+  <section>
+    <div id="cards" class="cards-grid"></div>
+  </section>
+
+  <!-- Radar -->
+  <section>
+    <div class="section-label">Radar — Goal-Scoring Profile</div>
+    <div class="chart-container">
+      <canvas id="radarChart" width="500" height="500"></canvas>
+    </div>
+  </section>
+
+  <!-- Detailed Metrics -->
+  <section>
+    <div class="section-label">Detailed Metrics</div>
+    <div class="table-scroll">
+      <table>
+        <thead><tr id="tableHead"></tr></thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Scouting Verdict -->
+  <section>
+    <div class="section-label">Scouting Verdict</div>
+    <div id="verdict">
+      <div class="verdict-box">
+        <p><strong>Deniz Undav — the pick.</strong> He scored 19 league goals, set up 7 more, and finished 3 goals clear of what his chances were actually worth. That kind of overperformance isn't a hot streak — it's a finisher who knows what he's doing in the box. He links up, he presses relentlessly, and at 28 he's entering the best years of his career. At roughly €20M he might be the best-value striker available in Europe right now. The only real question is whether he wants to make the move.</p>
+        <p><strong>Orri Óskarsson — the bet.</strong> Nine goals in under 830 minutes is either a sign of something special or a very small sample from a 21-year-old coming off the bench. Probably both. The efficiency numbers are genuinely absurd — 70% shot accuracy, one in three shots hitting the net — but you can't fully trust nine games worth of data. He's already in La Liga, the Barcelona links haven't gone away, and the upside is huge. If you can stomach the uncertainty, no one in this group has a higher ceiling at the price.</p>
+        <p><strong>Nicolò Tresoldi — the project.</strong> Twenty-one years old, nineteen goals, and he never stops working. He's physical, intelligent in his movement, and the pressing numbers put him near the top of the group. The legitimate hesitation is the Belgian Pro League — it's a step below La Liga and he hasn't faced defenders of this calibre yet. If the fee stays around €12M and there's patience in the plan, it's a bet worth taking.</p>
+        <p><strong>Luis Suárez — the proven one.</strong> He scored 28 league goals. Not in a top-5 league, but the volume and consistency are hard to dismiss — 0.93 per 90, top scorer in Portugal, and his xG barely flatters him, which means the chances were real. At 28, the prime window is now. The step-up question is genuine, but Gyökeres already answered it from the same league. Worth a serious conversation.</p>
+        <p><strong>Georges Mikautadze — the safe option.</strong> Already in La Liga, already knows what it takes to perform in it. Thirteen goals and six assists show he contributes across the board, not just as a poacher. He won't transform the attack, but he's reliable, available, and there's no adaptation period. If the club needs certainty over upside, he's the sensible call.</p>
+        <p><strong>Ollie Watkins — the expensive ready-now.</strong> Sixteen Premier League goals, overperforming his xG, strong aerially and relentless in behind. Villa are reportedly willing to let him go for around €34M, which for a proven PL striker at 30 is arguably fair value. He's not a long-term solution given his age, but if Barcelona need someone who can perform from day one without any adaptation risk, Watkins is the realistic answer at the top of the budget.</p>
+        <p><strong>Ayoze Pérez — useful, but not the answer.</strong> At 32 and playing roughly 45 minutes a game in a rotation role, Ayoze still shows he can contribute — five goals and four assists in La Liga is not nothing, and he knows the league inside out. But Barcelona need a starter and a presence, not an impact substitute. Fine as depth, not as the fix.</p>
+        <p><strong>Nicolas Jackson — not at that price.</strong> The rate is respectable — 0.72 per 90 at Bayern in a limited role — but he's the only striker in this group consistently finishing below his xG, and that has followed him throughout his career. Factor in Chelsea's €65M obligation and the fact that Bayern seem happy enough letting him walk, and the value simply isn't there compared to the other options here.</p>
+        <p><strong>Viktor Gyökeres — the benchmark, not a target.</strong> Arsenal paid €63.5M and he delivered 14 Premier League goals in a system that shared the load. He's useful as proof that Primeira Liga production translates to the top level, and not much else — he was never available and the price was always going to be beyond the conversation.</p>
+        <p><strong>Charles De Ketelaere — a different question.</strong> Three league goals is not what Barcelona are shopping for, but 8.75 xA and his ability to unlock defences with his passing is a genuinely elite skillset. If the club wants to evolve the attack rather than just replace Ferran, CDK makes the conversation interesting. If they need goals, he doesn't.</p>
+        <p><strong>Mikkel Bro Hansen — file for later.</strong> He's 17, he has two senior league goals, and 13 goals in 16 under-17 caps for Denmark is a serious number. He's not remotely ready for this conversation yet. Check back in two years.</p>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /main -->
+
+<!-- ─── FOOTER ────────────────────────────────────────── -->
+<footer>
+  <div class="footer-left">Report: August 2026 · 13 forwards · 5 major leagues · 2025/26 season</div>
+  <div class="footer-right">Sources: FBref · Understat · FotMob · Transfermarkt · Sofascore</div>
+</footer>
+
+<script>
+const PLAYERS = [
+  {
+    id:'ferran', key:'Ferran Torres', cls:'ferran', cl:'#1f77b4',
+    name:'Ferran Torres', club:'FC Barcelona — La Liga', val:'€38M', age:'26 / 184cm / Right', pos:'ST / RW / LW', app:'33 (23) — 1,976 min',
+    stats:[
+      ['Goals (G/90)','16 (0.73)','good'],
+      ['Assists','2',''],
+      ['G+A per 90','0.82','good'],
+      ['Shots / On Target','67 / 37 (55.2%)',''],
+      ['xG','14.02',''],
+      ['G - xG','+1.98','good'],
+      ['La Liga Rank','#5','good']
+    ]
+  },
+  {
+    id:'mika', key:'Mikautadze', cls:'mika', cl:'#ffd700',
+    name:'Georges Mikautadze', club:'Villarreal — La Liga', val:'€25.2M', age:'25 / 176cm / Right', pos:'ST (CF)', app:'32 (23) — 2,117 min',
+    stats:[
+      ['Goals (G/90)','13 (0.55)','ok'],
+      ['Assists','6','good'],
+      ['G+A per 90','0.81','ok'],
+      ['Shots / On Target','65 / 32 (49.2%)',''],
+      ['xG','11.42',''],
+      ['G - xG','+1.58','ok'],
+      ['La Liga Rank','#13','ok']
+    ]
+  },
+  {
+    id:'undav', key:'Undav', cls:'undav', cl:'#d62728',
+    name:'Deniz Undav', club:'VfB Stuttgart — Bundesliga', val:'~€20M', age:'28 / 178cm / Right', pos:'ST / SS', app:'29 (25) — 2,249 min',
+    stats:[
+      ['Goals (G/90)','19 (0.76)','good'],
+      ['Assists','7','good'],
+      ['G+A per 90','1.04','good'],
+      ['Shots / On Target','122 / 68 (55.7%)',''],
+      ['xG','15.94',''],
+      ['G - xG','+3.06','good'],
+      ['Bundesliga Rank','#3','good']
+    ]
+  },
+  {
+    id:'oskarsson', key:'Óskarsson', cls:'oskarsson', cl:'#2ca02c',
+    name:'Orri Óskarsson', club:'Real Sociedad — La Liga', val:'~€10M', age:'21 / 186cm / Right', pos:'ST (CF)', app:'20 (8) — 829 min',
+    stats:[
+      ['Goals (G/90)','9 (0.98)*','good'],
+      ['Assists','0','bad'],
+      ['G+A per 90','0.98','good'],
+      ['Shots / On Target','27 / 19 (70.4%)',''],
+      ['xG','5.77',''],
+      ['G - xG','+3.23','good'],
+      ['La Liga Rank','#20','ok']
+    ]
+  },
+  {
+    id:'tresoldi', key:'Tresoldi', cls:'tresoldi', cl:'#9467bd',
+    name:'Nicolò Tresoldi', club:'Club Brugge — Belgian Pro League', val:'~€12M', age:'21 / 183cm / Right', pos:'ST (CF)', app:'40 (30) — 2,500 min',
+    stats:[
+      ['Goals (G/90)','19 (0.68)','good'],
+      ['Assists','5','ok'],
+      ['G+A per 90','0.86','good'],
+      ['Shots / On Target','101 / 42 (41.6%)',''],
+      ['xG','16.85',''],
+      ['G - xG','+2.15','ok'],
+      ['Pro League Rank','#1','good']
+    ]
+  },
+  {
+    id:'asllani', key:'Asllani', cls:'asllani', cl:'#ff7f0e',
+    name:'Fisnik Asllani', club:'Hoffenheim — Bundesliga', val:'€30.7M', age:'23 / 188cm / Both', pos:'ST / AM', app:'33 (31) — 2,354 min',
+    stats:[
+      ['Goals (G/90)','10 (0.38)','bad'],
+      ['Assists','7','good'],
+      ['G+A per 90','0.65','ok'],
+      ['Shots / On Target','73 / 28 (38.4%)',''],
+      ['xG','8.28',''],
+      ['G - xG','+1.72','ok'],
+      ['Bundesliga Rank','#16','ok']
+    ]
+  },
+  {
+    id:'cdk', key:'CDK', cls:'cdk', cl:'#8c564b',
+    name:'Charles De Ketelaere', club:'Atalanta — Serie A', val:'€35.7M', age:'25 / 192cm / Left', pos:'AM / LW / RW / ST', app:'31 (26) — 2,188 min',
+    stats:[
+      ['Goals (G/90)','3 (0.12)','bad'],
+      ['Assists','5','good'],
+      ['G+A per 90','0.33','bad'],
+      ['Rating','7.12 (FotMob)','ok'],
+      ['xA','8.75','ok'],
+      ['Pass Success','78.8%','ok'],
+      ['Serie A Rank','#60+','bad']
+    ]
+  },
+  {
+    id:'jackson', key:'Jackson', cls:'jackson', cl:'#e377c2',
+    name:'Nicolas Jackson', club:'Bayern Munich (loan from Chelsea) — Bundesliga', val:'Loan (obl. ~€65M)', age:'25 / 187cm / Right', pos:'ST (CF)', app:'23 (16) — ~1,000 min',
+    stats:[
+      ['Goals (G/90)','8 (0.72)','ok'],
+      ['Assists','1','bad'],
+      ['G+A per 90','0.81','ok'],
+      ['Shots / On Target','38 / 21 (55.3%)',''],
+      ['xG (non-pen)','8.23',''],
+      ['G - xG','-0.23','bad'],
+      ['Role','Impact sub at Bayern','']
+    ]
+  },
+  {
+    id:'gyokeres', key:'Gyökeres', cls:'gyokeres', cl:'#bcbd22',
+    name:'Viktor Gyökeres', club:'Arsenal (ex-Sporting CP) — Premier League', val:'€63.5M fee', age:'27 / 187cm / Right', pos:'ST (CF)', app:'36 (26) — 2,231 min',
+    stats:[
+      ['Goals (G/90)','14 (0.56)','ok'],
+      ['Assists','1','bad'],
+      ['G+A per 90','0.61','ok'],
+      ['Shots / On Target','55 / 23 (41.8%)',''],
+      ['xG','12.51',''],
+      ['G - xG','+1.49','good'],
+      ['Premier League Rank','#7 (top AFC scorer)','ok']
+    ]
+  },
+  {
+    id:'suarez', key:'Suárez', cls:'suarez', cl:'#94a3b8',
+    name:'Luis Suárez', club:'Sporting CP — Primeira Liga', val:'€22M–€25M fee', age:'28 / 185cm / Right', pos:'ST (CF)', app:'32 (31) — 2,700 min',
+    stats:[
+      ['Goals (G/90)','28 (0.93)','good'],
+      ['Assists','6','good'],
+      ['G+A per 90','1.13','good'],
+      ['Shots / On Target','136 / 60 (44.1%)',''],
+      ['xG','27.86','good'],
+      ['G - xG','+0.14','ok'],
+      ['Primeira Liga Rank','#1 — Top scorer','good']
+    ]
+  },
+  {
+    id:'bro', key:'Bro Hansen', cls:'bro', cl:'#17becf',
+    name:'Mikkel Bro Hansen', club:'Bodø/Glimt — Eliteserien', val:'~€0.9M', age:'17 / 188cm / Right', pos:'ST (CF)', app:'11 (0) — 99 min*',
+    stats:[
+      ['Goals (G/90)','2 (1.82)*','good'],
+      ['Assists','1','ok'],
+      ['G+A per 90','2.73*','good'],
+      ['U17 Intl Goals','13 in 16 caps','good'],
+      ['Senior Career','15 apps, 8 goals',''],
+      ['2025 Cup Goals','6 in 3 apps','good'],
+      ['Status','Youth prospect','bad']
+    ]
+  },
+  {
+    id:'ayoze', key:'Ayoze', cls:'ayoze', cl:'#f59e0b',
+    name:'Ayoze Pérez', club:'Villarreal — La Liga', val:'~€6M', age:'32 / 178cm / Right', pos:'SS / RW / ST', app:'25 (10) — 1,122 min',
+    stats:[
+      ['Goals (G/90)','5 (0.40)','bad'],
+      ['Assists','4','ok'],
+      ['G+A per 90','0.72','ok'],
+      ['Shots / On Target','24 / 11 (45.8%)',''],
+      ['xG','5.38',''],
+      ['G - xG','-0.38','bad'],
+      ['La Liga Rank','#37','bad']
+    ]
+  },
+  {
+    id:'watkins', key:'Watkins', cls:'watkins', cl:'#7c3aed',
+    name:'Ollie Watkins', club:'Aston Villa — Premier League', val:'~€35M', age:'30 / 180cm / Right', pos:'ST (CF)', app:'37 (28) — 2,852 min',
+    stats:[
+      ['Goals (G/90)','16 (0.50)','ok'],
+      ['Assists','3','bad'],
+      ['G+A per 90','0.60','ok'],
+      ['Shots / On Target','83 / 38 (45.8%)',''],
+      ['xG','15.14',''],
+      ['G - xG','+0.86','good'],
+      ['Premier League Rank','#5','ok']
+    ]
+  }
+];
+
+const ALL_KEYS = PLAYERS.map(p=>p.key);
+const ALL_COLORS = Object.fromEntries(PLAYERS.map(p=>[p.key,p.cl]));
+
+const TABLE_ROWS = {
+  'GOALSCORING': [
+    ['Goals', p=>({ferran:'16',mika:'13',undav:'19',oskarsson:'9',tresoldi:'19',asllani:'10',cdk:'3',jackson:'8',gyokeres:'14',suarez:'28',bro:'2*',ayoze:'5',watkins:'16'})[p.id]],
+    ['G/90', p=>({ferran:'0.73',mika:'0.55',undav:'0.76',oskarsson:'0.98',tresoldi:'0.68',asllani:'0.38',cdk:'0.12',jackson:'0.72',gyokeres:'0.56',suarez:'0.93',bro:'1.82*',ayoze:'0.40',watkins:'0.50'})[p.id]],
+    ['Shot Accuracy', p=>({ferran:'55.2%',mika:'49.2%',undav:'55.7%',oskarsson:'70.4%',tresoldi:'41.6%',asllani:'38.4%',cdk:'83%*‡',jackson:'55.3%',gyokeres:'41.8%',suarez:'44.1%',bro:'33.3%*',ayoze:'45.8%',watkins:'45.8%'})[p.id]],
+    ['Conversion Rate', p=>({ferran:'23.9%',mika:'20.0%',undav:'15.6%',oskarsson:'33.3%',tresoldi:'19.6%',asllani:'13.7%',cdk:'6.5%§',jackson:'21.1%',gyokeres:'25.5%',suarez:'20.6%',bro:'66.7%*',ayoze:'20.8%',watkins:'19.3%'})[p.id]],
+    ['xG', p=>({ferran:'14.02',mika:'11.42',undav:'15.94',oskarsson:'5.77',tresoldi:'16.85',asllani:'8.28',cdk:'3.63§',jackson:'8.23†',gyokeres:'12.51',suarez:'27.86',bro:'0.4*',ayoze:'5.38',watkins:'15.14'})[p.id]],
+    ['G - xG', p=>({ferran:'+1.98',mika:'+1.58',undav:'+3.06',oskarsson:'+3.23',tresoldi:'+2.15',asllani:'+1.72',cdk:'-0.63§',jackson:'-0.23',gyokeres:'+1.49',suarez:'+0.14',bro:'+1.6*',ayoze:'-0.38',watkins:'+0.86'})[p.id]],
+  ],
+  'LINK-UP & CREATIVITY': [
+    ['Assists', p=>({ferran:'2',mika:'6',undav:'7',oskarsson:'0',tresoldi:'5',asllani:'7',cdk:'5',jackson:'1',gyokeres:'1',suarez:'6',bro:'1*',ayoze:'4',watkins:'3'})[p.id]],
+    ['Key Passes', p=>({ferran:'23',mika:'14*',undav:'39',oskarsson:'5*',tresoldi:'23',asllani:'19*',cdk:'24',jackson:'18',gyokeres:'20',suarez:'46',bro:'2*',ayoze:'16',watkins:'23'})[p.id]],
+    ['Pass Success', p=>({ferran:'70.4%',mika:'75.5%',undav:'69.9%',oskarsson:'64.0%',tresoldi:'74.0%',asllani:'68.6%',cdk:'78.8%',jackson:'81.6%',gyokeres:'62.6%',suarez:'75.6%',bro:'64%*',ayoze:'75.8%',watkins:'72.7%'})[p.id]],
+  ],
+  'HOLD-UP & PHYSICAL': [
+    ['Aerial Duels Won', p=>({ferran:'25',mika:'10',undav:'27*',oskarsson:'16',tresoldi:'63*',asllani:'24',cdk:'13*‡',jackson:'7',gyokeres:'30',suarez:'32',bro:'n/a*',ayoze:'15',watkins:'36'})[p.id]],
+    ['Touches Opp Box', p=>({ferran:'125',mika:'140',undav:'174*',oskarsson:'44',tresoldi:'172',asllani:'149',cdk:'129',jackson:'95',gyokeres:'142',suarez:'249',bro:'n/a*',ayoze:'55',watkins:'177'})[p.id]],
+  ],
+  'PRESSING': [
+    ['Duels Won %', p=>({ferran:'44.1%',mika:'45.4%',undav:'44.1%',oskarsson:'41.8%',tresoldi:'50.7%',asllani:'37.0%',cdk:'53.1%',jackson:'36.7%',gyokeres:'31.6%',suarez:'45.7%',bro:'n/a*',ayoze:'40.2%',watkins:'41.1%'})[p.id]],
+    ['Recoveries', p=>({ferran:'36',mika:'40',undav:'135*',oskarsson:'12',tresoldi:'172*',asllani:'76',cdk:'9*‡',jackson:'25',gyokeres:'55',suarez:'53',bro:'n/a*',ayoze:'23',watkins:'49'})[p.id]],
+  ]
+};
+
+const RADAR_METRICS = ['G/90','A/90','Shot%','Conv%','G-xG'];
+const RADAR_DATA = {
+  'Ferran Torres':[0.73,0.09,55.2,23.9,1.98],
+  'Mikautadze':[0.55,0.26,49.2,20.0,1.58],
+  'Undav':[0.76,0.28,55.7,15.6,3.06],
+  'Óskarsson':[0.98,0.00,70.4,33.3,3.23],
+  'Tresoldi':[0.68,0.18,41.6,19.6,2.15],
+  'Asllani':[0.38,0.27,38.4,13.7,1.72],
+  'CDK':[0.12,0.21,83.0,6.5,-0.63],
+  'Jackson':[0.72,0.09,55.3,21.1,-0.23],
+  'Gyökeres':[0.56,0.04,41.8,25.5,1.49],
+  'Suárez':[0.93,0.20,44.1,20.6,0.14],
+  'Bro Hansen':[1.82,0.91,33.3,66.7,1.60],
+  'Ayoze':[0.40,0.32,45.8,20.8,-0.38],
+  'Watkins':[0.50,0.09,45.8,19.3,0.86]
+};
+
+let visible = new Set(['Undav','Óskarsson','Tresoldi','Suárez','Mikautadze']);
+
+// build toggles
+const toggleDiv = document.getElementById('toggles');
+PLAYERS.forEach(p => {
+  const btn = document.createElement('button');
+  btn.className = 'toggle-btn' + (visible.has(p.key) ? ' active' : '');
+  btn.style.setProperty('--cl', p.cl);
+  btn.textContent = p.key;
+  btn.dataset.key = p.key;
+  btn.onclick = () => {
+    if (visible.has(p.key)) {
+      visible.delete(p.key);
+      btn.classList.remove('active');
+    } else {
+      visible.add(p.key);
+      btn.classList.add('active');
+    }
+    render();
+  };
+  toggleDiv.appendChild(btn);
+});
+
+// build cards
+function renderCards() {
+  const grid = document.getElementById('cards');
+  grid.innerHTML = '';
+  PLAYERS.forEach(p => {
+    const div = document.createElement('div');
+    div.className = `card ${p.cls}` + (visible.has(p.key) ? '' : ' hidden');
+    div.innerHTML = `
+      <div class="player-name">${p.name}</div>
+      <div class="player-club">${p.club} | Value: ${p.val}</div>
+      <div class="player-stat-label">${p.age} · ${p.pos} · ${p.app}</div>
+      ${p.stats.map(s => `<div class="stat-row"><span class="stat-label">${s[0]}</span><span class="stat-value ${s[2]}">${s[1]}</span></div>`).join('')}
+    `;
+    grid.appendChild(div);
+  });
+}
+
+// build table
+function renderTable() {
+  const head = document.getElementById('tableHead');
+  const body = document.getElementById('tableBody');
+  const visPlayers = PLAYERS.filter(p => visible.has(p.key));
+  head.innerHTML = '<th>Metric</th>' + visPlayers.map(p => `<th>${p.key}</th>`).join('');
+  body.innerHTML = '';
+  Object.entries(TABLE_ROWS).forEach(([section, rows]) => {
+    const secRow = document.createElement('tr');
+    secRow.className = 'top-row';
+    const secTd = document.createElement('td');
+    secTd.colSpan = visPlayers.length + 1;
+    secTd.style.cssText = 'color:#aabbdd;font-weight:700;text-align:left;padding-left:14px';
+    secTd.textContent = section;
+    secRow.appendChild(secTd);
+    body.appendChild(secRow);
+    rows.forEach(([label, fn]) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${label}</td>` + visPlayers.map(p => {
+        const v = fn(p);
+        const isBest = visPlayers.length > 1 && (() => {
+          const vals = visPlayers.map(p2 => {
+            const raw = fn(p2);
+            if (!raw || raw === 'n/a' || raw === 'n/a*' || raw === 'n/a*‡') return null;
+            const num = parseFloat(raw.replace(/,/g,''));
+            return isNaN(num) ? null : num;
+          }).filter(v => v !== null);
+          if (vals.length < 2) return false;
+          const vNum = parseFloat(v.replace(/,/g,''));
+          if (isNaN(vNum)) return false;
+          return vNum >= Math.max(...vals);
+        })();
+        return `<td>${isBest?`<span class="rank-badge rank-best">${v}</span>`:v}</td>`;
+      }).join('');
+      body.appendChild(tr);
+    });
+  });
+  // footnote
+  const foot = document.createElement('tr');
+  const footTd = document.createElement('td');
+  footTd.colSpan = visPlayers.length + 1;
+  footTd.style.cssText = 'color:#667799;font-size:0.75rem;padding-top:8px';
+  footTd.textContent = '* Extremely small sample. Bro Hansen: 99 Eliteserien min across 2 seasons. Óskarsson: 829 min. ‡ CDK from WC 2026 (353 min). † Jackson xG is non-penalty. § CDK conversion/xG/G−xG are FotMob Serie A 25/26 (FBref Opta blocked). Bro Hansen aerial/physical/pressing metrics unavailable (no tracking data at 99 min). All new cells sourced from FotMob 2025/26 domestic league.';
+  foot.appendChild(footTd);
+  body.appendChild(foot);
+}
+
+// radar
+function renderRadar() {
+  const c = document.getElementById('radarChart').getContext('2d');
+  const W=500,H=500,cx=250,cy=250,R=180;
+  const visKeys = ALL_KEYS.filter(k => visible.has(k));
+  const L = RADAR_METRICS;
+  const P = Object.fromEntries(Object.entries(RADAR_DATA).filter(([k])=>visible.has(k)));
+  const CL = Object.fromEntries(Object.entries(ALL_COLORS).filter(([k])=>visible.has(k)));
+  c.clearRect(0,0,W,H);
+  if (visKeys.length === 0) return;
+  for(let r=1;r<=5;r++){
+    const l=R/5*r;c.beginPath();
+    for(let i=0;i<L.length;i++){
+      const a=Math.PI*2/L.length*i-Math.PI/2;
+      const x=cx+l*Math.cos(a),y=cy+l*Math.sin(a);
+      i?c.lineTo(x,y):c.moveTo(x,y);
+    }c.closePath();c.strokeStyle='#1e2a4a';c.stroke();
+  }
+  c.fillStyle='#aabbdd';c.font='11px sans-serif';c.textAlign='center';
+  L.forEach((l,i)=>{const a=Math.PI*2/L.length*i-Math.PI/2;c.fillText(l,cx+(R+20)*Math.cos(a),cy+(R+20)*Math.sin(a));});
+  const Mx=L.map((_,i)=>Math.max(...Object.values(P).map(p=>p[i]),1));
+  const N=p=>p.map((v,i)=>(Math.max(v,0)/Mx[i])*100);
+  Object.entries(P).forEach(([n,v])=>{
+    const m=N(v);c.beginPath();
+    m.forEach((v,i)=>{const a=Math.PI*2/L.length*i-Math.PI/2,x=cx+(R*v/100)*Math.cos(a),y=cy+(R*v/100)*Math.sin(a);i?c.lineTo(x,y):c.moveTo(x,y);});
+    c.closePath();c.fillStyle=CL[n]+'30';c.fill();c.strokeStyle=CL[n];c.lineWidth=2;c.stroke();
+  });
+  Object.entries(CL).forEach(([n,cl],i)=>{
+    const x = i % 2 ? 300 : 20;
+    const y = 20 + Math.floor(i / 2) * 18;
+    c.fillStyle=cl;c.fillRect(x,y,12,12);
+    c.fillStyle='#e0e6f0';c.font='12px sans-serif';c.textAlign='left';c.fillText(n,x+18,y+10);
+  });
+}
+
+function render() {
+  renderCards();
+  renderTable();
+  renderRadar();
+}
+
+render();
+</script>
+
+</body>
+</html>

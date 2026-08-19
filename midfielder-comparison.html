@@ -3,158 +3,524 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Box-to-Box & Deep Midfielder: Yaya Toure vs Marc Bernal vs Jude Bellingham</title>
+<title>B2B Midfielder Comparison — Yaya · Bernal · Bellingham</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0e1a;color:#e0e6f0;padding:20px}
-.container{max-width:1200px;margin:0 auto}
-h1{font-size:1.6rem;margin-bottom:4px;color:#fff}
-.subtitle{color:#8899bb;margin-bottom:24px;font-size:0.9rem}
-.section-title{font-size:1.1rem;margin:28px 0 14px;color:#aabbdd;border-bottom:1px solid #1a2240;padding-bottom:8px}
-.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}
-.card{background:linear-gradient(135deg,#111827,#0f1729);border:1px solid #1e2a4a;border-radius:12px;padding:20px;position:relative;overflow:hidden}
-.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0}
-.card.yaya::before{background:linear-gradient(90deg,#6caddf,#1c2f5a)}
-.card.bernal::before{background:linear-gradient(90deg,#a50044,#004d98)}
-.card.bellingham::before{background:linear-gradient(90deg,#febe10,#00308f)}
-.player-name{font-size:1.15rem;font-weight:700;color:#fff;margin-bottom:2px}
-.player-sub{font-size:0.75rem;color:#8899bb;margin-bottom:8px}
-.stat-row{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid #161e36;font-size:0.8rem}
-.stat-row:last-child{border-bottom:none}
-.stat-label{color:#8899bb}
-.stat-val{color:#fff;font-weight:600}
-.stat-val.good{color:#4ade80}
-.stat-val.mid{color:#facc15}
-table{width:100%;border-collapse:collapse;font-size:0.78rem;margin-bottom:16px}
-th{background:#1a2240;color:#aabbdd;padding:7px;text-align:center;font-weight:600}
-th:first-child{text-align:left;padding-left:10px}
-td{padding:6px;text-align:center;border-bottom:1px solid #161e36}
-td:first-child{text-align:left;padding-left:10px;color:#8899bb;font-weight:500}
-tr:hover td{background:#0f1729}
-tr.section td{background:#0f1729;color:#aabbdd;font-weight:700;border-top:2px solid #1e2a4a;padding:6px}
-.badge{display:inline-block;padding:2px 7px;border-radius:20px;font-size:0.65rem;font-weight:700}
-.best{background:#14532d;color:#4ade80}
-.mid{background:#713f12;color:#facc15}
-.verdict-box{background:linear-gradient(135deg,#111827,#0f1729);border:1px solid #1e2a4a;border-radius:12px;padding:24px;margin-top:16px}
-.verdict-box h2{color:#fff;margin-bottom:10px;font-size:1rem}
-.verdict-box p{color:#c0cce0;line-height:1.6;font-size:0.85rem;margin-bottom:6px}
-.verdict-box strong{color:#fff}
-.radar-wrap{width:100%;max-width:500px;margin:14px auto}
-.chart-box{background:#111827;border:1px solid #1e2a4a;border-radius:12px;padding:20px;margin-bottom:20px}
+:root {
+  --bg:      #0b0d0f;
+  --surface: #111417;
+  --border:  #1e2329;
+  --border2: #2a3040;
+  --text:    #c8cdd6;
+  --muted:   #8896a8;
+  --accent:  #e8a020;
+  --green:   #2ecc71;
+  --yellow:  #f39c12;
+  --red:     #e74c3c;
+  --white:   #edf0f5;
+  --mono:    'DM Mono', monospace;
+  --display: 'Syne', sans-serif;
+  --body:    'DM Sans', sans-serif;
+  --yaya:    #6caddf;
+  --bernal:  #e8a020;
+  --bell:    #f39c12;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 14px;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* ── TOPNAV ──────────────────────────────────────── */
+.fi-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px; height: 48px; border-bottom: 1px solid var(--border);
+  background: var(--bg); position: sticky; top: 0; z-index: 100; gap: 24px;
+}
+.fi-nav a {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted); text-decoration: none;
+  display: flex; align-items: center; gap: 7px; transition: color .15s;
+}
+.fi-nav a:hover { color: var(--accent); }
+.fi-nav-brand {
+  font-family: var(--display); font-size: 12px; font-weight: 700;
+  color: var(--white); letter-spacing: .04em;
+}
+.fi-nav-sep { color: var(--border2); font-family: var(--mono); font-size: 12px; }
+.fi-nav-crumb {
+  font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: .08em;
+}
+
+/* ── HEADER ──────────────────────────────────────── */
+.header {
+  position: relative;
+  border-bottom: 1px solid var(--border2);
+  padding: 48px 64px 40px;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 80% at 85% 50%, rgba(232,160,32,.07) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 60% at 10% 20%, rgba(108,173,223,.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+.header-top {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 32px; flex-wrap: wrap;
+}
+.label-pill {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--accent);
+  background: rgba(232,160,32,.10); border: 1px solid rgba(232,160,32,.25);
+  padding: 4px 12px; border-radius: 2px; display: inline-block; margin-bottom: 16px;
+}
+.report-title {
+  font-family: var(--display);
+  font-size: clamp(32px, 4vw, 56px);
+  font-weight: 800;
+  color: var(--white);
+  line-height: 1;
+  letter-spacing: -.02em;
+  margin-bottom: 10px;
+}
+.report-sub {
+  font-family: var(--mono); font-size: 11px; color: var(--muted);
+  letter-spacing: .06em; text-transform: uppercase;
+}
+.header-meta {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--border); border: 1px solid var(--border);
+  border-radius: 4px; overflow: hidden; min-width: 280px; align-self: flex-start;
+}
+.meta-cell { background: var(--surface); padding: 16px 20px; }
+.meta-label {
+  font-family: var(--mono); font-size: 9px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 5px;
+}
+.meta-value {
+  font-family: var(--mono); font-size: 20px; color: var(--white); font-weight: 500;
+}
+.meta-value.accent { color: var(--accent); }
+
+/* ── SECTION LABEL ───────────────────────────────── */
+.section-label {
+  font-family: var(--mono); font-size: 9px; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--accent);
+  margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
+}
+.section-label::after {
+  content: ''; flex: 1; height: 1px; background: var(--border2);
+}
+
+/* ── PLAYER CARDS ────────────────────────────────── */
+.cards-section {
+  padding: 40px 64px;
+  border-bottom: 1px solid var(--border);
+}
+.grid-3 {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+}
+.card {
+  background: var(--surface); border: 1px solid var(--border2);
+  border-radius: 4px; padding: 22px 20px 20px; position: relative; overflow: hidden;
+}
+.card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+}
+.card.yaya::before       { background: var(--yaya); }
+.card.bernal::before     { background: var(--bernal); }
+.card.bellingham::before { background: var(--bell); }
+
+.player-name {
+  font-family: var(--display); font-size: 21px; font-weight: 700;
+  color: var(--white); margin-bottom: 3px; line-height: 1.1;
+}
+.player-sub {
+  font-family: var(--mono); font-size: 9px; color: var(--muted);
+  letter-spacing: .05em; text-transform: uppercase; margin-bottom: 14px;
+}
+.stat-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 5px 0; border-bottom: 1px solid var(--border);
+}
+.stat-row:last-child { border-bottom: none; }
+.stat-label { font-family: var(--mono); font-size: 10px; color: var(--muted); }
+.stat-val   { font-family: var(--mono); font-size: 11px; color: var(--text); font-weight: 500; }
+.stat-val.good { color: var(--green); }
+.stat-val.mid  { color: var(--yellow); }
+.stat-val.bad  { color: var(--red); }
+
+/* ── MAIN 2-COL LAYOUT ───────────────────────────── */
+.main {
+  display: grid; grid-template-columns: 1fr 380px;
+  gap: 0; align-items: start;
+}
+.col-left { border-right: 1px solid var(--border); }
+
+section {
+  padding: 40px 64px; border-bottom: 1px solid var(--border);
+}
+.col-right section { padding: 32px 28px; }
+
+/* ── STAT TABLE ──────────────────────────────────── */
+.stat-table {
+  width: 100%; border-collapse: collapse;
+  font-family: var(--mono); font-size: 11.5px;
+}
+.stat-table th {
+  text-align: left; font-size: 9px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted);
+  padding: 6px 12px 10px; border-bottom: 1px solid var(--border2); font-weight: 400;
+}
+.stat-table th:not(:first-child) { text-align: center; }
+.stat-table td {
+  padding: 7px 12px; color: var(--text); border-bottom: 1px solid var(--border);
+}
+.stat-table tr:last-child td { border-bottom: none; }
+.stat-table td:first-child { color: var(--muted); }
+.stat-table td:not(:first-child) { text-align: center; }
+.stat-table td.highlight { color: var(--white); font-weight: 500; }
+.stat-table td.accent    { color: var(--accent); }
+.stat-table td.good      { color: var(--green); }
+.stat-table td.bad       { color: var(--red); }
+
+.stat-table tr.section-row td {
+  background: rgba(232,160,32,.05); color: var(--accent);
+  font-size: 9px; letter-spacing: .15em; text-transform: uppercase;
+  padding: 8px 12px;
+  border-top: 1px solid var(--border2); border-bottom: 1px solid var(--border2);
+  font-weight: 400; text-align: left;
+}
+.badge {
+  display: inline-block; padding: 2px 8px; border-radius: 2px;
+  font-size: 10px; font-weight: 500;
+}
+.best {
+  background: rgba(46,204,113,.12); color: var(--green);
+  border: 1px solid rgba(46,204,113,.3);
+}
+
+/* ── SIDEBAR ─────────────────────────────────────── */
+.sidebar-block { padding: 28px 28px; border-bottom: 1px solid var(--border); }
+.sidebar-block:last-child { border-bottom: none; }
+
+.radar-wrap { width: 100%; display: flex; justify-content: center; margin-top: 8px; }
+.radar-wrap canvas { max-width: 100%; display: block; }
+
+.verdict-body { font-size: 13px; line-height: 1.65; color: var(--text); }
+.verdict-body p { margin-bottom: 14px; }
+.verdict-body p:last-child { margin-bottom: 0; }
+.verdict-body strong { color: var(--white); font-weight: 500; }
+
+/* ── FOOTER ──────────────────────────────────────── */
+footer {
+  padding: 28px 64px; border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 12px;
+}
+.footer-left  { font-family: var(--mono); font-size: 10px; color: var(--muted); }
+.footer-right { font-family: var(--mono); font-size: 10px; color: var(--muted); text-align: right; }
+
+/* ── RESPONSIVE ──────────────────────────────────── */
+@media (max-width: 900px) {
+  .main { grid-template-columns: 1fr; }
+  .col-left { border-right: none; }
+  .header { padding: 32px 24px 28px; }
+  section { padding: 28px 24px; }
+  .cards-section { padding: 28px 24px; }
+  footer { padding: 20px 24px; }
+  .header-meta { min-width: 0; width: 100%; }
+  .grid-3 { grid-template-columns: 1fr; }
+  .fi-nav { padding: 0 20px; }
+}
 </style>
 </head>
 <body>
-<div class="container">
-<h1>Midfielder Report: 3 Box-to-Box Profiles Compared</h1>
-<p class="subtitle">Yaya Toure (Best: 2013/14) | Marc Bernal (2025/26) | Jude Bellingham (2025/26)</p>
 
-<div class="grid-3">
+<!-- ─── TOPNAV ──────────────────────────────────────── -->
+<nav class="fi-nav">
+  <a href="index.html#comparisons">← Back</a>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <span class="fi-nav-brand">Football Intelligence</span>
+    <span class="fi-nav-sep">·</span>
+    <span class="fi-nav-crumb">B2B Midfielders</span>
+  </div>
+  <div></div>
+</nav>
 
-<div class="card yaya">
-<div class="player-name">Yaya Toure</div>
-<div class="player-sub">Manchester City | PL 2013/14 | Age 30 | 188cm / Right</div>
-<div class="stat-row"><span class="stat-label">Appearances</span><span class="stat-val">35 PL (49 all comps)</span></div>
-<div class="stat-row"><span class="stat-label">Minutes</span><span class="stat-val">~3,150 PL</span></div>
-<div class="stat-row"><span class="stat-label">Goals</span><span class="stat-val good">20 PL (24 all)</span></div>
-<div class="stat-row"><span class="stat-label">Assists</span><span class="stat-val good">9 PL (13 all)</span></div>
-<div class="stat-row"><span class="stat-label">G+A per 90</span><span class="stat-val good">0.83</span></div>
-<div class="stat-row"><span class="stat-label">Passes/Game</span><span class="stat-val">76.41</span></div>
-<div class="stat-row"><span class="stat-label">Pass Accuracy</span><span class="stat-val good">90.76%</span></div>
-<div class="stat-row"><span class="stat-label">Tackles/Game</span><span class="stat-val">2.3</span></div>
-<div class="stat-row"><span class="stat-label">Set Piece Goals</span><span class="stat-val">10</span></div>
-<div class="stat-row"><span class="stat-label">Market Value (peak)</span><span class="stat-val">€55M (2014)</span></div>
+<!-- ─── HEADER ──────────────────────────────────────── -->
+<header class="header">
+  <div class="header-top">
+    <div>
+      <div class="label-pill">Comparison · Box-to-Box · Cross-Era</div>
+      <h1 class="report-title">Three B2B Archetypes</h1>
+      <p class="report-sub">Yaya Toure (2013/14) · Marc Bernal (2025/26) · Jude Bellingham (2025/26)</p>
+    </div>
+    <div class="header-meta">
+      <div class="meta-cell">
+        <div class="meta-label">Players</div>
+        <div class="meta-value accent">3</div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-label">Eras</div>
+        <div class="meta-value">2</div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-label">Dimensions</div>
+        <div class="meta-value">8</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ─── PLAYER CARDS ─────────────────────────────────── -->
+<div class="cards-section">
+  <div class="section-label">Player Profiles</div>
+  <div class="grid-3">
+
+    <div class="card yaya">
+      <div class="player-name">Yaya Toure</div>
+      <div class="player-sub">Manchester City · PL 2013/14 · Age 30 · 188cm / Right</div>
+      <div class="stat-row"><span class="stat-label">Appearances</span><span class="stat-val">35 PL (49 all comps)</span></div>
+      <div class="stat-row"><span class="stat-label">Minutes</span><span class="stat-val">~3,150 PL</span></div>
+      <div class="stat-row"><span class="stat-label">Goals</span><span class="stat-val good">20 PL (24 all)</span></div>
+      <div class="stat-row"><span class="stat-label">Assists</span><span class="stat-val good">9 PL (13 all)</span></div>
+      <div class="stat-row"><span class="stat-label">G+A per 90</span><span class="stat-val good">0.83</span></div>
+      <div class="stat-row"><span class="stat-label">Passes/Game</span><span class="stat-val">76.41</span></div>
+      <div class="stat-row"><span class="stat-label">Pass Accuracy</span><span class="stat-val good">90.76%</span></div>
+      <div class="stat-row"><span class="stat-label">Tackles/Game</span><span class="stat-val">2.3</span></div>
+      <div class="stat-row"><span class="stat-label">Set Piece Goals</span><span class="stat-val">10</span></div>
+      <div class="stat-row"><span class="stat-label">Market Value (peak)</span><span class="stat-val">€55M (2014)</span></div>
+    </div>
+
+    <div class="card bernal">
+      <div class="player-name">Marc Bernal</div>
+      <div class="player-sub">FC Barcelona · La Liga 2025/26 · Age 19 · 191cm / Left</div>
+      <div class="stat-row"><span class="stat-label">Appearances</span><span class="stat-val">22 (9 starts)</span></div>
+      <div class="stat-row"><span class="stat-label">Minutes</span><span class="stat-val">787</span></div>
+      <div class="stat-row"><span class="stat-label">Goals</span><span class="stat-val">2</span></div>
+      <div class="stat-row"><span class="stat-label">Assists</span><span class="stat-val">1</span></div>
+      <div class="stat-row"><span class="stat-label">G+A per 90</span><span class="stat-val">0.34</span></div>
+      <div class="stat-row"><span class="stat-label">Shots/90</span><span class="stat-val">0.80</span></div>
+      <div class="stat-row"><span class="stat-label">Pass Accuracy</span><span class="stat-val good">92.0%</span></div>
+      <div class="stat-row"><span class="stat-label">Dribble Success</span><span class="stat-val good">78.6%</span></div>
+      <div class="stat-row"><span class="stat-label">Duels Won %</span><span class="stat-val good">55.3%</span></div>
+      <div class="stat-row"><span class="stat-label">Def Contributions/90</span><span class="stat-val good">6.75</span></div>
+      <div class="stat-row"><span class="stat-label">Market Value</span><span class="stat-val">€14M</span></div>
+    </div>
+
+    <div class="card bellingham">
+      <div class="player-name">Jude Bellingham</div>
+      <div class="player-sub">Real Madrid · La Liga 2025/26 · Age 23 · 186cm / Right</div>
+      <div class="stat-row"><span class="stat-label">Appearances</span><span class="stat-val">28 (22 starts)</span></div>
+      <div class="stat-row"><span class="stat-label">Minutes</span><span class="stat-val">1,917</span></div>
+      <div class="stat-row"><span class="stat-label">Goals</span><span class="stat-val">6</span></div>
+      <div class="stat-row"><span class="stat-label">Assists</span><span class="stat-val">4</span></div>
+      <div class="stat-row"><span class="stat-label">G+A per 90</span><span class="stat-val mid">0.47</span></div>
+      <div class="stat-row"><span class="stat-label">Prog Carries</span><span class="stat-val good">100 (#58 La Liga)</span></div>
+      <div class="stat-row"><span class="stat-label">Init. Danger Attacks</span><span class="stat-val good">156 (#83 La Liga)</span></div>
+      <div class="stat-row"><span class="stat-label">FotMob Rating</span><span class="stat-val good">7.53</span></div>
+      <div class="stat-row"><span class="stat-label">Pass Accuracy</span><span class="stat-val">81.5%</span></div>
+      <div class="stat-row"><span class="stat-label">Market Value</span><span class="stat-val good">€139.5M</span></div>
+    </div>
+
+  </div>
 </div>
 
-<div class="card bernal">
-<div class="player-name">Marc Bernal</div>
-<div class="player-sub">FC Barcelona | La Liga 2025/26 | Age 19 | 191cm / Left</div>
-<div class="stat-row"><span class="stat-label">Appearances</span><span class="stat-val">22 (9 starts)</span></div>
-<div class="stat-row"><span class="stat-label">Minutes</span><span class="stat-val">787</span></div>
-<div class="stat-row"><span class="stat-label">Goals</span><span class="stat-val">2</span></div>
-<div class="stat-row"><span class="stat-label">Assists</span><span class="stat-val">1</span></div>
-<div class="stat-row"><span class="stat-label">G+A per 90</span><span class="stat-val">0.34</span></div>
-<div class="stat-row"><span class="stat-label">Shots/90</span><span class="stat-val">0.80</span></div>
-<div class="stat-row"><span class="stat-label">Pass Accuracy</span><span class="stat-val good">92.0%</span></div>
-<div class="stat-row"><span class="stat-label">Dribble Success</span><span class="stat-val good">78.6%</span></div>
-<div class="stat-row"><span class="stat-label">Duels Won %</span><span class="stat-val good">55.3%</span></div>
-<div class="stat-row"><span class="stat-label">Def Contributions/90</span><span class="stat-val good">6.75</span></div>
-<div class="stat-row"><span class="stat-label">Market Value</span><span class="stat-val">€14M</span></div>
-</div>
+<!-- ─── MAIN 2-COL ────────────────────────────────────── -->
+<div class="main">
 
-<div class="card bellingham">
-<div class="player-name">Jude Bellingham</div>
-<div class="player-sub">Real Madrid | La Liga 2025/26 | Age 23 | 186cm / Right</div>
-<div class="stat-row"><span class="stat-label">Appearances</span><span class="stat-val">28 (22 starts)</span></div>
-<div class="stat-row"><span class="stat-label">Minutes</span><span class="stat-val">1,917</span></div>
-<div class="stat-row"><span class="stat-label">Goals</span><span class="stat-val">6</span></div>
-<div class="stat-row"><span class="stat-label">Assists</span><span class="stat-val">4</span></div>
-<div class="stat-row"><span class="stat-label">G+A per 90</span><span class="stat-val mid">0.47</span></div>
-<div class="stat-row"><span class="stat-label">Prog Carries</span><span class="stat-val good">100 (#58 La Liga)</span></div>
-<div class="stat-row"><span class="stat-label">Init. Danger Attacks</span><span class="stat-val good">156 (#83 La Liga)</span></div>
-<div class="stat-row"><span class="stat-label">FotMob Rating</span><span class="stat-val good">7.53</span></div>
-<div class="stat-row"><span class="stat-label">Pass Accuracy</span><span class="stat-val">81.5%</span></div>
-<div class="stat-row"><span class="stat-label">Market Value</span><span class="stat-val good">€139.5M</span></div>
-</div>
+  <!-- LEFT: H2H TABLE -->
+  <div class="col-left">
+    <section>
+      <div class="section-label">Head-to-Head · All Metrics</div>
+      <div style="overflow-x:auto">
+        <table class="stat-table">
+          <thead>
+            <tr>
+              <th>Metric</th>
+              <th>Yaya Toure</th>
+              <th>Marc Bernal</th>
+              <th>Jude Bellingham</th>
+              <th>Best For Barca B2B</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="section-row"><td colspan="5">Attacking Output</td></tr>
+            <tr>
+              <td>Goals (League)</td>
+              <td><span class="badge best">20</span></td>
+              <td>2</td>
+              <td>6</td>
+              <td class="accent">Yaya</td>
+            </tr>
+            <tr>
+              <td>Goals per 90</td>
+              <td><span class="badge best">0.57</span></td>
+              <td>0.23</td>
+              <td>0.28</td>
+              <td class="accent">Yaya</td>
+            </tr>
+            <tr>
+              <td>Assists</td>
+              <td><span class="badge best">9</span></td>
+              <td>1</td>
+              <td>4</td>
+              <td class="accent">Yaya</td>
+            </tr>
+            <tr>
+              <td>G+A per 90</td>
+              <td><span class="badge best">0.83</span></td>
+              <td>0.34</td>
+              <td>0.47</td>
+              <td class="accent">Yaya</td>
+            </tr>
 
-</div>
+            <tr class="section-row"><td colspan="5">Passing &amp; Progression</td></tr>
+            <tr>
+              <td>Passes per 90</td>
+              <td><span class="badge best">76.4</span></td>
+              <td>62.1</td>
+              <td>~55</td>
+              <td class="accent">Yaya</td>
+            </tr>
+            <tr>
+              <td>Passing Accuracy</td>
+              <td>90.76%</td>
+              <td><span class="badge best">92.0%</span></td>
+              <td>81.5%</td>
+              <td class="accent">Bernal</td>
+            </tr>
+            <tr>
+              <td>Progressive Carries</td>
+              <td>~60</td>
+              <td>n/a</td>
+              <td><span class="badge best">100</span></td>
+              <td class="accent">Bellingham</td>
+            </tr>
 
-<!-- RADAR -->
-<div class="chart-box">
-<h2 class="section-title" style="margin-top:0;border-bottom:none;padding-bottom:0">Radar: Midfielder Profile Comparison</h2>
-<p style="color:#8899bb;font-size:0.8rem;margin-bottom:6px">Per 90 or % values scaled within this trio</p>
-<div class="radar-wrap">
-<canvas id="r" width="500" height="500"></canvas>
-</div>
-</div>
+            <tr class="section-row"><td colspan="5">Defensive</td></tr>
+            <tr>
+              <td>Tackles per 90</td>
+              <td>2.3</td>
+              <td><span class="badge best">3.0</span></td>
+              <td>2.1</td>
+              <td class="accent">Bernal</td>
+            </tr>
+            <tr>
+              <td>Duels Won %</td>
+              <td>~48%</td>
+              <td><span class="badge best">55.3%</span></td>
+              <td>53.8%</td>
+              <td class="accent">Bernal</td>
+            </tr>
+            <tr>
+              <td>Aerial Duels %</td>
+              <td><span class="badge best">~52%</span></td>
+              <td>48.4%</td>
+              <td>11.1%</td>
+              <td class="accent">Yaya</td>
+            </tr>
+            <tr>
+              <td>Def Cont/90</td>
+              <td>~4.5</td>
+              <td><span class="badge best">6.75</span></td>
+              <td>3.8</td>
+              <td class="accent">Bernal</td>
+            </tr>
+            <tr>
+              <td>Dribble Success %</td>
+              <td>~55%</td>
+              <td><span class="badge best">78.6%</span></td>
+              <td>69.2%</td>
+              <td class="accent">Bernal</td>
+            </tr>
 
-<!-- TABLE -->
-<h2 class="section-title">Head-to-Head: All Midfielder Metrics</h2>
-<div style="overflow-x:auto">
-<table>
-<thead>
-<tr><th>Metric</th><th>Yaya Toure</th><th>Marc Bernal</th><th>Jude Bellingham</th><th>Best For Barca B2B</th></tr>
-</thead>
-<tbody>
-<tr class="section"><td colspan="5">ATTACKING OUTPUT</td></tr>
-<tr><td>Goals (League)</td><td><span class="badge best">20</span></td><td>2</td><td>6</td><td>Yaya</td></tr>
-<tr><td>Goals per 90</td><td><span class="badge best">0.57</span></td><td>0.23</td><td>0.28</td><td>Yaya</td></tr>
-<tr><td>Assists</td><td><span class="badge best">9</span></td><td>1</td><td>4</td><td>Yaya</td></tr>
-<tr><td>G+A per 90</td><td><span class="badge best">0.83</span></td><td>0.34</td><td>0.47</td><td>Yaya</td></tr>
-<tr class="section"><td colspan="5">PASSING &amp; PROGRESSION</td></tr>
-<tr><td>Passes per 90</td><td><span class="badge best">76.4</span></td><td>62.1</td><td>~55</td><td>Yaya</td></tr>
-<tr><td>Passing Accuracy</td><td>90.76%</td><td><span class="badge best">92.0%</span></td><td>81.5%</td><td>Bernal</td></tr>
-<tr><td>Progressive Carries</td><td>~60</td><td>n/a</td><td><span class="badge best">100</span></td><td>Bellingham</td></tr>
-<tr class="section"><td colspan="5">DEFENSIVE</td></tr>
-<tr><td>Tackles per 90</td><td>2.3</td><td><span class="badge best">3.0</span></td><td>2.1</td><td>Bernal</td></tr>
-<tr><td>Duels Won %</td><td>~48%</td><td><span class="badge best">55.3%</span></td><td>53.8%</td><td>Bernal</td></tr>
-<tr><td>Aerial Duels %</td><td><span class="badge best">~52%</span></td><td>48.4%</td><td>11.1%</td><td>Yaya</td></tr>
-<tr><td>Def Cont/90</td><td>~4.5</td><td><span class="badge best">6.75</span></td><td>3.8</td><td>Bernal</td></tr>
-<tr><td>Dribble Success %</td><td>~55%</td><td><span class="badge best">78.6%</span></td><td>69.2%</td><td>Bernal</td></tr>
-<tr class="section"><td colspan="5">PROFILE</td></tr>
-<tr><td>Role</td><td>B2B Playmaker (8)</td><td>B2B Carrier (8)</td><td>Adv. B2B (8/10)</td><td>—</td></tr>
-<tr><td>Age / Height</td><td>30 / 188cm</td><td>19 / 191cm</td><td>23 / 186cm</td><td>—</td></tr>
-<tr><td>Foot</td><td>Right</td><td>Left</td><td>Right</td><td>—</td></tr>
-<tr><td>Value</td><td>€55M (peak)</td><td>€14M</td><td>€139.5M</td><td>—</td></tr>
-</tbody>
-</table>
-</div>
+            <tr class="section-row"><td colspan="5">Profile</td></tr>
+            <tr>
+              <td>Role</td>
+              <td>B2B Playmaker (8)</td>
+              <td>B2B Carrier (8)</td>
+              <td>Adv. B2B (8/10)</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>Age / Height</td>
+              <td>30 / 188cm</td>
+              <td>19 / 191cm</td>
+              <td>23 / 186cm</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>Foot</td>
+              <td>Right</td>
+              <td>Left</td>
+              <td>Right</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>Value</td>
+              <td>€55M (peak)</td>
+              <td>€14M</td>
+              <td>€139.5M</td>
+              <td>—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
 
-<!-- VERDICT -->
-<div class="verdict-box">
-<h2>Three B2B Archetypes, One Generation Apart</h2>
-<p><strong>Yaya (2013/14) — The Complete B2B Playmaker</strong><br>
-20 league goals from midfield is generational. Deep-lying passing (90.76%, 76/game) + striker finishing + physical dominance (10 set piece goals). No current midfielder combines all three facets.</p>
+  <!-- RIGHT: RADAR + VERDICT -->
+  <div class="col-right">
+    <div class="sidebar-block">
+      <div class="section-label">Radar Profile</div>
+      <p style="font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px;">Per 90 or % · scaled within this trio</p>
+      <div class="radar-wrap">
+        <canvas id="r" width="500" height="500"></canvas>
+      </div>
+    </div>
+    <div class="sidebar-block">
+      <div class="section-label">Verdict</div>
+      <div class="verdict-body">
+        <p><strong>Yaya (2013/14) — The Complete B2B Playmaker</strong><br>
+        20 league goals from midfield is generational. Deep-lying passing (90.76%, 76/game) + striker finishing + physical dominance (10 set piece goals). No current midfielder combines all three facets.</p>
 
-<p><strong>Bellingham (2025/26) — The Modern Advanced B2B</strong><br>
-Closest active player to Yaya's profile. 100 progressive carries (#58 La Liga), 156 dangerous attacks initiated. But 0.47 G+A/90 vs Yaya's 0.83 shows the gap. Creates through dribbling and line-breaking passes rather than set-piece dominance.</p>
+        <p><strong>Bellingham (2025/26) — The Modern Advanced B2B</strong><br>
+        Closest active player to Yaya's profile. 100 progressive carries (#58 La Liga), 156 dangerous attacks initiated. But 0.47 G+A/90 vs Yaya's 0.83 shows the gap. Creates through dribbling and line-breaking passes rather than set-piece dominance.</p>
 
-<p><strong>Bernal (2025/26) — The Young B2B Carrier</strong><br>
-My earlier read was wrong — Bernal is not a static 6. At 191cm, left-footed, with <strong>0.80 shots/90</strong>, <strong>78.6% dribble success</strong>, and <strong>55.3% duel win</strong>, he's carrying the ball forward, arriving in the box, and shooting from distance. The defensive numbers (6.75 contributions/90, 3.0 tackles/90) just show he does both phases — that's the B2B job. At 19, with 787 senior minutes, his 0.34 G+A/90 is respectable for a developing 8, and his 92% passing accuracy is elite for any role. The raw materials (size, left foot, duel strength, ball-carrying) are genuinely exciting.</p>
+        <p><strong>Bernal (2025/26) — The Young B2B Carrier</strong><br>
+        My earlier read was wrong — Bernal is not a static 6. At 191cm, left-footed, with <strong>0.80 shots/90</strong>, <strong>78.6% dribble success</strong>, and <strong>55.3% duel win</strong>, he's carrying the ball forward, arriving in the box, and shooting from distance. The defensive numbers (6.75 contributions/90, 3.0 tackles/90) just show he does both phases — that's the B2B job. At 19, with 787 senior minutes, his 0.34 G+A/90 is respectable for a developing 8, and his 92% passing accuracy is elite for any role. The raw materials (size, left foot, duel strength, ball-carrying) are genuinely exciting.</p>
 
-<p><strong>Bottom line:</strong> Bernal is a proper B2B prospect — more of a ball-carrier/shooter than Yaya (who was a playmaker/finisher) and more defensively active than Bellingham (who's more about progressive carrying and chance creation). At age 19, he's ahead of where Yaya was at the same stage. If his offensive output grows from 0.34 to 0.50-0.60 G+A/90 by age 22-23, he's a genuine heir. The ceiling is real.</p>
-</div>
+        <p><strong>Bottom line:</strong> Bernal is a proper B2B prospect — more of a ball-carrier/shooter than Yaya (who was a playmaker/finisher) and more defensively active than Bellingham (who's more about progressive carrying and chance creation). At age 19, he's ahead of where Yaya was at the same stage. If his offensive output grows from 0.34 to 0.50-0.60 G+A/90 by age 22-23, he's a genuine heir. The ceiling is real.</p>
+      </div>
+    </div>
+  </div>
 
-</div>
+</div><!-- /main -->
+
+<!-- ─── FOOTER ────────────────────────────────────────── -->
+<footer>
+  <div class="footer-left">
+    Report date: August 2026 · Cross-era comparison · B2B Midfielder archetypes<br>
+    Peak season (Yaya 2013/14) vs current season (Bernal &amp; Bellingham 2025/26)
+  </div>
+  <div class="footer-right">
+    Sources: Transfermarkt · FBref · Sofascore · FotMob · Understat<br>
+    Premier League · La Liga · UEFA data
+  </div>
+</footer>
 
 <script>
 const c=document.getElementById('r').getContext('2d');

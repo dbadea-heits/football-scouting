@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<!--
+  FULL PROFILE REPORT — "The Dossier"
+  Player: Nicolò Tresoldi · Club Brugge KV · 19 Aug 2026
+  Populated per template rules: conclusions in closed state, explicit
+  N/A rows, ≠ divergence rows in --concern, SHORTLIST tier (live obs
+  not conducted — Recommend guarded), signal row = striker priority metrics.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scout Report — Nicolò Tresoldi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,560;9..144,600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FAF7F2; --ink:#1C1B18; --hairline:#E4DFD5;
+  --accent:#1E5A3C; --strong:#1E5A3C; --adequate:#8A857B; --concern:#A63D2F;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:'Newsreader',serif; font-size:16px; line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+.col{max-width:480px;margin:0 auto;padding:0 24px 48px}
+.mono{font-family:'IBM Plex Mono',monospace;font-variant-numeric:tabular-nums}
+.label{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;
+  text-transform:uppercase;letter-spacing:.08em}
+
+/* ---- sticky mini-header ---- */
+#mini{position:fixed;top:0;left:0;right:0;height:40px;background:var(--paper);
+  border-bottom:1px solid var(--hairline);display:flex;align-items:center;
+  justify-content:center;gap:10px;z-index:10;
+  transform:translateY(-100%);transition:transform .15s ease}
+#mini.pinned{transform:translateY(0)}
+#mini .name{font-family:'Fraunces',serif;font-size:15px;font-weight:560}
+
+/* ---- masthead + identity ---- */
+.masthead{padding-top:32px;color:var(--adequate)}
+h1{font-family:'Fraunces',serif;font-size:34px;line-height:1.1;font-weight:560;
+  margin-top:16px}
+.posline{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--adequate);
+  margin:6px 0 16px}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px 8px;
+  border-top:1px solid var(--hairline);padding:14px 0 20px}
+.facts .label{font-size:10px;color:var(--adequate);display:block;margin-bottom:2px}
+.facts .val{font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:500}
+.risk-low{color:var(--strong)} .risk-med{color:var(--adequate)} .risk-high{color:var(--concern)}
+
+/* ---- verdict band ---- */
+.verdict{border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);
+  padding:18px 0}
+.tier{font-family:'Fraunces',serif;font-size:28px;font-weight:600;
+  letter-spacing:.02em;display:inline-block;padding-bottom:2px;border-bottom:3px solid}
+.tier-pass{color:var(--concern);border-color:var(--concern)}
+.tier-watch{color:var(--adequate);border-color:var(--adequate)}
+.tier-shortlist{color:var(--accent);border-color:var(--accent)}
+.tier-recommend{color:var(--ink);border-color:var(--ink)}
+.nextstep{font-family:'IBM Plex Mono',monospace;font-size:13px;margin-top:10px}
+.liveobs{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--adequate);
+  margin-top:8px}
+
+/* ---- accordions ---- */
+details{border-bottom:1px solid var(--hairline)}
+summary{list-style:none;cursor:pointer;min-height:48px;display:flex;
+  align-items:center;justify-content:space-between;gap:8px;padding:12px 0}
+summary::-webkit-details-marker{display:none}
+summary .chev{color:var(--adequate);font-size:14px;display:inline-block;
+  transition:transform .15s ease;flex:none}
+details[open] summary .chev{transform:rotate(90deg)}
+.body{padding:0 0 18px 12px;border-left:1px solid var(--accent);margin-bottom:14px}
+.body p{margin-bottom:10px}
+.body p:last-child{margin-bottom:0}
+.sumright{display:flex;align-items:center;gap:8px}
+
+/* ---- chips ---- */
+.chip{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;
+  text-transform:uppercase;letter-spacing:.06em;border:1px solid;
+  padding:2px 6px;white-space:nowrap}
+.chip-strong{color:var(--strong);border-color:var(--strong)}
+.chip-adequate{color:var(--adequate);border-color:var(--adequate)}
+.chip-concern{color:var(--concern);border-color:var(--concern)}
+.chip-accent{color:var(--accent);border-color:var(--accent)}
+.chip-ink{color:var(--ink);border-color:var(--ink)}
+
+/* ---- signal row ---- */
+.signals{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding:20px 0;
+  border-bottom:1px solid var(--hairline)}
+.signals .num{font-family:'IBM Plex Mono',monospace;font-size:24px;font-weight:600}
+.signals .label{font-size:10px;color:var(--adequate);margin:2px 0 6px;display:block}
+.bar{height:3px;background:var(--hairline);position:relative}
+.bar i{position:absolute;left:0;top:0;bottom:0;background:var(--accent)}
+.pctl{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--adequate);
+  margin-top:3px;display:block}
+
+/* ---- four corners ---- */
+.fc-head{display:flex;align-items:center;justify-content:space-between;
+  padding:16px 0 4px}
+.dots{font-size:13px;letter-spacing:3px}
+.dot-strong{color:var(--strong)} .dot-adequate{color:var(--adequate)} .dot-concern{color:var(--concern)}
+.srcline{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--adequate);
+  margin-top:6px}
+
+/* ---- metric tables ---- */
+.mgroup{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;
+  text-transform:uppercase;letter-spacing:.08em;color:var(--adequate);
+  margin:12px 0 6px}
+.mrow{display:flex;justify-content:space-between;gap:12px;
+  font-family:'IBM Plex Mono',monospace;font-size:13px;padding:4px 0}
+.mrow .mv{font-weight:500;white-space:nowrap}
+.diverge{color:var(--concern)}
+.diverge-note{font-size:12px;color:var(--concern);font-family:'Newsreader',serif;
+  font-style:italic;padding:2px 0 6px}
+.na{color:var(--adequate)}
+
+/* ---- eye test ---- */
+.eyes{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;letter-spacing:4px}
+.e-s{color:var(--strong)} .e-a{color:var(--adequate)} .e-c{color:var(--concern)}
+.eyerow{padding:8px 0}
+.eyerow .top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.eyerow .obs{font-size:14px;margin-top:3px}
+.cornertag{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--adequate);
+  text-transform:uppercase;letter-spacing:.06em}
+
+/* ---- philosophy / checklists ---- */
+.philosophy{font-style:italic;color:var(--ink)}
+.check{display:flex;gap:10px;padding:6px 0;font-size:14px}
+.check .mark{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;flex:none}
+.fit{color:var(--accent)} .misfit{color:var(--concern)}
+
+/* ---- sourced signal bullets ---- */
+.sig{font-family:'IBM Plex Mono',monospace;font-size:12px;padding:4px 0;
+  display:flex;gap:8px}
+.sig .src{color:var(--adequate);flex:none}
+
+/* ---- methods footer ---- */
+.methods{padding:20px 0 0;display:flex;flex-wrap:wrap;gap:8px}
+.m-on{color:var(--ink)} .m-off{color:var(--adequate)}
+.footnote{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--adequate);
+  margin-top:10px;text-transform:uppercase;letter-spacing:.06em}
+</style>
+</head>
+<body>
+
+<div id="mini" aria-hidden="true">
+  <span class="name">Tresoldi</span>
+  <span class="chip chip-accent">Shortlist</span>
+</div>
+
+<div class="col">
+
+  <!-- 1 · MASTHEAD -->
+  <header class="masthead">
+    <span class="label">Scout Report · Full Profile</span><br>
+    <span class="label">19 Aug 2026</span>
+  </header>
+
+  <!-- 2 · IDENTITY -->
+  <h1>Nicolò Tresoldi</h1>
+  <p class="posline">CF · Club Brugge KV · Jupiler Pro League</p>
+  <div class="facts">
+    <div><span class="label">Age</span><span class="val">21 · Aug 04</span></div>
+    <div><span class="label">Contract</span><span class="val">06 / 29</span></div>
+    <div><span class="label">Value</span><span class="val">€25M</span></div>
+    <div><span class="label">Option</span><span class="val">None rpt.</span></div>
+    <div><span class="label">Injury</span><span class="val risk-low">Low</span></div>
+    <div><span class="label">Report</span><span class="val">19/08/26</span></div>
+  </div>
+
+  <!-- 3 · VERDICT BAND -->
+  <section class="verdict" id="verdict">
+    <span class="tier tier-shortlist">Shortlist</span>
+    <p class="nextstep">NEXT: LIVE OBS — CLUB BRUGGE v CERCLE BRUGGE, 23 AUG</p>
+    <details>
+      <summary><span class="label">Rationale</span><span class="chev">›</span></summary>
+      <div class="body">
+        <p>Belgian top scorer at 21 whose underlying rate held at Champions
+        League level (0.63 xG/90 over 550 min) — an age-gap signal proven
+        above league context. Two Strong corners, zero Concern corners,
+        clean injury slate. Recommend is blocked twice: no live observation
+        yet, and the fee has moved above the €35m Philosophy ceiling after
+        Brugge rejected Roma's bid. Primary sporting risk: first touch under
+        pressure against top-5-league pressing — the exact skill our system
+        stresses; secondary: aerials regress vs elite CBs (36.4% in UCL).</p>
+      </div>
+    </details>
+    <p class="liveobs">LIVE OBS: NOT CONDUCTED — REQUIRED BEFORE RECOMMEND · NEXT FIXTURE 23 AUG, JAN BREYDEL</p>
+  </section>
+
+  <!-- 4 · SIGNAL ROW (striker priority: xG/90 · finishing delta · shots) -->
+  <section class="signals">
+    <div>
+      <span class="num">0.60</span>
+      <span class="label">npxG/90</span>
+      <div class="bar"><i style="width:99%"></i></div>
+      <span class="pctl">99th · JPL</span>
+    </div>
+    <div>
+      <span class="num">+2.4</span>
+      <span class="label">Goals − xG</span>
+      <div class="bar"><i style="width:95%"></i></div>
+      <span class="pctl">95th goals pctl</span>
+    </div>
+    <div>
+      <span class="num">3.6</span>
+      <span class="label">Shots/90</span>
+      <div class="bar"><i style="width:94%"></i></div>
+      <span class="pctl">94th · fwds</span>
+    </div>
+  </section>
+
+  <!-- 5 · DORMANT POTENTIAL -->
+  <details>
+    <summary>
+      <span class="label">Dormant Potential</span>
+      <span class="sumright"><span class="chip chip-accent">Age Gap</span><span class="chev">›</span></span>
+    </summary>
+    <div class="body">
+      <p>U23 with top-quartile underlying process: npxG volume 99th percentile
+      in the JPL (FootyStats); FotMob trait percentiles vs league forwards —
+      goals 95th, shot attempts 94th. The rate survived the level jump:
+      0.63 xG/90 across 550 Champions League minutes, including 1.21 xG on
+      UCL debut v Monaco. Trend upward — 7.26 season rating → 8.22 in the
+      26/27 start, 3 goals in 3 league games. RAE: born 20 Aug, second half
+      of the Jan-1 German selection year — mildly late-born, no discount.</p>
+      <p>Metric gap ruled out: 19 goals EXCEED 16.60 npxG (+0.09/90); the
+      suppressed-finishing threshold runs the wrong way. System gap ruled
+      out: it existed at Hannover 24/25 (2.BL) and was resolved by the
+      Brugge move — the current side is possession-dominant. Honesty note:
+      the market has partially repriced him (€7m fee → €25m TM → €35m bid
+      rejected in 13 months); the residual gap is vs established
+      top-5-league #9 pricing, and it narrows every week he scores.</p>
+    </div>
+  </details>
+
+  <!-- 6 · FOUR CORNERS -->
+  <div class="fc-head">
+    <span class="label">Four Corners</span>
+    <span class="dots"><span class="dot-adequate">◐</span><span class="dot-strong">●</span><span class="dot-adequate">◐</span><span class="dot-strong">●</span></span>
+  </div>
+
+  <details>
+    <summary>
+      <span class="label">Technical</span>
+      <span class="sumright"><span class="chip chip-adequate">Adequate</span><span class="chev">›</span></span>
+    </summary>
+    <div class="body">
+      <p>Elite three-tool box finishing: 19 league goals from 16.60 npxG —
+      64 shots right foot, 23 headers, 14 left, zero penalties — with xGOT
+      above xG, so placement adds value and the modest overperformance is
+      process-driven. Dribble success 57.6% is good for a 9; pass completion
+      75% modest. The flag is first touch under pressure: named by TFA's
+      video analysis and corroborated by 40 league dispossessions plus 11 in
+      only 550 UCL minutes — the one skill a top-5-league press will attack.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>
+      <span class="label">Tactical</span>
+      <span class="sumright"><span class="chip chip-strong">Strong</span><span class="chev">›</span></span>
+    </summary>
+    <div class="body">
+      <p>Movement is the signature: near-post arrivals ahead of markers
+      (goals reel, 0:20), double movements between centre-backs, correctly
+      timed depth runs against Bayern's high line (UCL reel). Heatmap shows
+      disciplined central occupation with productive drops — 38 chances and
+      8 big chances created prove the link play feeds teammates, not vanity
+      touches. Presses by cutting lanes rather than ball-chasing, and
+      adapted instantly to a second coach's demands inside eight months.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>
+      <span class="label">Physical</span>
+      <span class="sumright"><span class="chip chip-adequate">Adequate</span><span class="chev">›</span></span>
+    </summary>
+    <div class="body">
+      <p>UCL tracking (550 min): 33.3 km/h top speed, 79 sprints, ~11.0
+      km/90 — a real engine with above-average top-end pace for the role.
+      Aerially willing but not dominant at 1.86m: 47.7% duels won in the
+      JPL degrading to 36.4% against Champions League centre-backs. Fits a
+      press-and-depth 9; do not acquire him as a target man.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>
+      <span class="label">Psychosocial</span>
+      <span class="sumright"><span class="chip chip-strong">Strong</span><span class="chev">›</span></span>
+    </summary>
+    <div class="body">
+      <p>Zero red flags across all five behavioral search strings; two
+      independent positive signals sourced. Output continued through a
+      December coach sacking and through heavy 2026 transfer noise — 3 goals
+      in 3 league games this August amid Roma/Barcelona speculation.
+      Nagelsmann nearly took him to the 2026 World Cup ("a classic number
+      9… his time will come"). Four languages, professional's son, relocated
+      countries at 13. Caveats: quotes are PR-filtered, absence of red flags
+      is neutral per framework, and there is no captaincy evidence.</p>
+      <div class="sig"><span class="src">VOETBALKRANT 08/26 ·</span><span>Leko: "indestructible mentality… I want to build my team around him"</span></div>
+      <div class="sig"><span class="src">FOOTBOOM 12/24 ·</span><span>"I definitely feel a certain responsibility here — it plays a role" — sought pressure at Hannover</span></div>
+    </div>
+  </details>
+
+  <!-- 7 · FULL METRICS -->
+  <details>
+    <summary><span class="label">Full Metrics</span><span class="chev">›</span></summary>
+    <div class="body">
+      <p class="mgroup">FotMob · JPL 25/26 · 40 apps, 29 starts, 2,500 min</p>
+      <div class="mrow"><span>Goals / Assists</span><span class="mv">19 / 5</span></div>
+      <div class="mrow"><span>npxG (per 90)</span><span class="mv">16.60 (0.60)</span></div>
+      <div class="mrow"><span>Goals − xG</span><span class="mv">+2.4</span></div>
+      <div class="mrow"><span>xGOT</span><span class="mv">15.64</span></div>
+      <div class="mrow"><span>Shots (SoT%)</span><span class="mv">101 (39%)</span></div>
+      <div class="mrow"><span>xA / chances created</span><span class="mv">3.73 / 38</span></div>
+      <div class="mrow"><span>Big chances created</span><span class="mv">8</span></div>
+      <div class="mrow"><span>Dribble success</span><span class="mv">57.6%</span></div>
+      <div class="mrow"><span>Aerial duels won</span><span class="mv">47.7%</span></div>
+      <div class="mrow"><span>Recoveries / poss. won fin. ⅓</span><span class="mv">54 / 14</span></div>
+      <div class="mrow"><span>Dispossessed</span><span class="mv diverge">40</span></div>
+      <div class="mrow diverge"><span>≠ npxG (FootyStats model)</span><span class="mv">19.06 (0.69/90)</span></div>
+      <p class="diverge-note">FootyStats' model reads 2.5 npxG higher than FotMob's.
+      Model variance, not a data error — both place his volume at elite JPL
+      level; the conservative figure is used throughout this report.</p>
+
+      <p class="mgroup">FotMob · UCL 25/26 · 10 apps, 550 min</p>
+      <div class="mrow"><span>Goals / npxG</span><span class="mv">3 / 3.84</span></div>
+      <div class="mrow"><span>xG/90 at UCL level</span><span class="mv">0.63</span></div>
+      <div class="mrow diverge"><span>≠ Aerials vs elite CBs</span><span class="mv">36.4%</span></div>
+      <p class="diverge-note">League aerial figure (47.7%) does not survive the
+      level jump — weight the UCL number for acquiring-club context.</p>
+
+      <p class="mgroup">Understat</p>
+      <div class="mrow"><span class="na">N/A — Belgian Pro League not covered; consistency proxied via FotMob match log (goals spread season-long; hat-trick in title clincher v Gent 24/05)</span><span class="mv na">—</span></div>
+
+      <p class="mgroup">Sofascore → FotMob substitution</p>
+      <div class="mrow"><span class="na">Sofascore page + API returned 403; ratings below are FotMob</span><span class="mv na">—</span></div>
+      <div class="mrow"><span>Season rating 25/26</span><span class="mv">7.26</span></div>
+      <div class="mrow"><span>26/27 start (3 games)</span><span class="mv">8.22</span></div>
+      <div class="mrow"><span>Last-10 trend</span><span class="mv">Upward</span></div>
+      <div class="mrow"><span>Heatmap</span><span class="mv">Central + R half-space</span></div>
+
+      <p class="mgroup">ScoutingStats.ai · cohort: centre-forwards</p>
+      <div class="mrow"><span>Platform rating</span><span class="mv">94</span></div>
+      <div class="mrow"><span class="na">N/A — percentile radar + AI verdict Cloudflare-blocked this session; percentile context substituted with FootyStats + FotMob traits</span><span class="mv na">—</span></div>
+
+      <p class="mgroup">Transfermarkt</p>
+      <div class="mrow"><span>Value (04/06/26)</span><span class="mv">€25.0M</span></div>
+      <div class="mrow"><span>Value trend 12mo</span><span class="mv">≈ +€16M</span></div>
+      <div class="mrow"><span>Intl caps</span><span class="mv">GER U21 · 24/12</span></div>
+      <div class="mrow diverge"><span>≠ FotMob ETV</span><span class="mv">€12.8M</span></div>
+      <p class="diverge-note">Model ETV sits far below both TM crowd value and the
+      rejected €35m bid — Brugge's 2029 contract leverage sets the real price,
+      not the models.</p>
+      <div class="mrow diverge"><span>≠ Height TM / FotMob·TFA</span><span class="mv">1.86 / 1.83m</span></div>
+    </div>
+  </details>
+
+  <!-- 8 · EYE TEST -->
+  <details>
+    <summary>
+      <span class="label">Eye Test</span>
+      <span class="sumright"><span class="eyes"><span class="e-s">S</span><span class="e-a">A</span><span class="e-c">C</span><span class="e-s">S</span><span class="e-a">A</span></span><span class="chev">›</span></span>
+    </summary>
+    <div class="body">
+      <div class="eyerow">
+        <div class="top"><span>Movement off ball</span><span class="chip chip-strong">Strong</span></div>
+        <p class="obs">Near-post arrival ahead of two markers in the six-yard box; repeated depth runs behind Bayern's line.</p>
+        <span class="cornertag">→ Tactical</span>
+      </div>
+      <div class="eyerow">
+        <div class="top"><span>Body shape on receive</span><span class="chip chip-adequate">Adequate</span></div>
+        <p class="obs">Comfortable back-to-goal in hold-up, but shape closes when pressed rather than opening to the next action.</p>
+        <span class="cornertag">→ Tactical</span>
+      </div>
+      <div class="eyerow">
+        <div class="top"><span>First touch under pressure</span><span class="chip chip-concern">Concern</span></div>
+        <p class="obs">Named weakness in TFA video analysis; 40 league + 11 UCL dispossessions corroborate under real press.</p>
+        <span class="cornertag">→ Technical</span>
+      </div>
+      <div class="eyerow">
+        <div class="top"><span>Pressing intensity</span><span class="chip chip-strong">Strong</span></div>
+        <p class="obs">First line of the press, triggers on lanes not the ball; 79 sprints in 550 UCL minutes.</p>
+        <span class="cornertag">→ Physical · Tactical</span>
+      </div>
+      <div class="eyerow">
+        <div class="top"><span>Communication</span><span class="chip chip-adequate">Adequate</span></div>
+        <p class="obs">No organizing evidence in sampled frames — data thin, scored neutral pending live observation.</p>
+        <span class="cornertag">→ Psychosocial</span>
+      </div>
+      <p class="srcline">METHOD: CONTINUOUS PLAYBACK + FRAME SAMPLING — JPL ALL-GOALS REEL 25/26 + UCL REEL v BAYERN · 10+ MATCHES · NOT FULL-90 EQUIVALENT</p>
+    </div>
+  </details>
+
+  <!-- 9 · BACKGROUND -->
+  <details>
+    <summary>
+      <span class="label">Background</span>
+      <span class="sumright"><span class="chip chip-strong">⚑ Inj Low</span><span class="chip chip-concern">€35M Rejected</span><span class="chev">›</span></span>
+    </summary>
+    <div class="body">
+      <p>Injury record exceptional: one influenza absence (2023, 4 matches),
+      zero muscular or structural injuries in four professional seasons.
+      Contract confirmed to 30 June 2029, no option year reported; an
+      unverified "exit clause" rumour (Aug 2026) must be checked before any
+      bid. No acquisition window — Brugge holds all the leverage.</p>
+      <div class="sig"><span class="src">TRANSFER ·</span><span class="diverge">Roma's €35m bid rejected (Jul 2026); Barcelona, Arsenal, Chelsea, Man United, BVB, Leipzig monitoring — fee sits at or above our ceiling</span></div>
+      <div class="sig"><span class="src">BEHAVIORAL ·</span><span>All five search strings (coachability, leadership, social fit, mentality, character): no red flags; positives logged under Psychosocial</span></div>
+      <div class="sig"><span class="src">INTL ·</span><span>GER U21: 24 caps, 12 goals; U21 EURO 2025 finalist; Nagelsmann near-callup for WC 2026</span></div>
+    </div>
+  </details>
+
+  <!-- 10 · PHILOSOPHY FIT -->
+  <details>
+    <summary>
+      <span class="label">Philosophy Fit</span>
+      <span class="sumright"><span class="chip chip-accent">5/6 Fit</span><span class="chev">›</span></span>
+    </summary>
+    <div class="body">
+      <p class="philosophy">Sought: ready-now young CF — penalty-box finisher with
+      pressing responsibility — for a high-press 4-3-3 in a top-6 league.
+      Primary goal source, first line of press, depth threat. Age ≤23,
+      fee ≤€35m, contract not expiring within 12 months. Hard dealbreaker:
+      no High injury risk.</p>
+      <div class="check"><span class="mark fit">✓ FIT</span><span>Role — 92/101 shots inside the box; heatmap hottest at the edge of the area</span></div>
+      <div class="check"><span class="mark fit">✓ FIT</span><span>System — leads the press; 14 possessions won in final third; depth runs on video</span></div>
+      <div class="check"><span class="mark fit">✓ FIT</span><span>Goal source — 19-goal league top scorer + 3 in UCL at 21</span></div>
+      <div class="check"><span class="mark fit">✓ FIT</span><span>Age bracket — 21 (22 this week), development upside intact</span></div>
+      <div class="check"><span class="mark fit">✓ FIT</span><span>Injury dealbreaker — Low risk, cleared outright</span></div>
+      <div class="check"><span class="mark misfit">✗ MISFIT</span><span>Fee — €35m ceiling breached: Brugge rejected exactly that from Roma</span></div>
+    </div>
+  </details>
+
+  <!-- 11 · METHODS FOOTER -->
+  <footer class="methods label">
+    <span class="m-on">▣ Data</span>
+    <span class="m-on">▣ Video</span>
+    <span class="m-on">▣ Behavioral</span>
+    <span class="m-on">▣ Background</span>
+    <span class="m-off">□ Live</span>
+  </footer>
+  <p class="footnote">Live observation required before Recommend — scheduled option: 23 Aug, Jan Breydel</p>
+
+</div>
+
+<script>
+// Sticky mini-header: pin once the verdict band scrolls out of view.
+const verdict = document.getElementById('verdict');
+const mini = document.getElementById('mini');
+new IntersectionObserver(([e]) => {
+  mini.classList.toggle('pinned', !e.isIntersecting && e.boundingClientRect.top < 0);
+}).observe(verdict);
+</script>
+</body>
+</html>
