@@ -584,33 +584,6 @@
     footer { padding: 20px; }
     .nav-meta { display: none; }
   }
-/* ── REPORT PANEL (SPA) ── */
-#view-report {
-  display: none;
-  flex-direction: column;
-  height: calc(100vh - 52px);
-}
-#view-report.active { display: flex; }
-.report-back-bar {
-  display: flex; align-items: center; gap: 16px;
-  padding: 0 24px; height: 44px; flex-shrink: 0;
-  border-bottom: 1px solid var(--border);
-  background: var(--surface);
-}
-.report-back-btn {
-  font-family: var(--mono); font-size: 10px; letter-spacing: .1em;
-  text-transform: uppercase; color: var(--muted); cursor: pointer;
-  background: none; border: none; display: flex; align-items: center;
-  gap: 6px; transition: color .15s; padding: 0;
-}
-.report-back-btn:hover { color: var(--accent); }
-.report-frame-label {
-  font-family: var(--mono); font-size: 10px; color: var(--border2);
-  letter-spacing: .08em; margin-left: auto;
-}
-#report-iframe {
-  flex: 1; border: none; width: 100%; height: 100%;
-}
 </style>
 </head>
 <body>
@@ -681,7 +654,7 @@
   <div class="card-grid">
 
     <!-- Deniz Undav -->
-    <a href="#deniz-undav" class="report-card shortlist">
+    <a href="deniz-undav-report.html" class="report-card shortlist">
       <div class="card-top">
         <span class="pos-badge">CF / #9½</span>
         <span class="verdict-badge shortlist">Shortlist</span>
@@ -709,7 +682,7 @@
     </a>
 
     <!-- Nicolò Tresoldi -->
-    <a href="#nicolo-tresoldi" class="report-card shortlist">
+    <a href="nicolo-tresoldi-report.html" class="report-card shortlist">
       <div class="card-top">
         <span class="pos-badge">CF</span>
         <span class="verdict-badge shortlist">Shortlist</span>
@@ -808,14 +781,6 @@
 
 </div>
 
-<!-- ─── REPORT PANEL (SPA) ────────────────────────────── -->
-<div class="view" id="view-report">
-  <div class="report-back-bar">
-    <button class="report-back-btn" onclick="navigate('reports')">← Back to Hub</button>
-    <span class="report-frame-label" id="reportFrameLabel"></span>
-  </div>
-  <iframe id="report-iframe" src="" title="Scout Report" loading="eager"></iframe>
-</div>
 
 <!-- ─── FOOTER ────────────────────────────────────────────── -->
 <footer>
@@ -823,50 +788,28 @@
     Football Intelligence · FIFA TID model · Five observation methods · Four Corners
   </div>
   <div class="footer-right">
-    Built for GitHub Pages · Hash routing · No dependencies
+    Built for GitHub Pages · No dependencies
   </div>
 </footer>
 
 <script>
   const VIEWS = ['reports', 'comparisons'];
-  const REPORT_SLUGS = {
-    'nicolo-tresoldi': { file: 'nicolo-tresoldi-report.html', label: 'Nicolò Tresoldi · Full Profile' },
-    'deniz-undav':     { file: 'deniz-undav-report.html',    label: 'Deniz Undav · Full Profile' },
-  };
 
   function navigate(tab) {
     history.replaceState(null, '', '#' + tab);
-    showView(tab);
-  }
-
-  function showView(tab) {
-    document.getElementById('view-report').classList.remove('active');
     VIEWS.forEach(v => {
-      document.getElementById('view-' + v).classList.remove('active');
-      document.querySelector('[data-tab="' + v + '"]').classList.remove('active');
+      const el = document.getElementById('view-' + v);
+      const btn = document.querySelector('[data-tab="' + v + '"]');
+      const isActive = v === tab;
+      el.classList.toggle('active', isActive);
+      btn.classList.toggle('active', isActive);
     });
-    if (REPORT_SLUGS[tab]) {
-      const { file, label } = REPORT_SLUGS[tab];
-      const iframe = document.getElementById('report-iframe');
-      if (iframe.getAttribute('data-loaded') !== file) {
-        iframe.src = file;
-        iframe.setAttribute('data-loaded', file);
-      }
-      document.getElementById('reportFrameLabel').textContent = label;
-      document.getElementById('view-report').classList.add('active');
-    } else {
-      const v = VIEWS.includes(tab) ? tab : 'reports';
-      document.getElementById('view-' + v).classList.add('active');
-      document.querySelector('[data-tab="' + v + '"]').classList.add('active');
-    }
   }
 
   function routeFromHash() {
-    const hash = location.hash.slice(1).trim();
-    if (REPORT_SLUGS[hash]) { showView(hash); return; }
-    if (hash.startsWith('report/')) { const s = hash.slice(7); if (REPORT_SLUGS[s]) { history.replaceState(null,'','#'+s); showView(s); return; } }
+    const hash = location.hash.replace('#', '').trim();
     const tab = VIEWS.includes(hash) ? hash : 'reports';
-    showView(tab);
+    navigate(tab);
   }
 
   window.addEventListener('hashchange', routeFromHash);
