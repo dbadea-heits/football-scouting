@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<!--
+  FULL PROFILE REPORT — "The Dossier"
+  Player: Deniz Undav · VfB Stuttgart · 19 Aug 2026
+  Populated per template rules: conclusions in closed state, explicit
+  N/A rows, ≠ divergence rows in --concern, SHORTLIST tier (injury and
+  acquisition risk block Recommend — medical audit required before any bid).
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scout Report — Deniz Undav</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#0b0d0f; --ink:#edf0f5; --hairline:#1e2329;
+  --accent:#e8a020; --strong:#2ecc71; --adequate:#8896a8; --concern:#e74c3c;
+  --surface:#111417; --border2:#2a3040;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:'DM Sans',sans-serif; font-size:16px; line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+.col{max-width:480px;margin:0 auto;padding:0 24px 48px}
+.mono{font-family:'DM Mono',monospace;font-variant-numeric:tabular-nums}
+.label{font-family:'DM Mono',monospace;font-size:11px;font-weight:500;
+  text-transform:uppercase;letter-spacing:.08em}
+
+/* ---- sticky mini-header ---- */
+#mini{position:fixed;top:0;left:0;right:0;height:40px;background:var(--paper);
+  border-bottom:1px solid var(--hairline);display:flex;align-items:center;
+  justify-content:center;gap:10px;z-index:10;
+  transform:translateY(-100%);transition:transform .15s ease}
+#mini.pinned{transform:translateY(0)}
+#mini .name{font-family:'Syne',serif;font-size:15px;font-weight:700}
+
+/* ---- masthead + identity ---- */
+.masthead{padding-top:32px;color:var(--adequate)}
+h1{font-family:'Syne',serif;font-size:34px;line-height:1.1;font-weight:700;
+  margin-top:16px}
+.posline{font-family:'DM Mono',monospace;font-size:12px;color:var(--adequate);
+  margin:6px 0 16px}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px 8px;
+  border-top:1px solid var(--hairline);padding:14px 0 20px}
+.facts .label{font-size:10px;color:var(--adequate);display:block;margin-bottom:2px}
+.facts .val{font-family:'DM Mono',monospace;font-size:14px;font-weight:500;color:var(--ink)}
+.risk-low{color:var(--strong)} .risk-med{color:var(--adequate)} .risk-high{color:var(--concern)}
+
+/* ---- verdict band ---- */
+.verdict{border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);
+  padding:18px 0}
+.tier{font-family:'Syne',serif;font-size:28px;font-weight:700;
+  letter-spacing:.02em;display:inline-block;padding-bottom:2px;border-bottom:3px solid}
+.tier-pass{color:var(--concern);border-color:var(--concern)}
+.tier-watch{color:var(--adequate);border-color:var(--adequate)}
+.tier-shortlist{color:var(--accent);border-color:var(--accent)}
+.tier-recommend{color:var(--ink);border-color:var(--ink)}
+.nextstep{font-family:'DM Mono',monospace;font-size:13px;margin-top:10px}
+.liveobs{font-family:'DM Mono',monospace;font-size:11px;color:var(--adequate);
+  margin-top:8px}
+
+/* ---- accordions ---- */
+details{border-bottom:1px solid var(--hairline)}
+summary{list-style:none;cursor:pointer;min-height:48px;display:flex;
+  align-items:center;justify-content:space-between;gap:8px;padding:12px 0}
+summary::-webkit-details-marker{display:none}
+summary .chev{color:var(--adequate);font-size:14px;display:inline-block;
+  transition:transform .15s ease;flex:none}
+details[open] summary .chev{transform:rotate(90deg)}
+.body{padding:0 0 18px 12px;border-left:1px solid var(--accent);margin-bottom:14px}
+details[open] .body{background:var(--surface)}
+.body p{margin-bottom:10px}
+.body p:last-child{margin-bottom:0}
+.sumright{display:flex;align-items:center;gap:8px}
+
+/* ---- chips ---- */
+.chip{font-family:'DM Mono',monospace;font-size:10px;font-weight:600;
+  text-transform:uppercase;letter-spacing:.06em;border:1px solid;
+  padding:2px 6px;white-space:nowrap}
+.chip-strong{color:var(--strong);border-color:var(--strong)}
+.chip-adequate{color:var(--adequate);border-color:var(--adequate)}
+.chip-concern{color:var(--concern);border-color:var(--concern)}
+.chip-accent{color:var(--accent);border-color:var(--accent)}
+.chip-ink{color:var(--ink);border-color:var(--ink)}
+
+/* ---- signal row ---- */
+.signals{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding:20px 0;
+  border-bottom:1px solid var(--hairline)}
+.signals .num{font-family:'DM Mono',monospace;font-size:24px;font-weight:600}
+.signals .label{font-size:10px;color:var(--adequate);margin:2px 0 6px;display:block}
+.bar{height:3px;background:var(--hairline);position:relative}
+.bar i{position:absolute;left:0;top:0;bottom:0;background:var(--accent)}
+.pctl{font-family:'DM Mono',monospace;font-size:10px;color:var(--adequate);
+  margin-top:3px;display:block}
+
+/* ---- four corners ---- */
+.fc-head{display:flex;align-items:center;justify-content:space-between;
+  padding:16px 0 4px}
+.dots{font-size:13px;letter-spacing:3px}
+.dot-strong{color:var(--strong)} .dot-adequate{color:var(--adequate)} .dot-concern{color:var(--concern)}
+.srcline{font-family:'DM Mono',monospace;font-size:11px;color:var(--adequate);
+  margin-top:6px}
+
+/* ---- metric tables ---- */
+.mgroup{font-family:'DM Mono',monospace;font-size:10px;font-weight:600;
+  text-transform:uppercase;letter-spacing:.08em;color:var(--adequate);
+  margin:12px 0 6px}
+.mrow{display:flex;justify-content:space-between;gap:12px;
+  font-family:'DM Mono',monospace;font-size:13px;padding:4px 0}
+.mrow .mv{font-weight:500;white-space:nowrap}
+.diverge{color:var(--concern)}
+.diverge-note{font-size:12px;color:var(--concern);font-family:'DM Sans',sans-serif;
+  font-style:italic;padding:2px 0 6px}
+.na{color:var(--adequate)}
+
+/* ---- eye test ---- */
+.eyes{font-family:'DM Mono',monospace;font-size:12px;font-weight:600;letter-spacing:4px}
+.e-s{color:var(--strong)} .e-a{color:var(--adequate)} .e-c{color:var(--concern)}
+.eyerow{padding:8px 0}
+.eyerow .top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.eyerow .obs{font-size:14px;margin-top:3px}
+.cornertag{font-family:'DM Mono',monospace;font-size:10px;color:var(--adequate);
+  text-transform:uppercase;letter-spacing:.06em}
+
+/* ---- philosophy / checklists ---- */
+.philosophy{font-style:italic;color:var(--ink)}
+.check{display:flex;gap:10px;padding:6px 0;font-size:14px}
+.check .mark{font-family:'DM Mono',monospace;font-size:12px;font-weight:600;flex:none}
+.fit{color:var(--accent)} .misfit{color:var(--concern)} .warn{color:var(--adequate)}
+
+/* ---- sourced signal bullets ---- */
+.sig{font-family:'DM Mono',monospace;font-size:12px;padding:4px 0;
+  display:flex;gap:8px}
+.sig .src{color:var(--adequate);flex:none}
+
+/* ---- methods footer ---- */
+.methods{padding:20px 0 0;display:flex;flex-wrap:wrap;gap:8px}
+.m-on{color:var(--ink)} .m-off{color:var(--adequate)}
+.footnote{font-family:'DM Mono',monospace;font-size:10px;color:var(--adequate);
+  margin-top:10px;text-transform:uppercase;letter-spacing:.06em}
+
+/* ---- topnav ---- */
+.topnav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;height:48px;border-bottom:1px solid var(--hairline);
+  background:var(--surface);gap:24px;
+}
+.topnav a{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--adequate);text-decoration:none;
+  display:flex;align-items:center;gap:7px;transition:color .15s}
+.topnav a:hover{color:var(--accent)}
+.topnav-brand{font-family:'Syne',serif;font-size:12px;font-weight:700;
+  color:var(--ink);letter-spacing:.04em}
+.topnav-sep{color:var(--border2);font-family:'DM Mono',monospace;font-size:12px}
+.topnav-crumb{font-family:'DM Mono',monospace;font-size:10px;color:var(--adequate);
+  letter-spacing:.08em}
+@media(max-width:700px){.topnav{padding:0 16px}}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html#reports">← Hub</a>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <span class="topnav-brand">Football Intelligence</span>
+    <span class="topnav-sep">·</span>
+    <span class="topnav-crumb">Deniz Undav · Full Profile</span>
+  </div>
+  <div></div>
+</nav>
+
+<div id="mini" aria-hidden="true">
+  <span class="name">Undav</span>
+  <span class="chip chip-accent">Shortlist</span>
+</div>
+
+<div class="col">
+
+  <!-- 1 · MASTHEAD -->
+  <header class="masthead">
+    <span class="label">Scout Report · Full Profile</span><br>
+    <span class="label">19 Aug 2026</span>
+  </header>
+
+  <!-- 2 · IDENTITY -->
+  <h1>Deniz Undav</h1>
+  <p class="posline">CF / #9-½ · VfB Stuttgart · Bundesliga</p>
+  <div class="facts">
+    <div><span class="label">Age</span><span class="val">30 · Dec 95</span></div>
+    <div><span class="label">Contract</span><span class="val">06 / 29</span></div>
+    <div><span class="label">Value</span><span class="val">€22M</span></div>
+    <div><span class="label">Option</span><span class="val">None</span></div>
+    <div><span class="label">Injury</span><span class="val risk-high">HIGH</span></div>
+    <div><span class="label">Report</span><span class="val">19/08/26</span></div>
+  </div>
+
+  <!-- 3 · VERDICT BAND -->
+  <section class="verdict" id="verdict">
+    <span class="tier tier-shortlist">Shortlist</span>
+    <p class="nextstep">NEXT: ADD TO 5-PLAYER DOF SHORTLIST — COMMISSION MEDICAL AUDIT (MRI, GPS LOAD, SOFT TISSUE HISTORY) BEFORE ANY BID</p>
+    <details>
+      <summary><span class="label">Rationale</span><span class="chev">›</span></summary>
+      <div class="body">
+        <p>Two exceptional corners (Technical + Tactical) over three Bundesliga seasons
+        confirmed at top-3 league level. Blocked twice: contract runs to 2029 with
+        public commitment, and HIGH injury risk requires mandatory medical before any
+        offer. No dormant potential — buying a known commodity at market rate.</p>
+      </div>
+    </details>
+    <p class="liveobs">LIVE OBS: NOT CONDUCTED — DATA + VIDEO (PROXY) + BEHAVIORAL + BACKGROUND ONLY · MEDICAL AUDIT REQUIRED BEFORE ANY BID</p>
+  </section>
+
+  <!-- 4 · SIGNAL ROW (striker priority: xG/90 · finishing delta · shots) -->
+  <section class="signals">
+    <div>
+      <span class="num">0.80</span>
+      <span class="label">NP-xG/90</span>
+      <div class="bar"><i style="width:88%"></i></div>
+      <span class="pctl">88th · BL CF cohort</span>
+    </div>
+    <div>
+      <span class="num">+3.1</span>
+      <span class="label">Goals − xG</span>
+      <div class="bar"><i style="width:93%"></i></div>
+      <span class="pctl">93rd goals pctl</span>
+    </div>
+    <div>
+      <span class="num">4.95</span>
+      <span class="label">Shots/90</span>
+      <div class="bar"><i style="width:97%"></i></div>
+      <span class="pctl">#1 Bundesliga</span>
+    </div>
+  </section>
+
+  <!-- 5 · DORMANT POTENTIAL -->
+  <details>
+    <summary>
+      <span class="label">Dormant Potential</span>
+      <span class="sumright"><span class="chip chip-adequate">None</span><span class="chev">›</span></span>
+    </summary>
+    <div class="body">
+      <p>Metric gap ruled out: NP-xG/90 0.80 vs goals/90 0.77 in 2025-26 — delta
+      +0.03, runs the wrong direction. Two prior seasons show no suppressed pattern.
+      Age gap N/A: age 30. System gap ruled out: Stuttgart top-3 Bundesliga in
+      pressing intensity; Undav leads the club in attacking sequence involvements
+      (7.8/90, Opta) — he IS the system's output vehicle.</p>
+      <p>Result: None. Metrics and reputation in proportion. Market price reflects
+      what he demonstrably is.</p>
+    </div>
+  </details>
+
+  <!-- 6 · FOUR CORNERS -->
+  <div class="fc-head">
+    <span class="label">Four Corners</span>
+    <span class="dots"><span class="dot-strong">●</span><span class="dot-strong">●</span><span class="dot-adequate">◐</span><span class="dot-adequate">◐</span></span>
+  </div>
+
+  <details>
+    <summary>
+      <span class="label">Technical</span>
+      <span class="sumright"><span class="chip chip-strong">Strong</span><span class="chev">›</span></span>
+    </summary>
+    <div class="body">
+      <p>Top-decile efficiency across the CF positional cohort on ScoutingStats.ai.
+      Three consecutive Bundesliga seasons with elite shot volume: 4.6 shots/90
+      (#1 Bundesliga 2023-24), 2.2 SoT/90 (#1 big-five leagues that season), 4.95
+      shots/90 (#1 Bundesliga 2025-26, 121 total). Both-footed, consistently
+      finishes across his body from tight angles — xGOT routinely exceeds xG.</p>
+      <p>Weakness: aerial duels ~24th percentile, consistent with 179 cm frame.
+      Not a concern for a link-play CF; dealbreaker only in a long-ball aerial
+      system. The club does not use one.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>
+      <span class="label">Tactical</span>
+      <span class="sumright"><span class="chip chip-strong">Strong</span><span class="chev">›</span></span>
+    </summary>
+    <div class="body">
+      <p>Leads Stuttgart in attacking sequence involvements per 90 (7.8 — Opta),
+      outperforming every teammate. In Stuttgart's 1-4-2-4 build-up, drops between
+      lines to force CB decisions then exploits the gap. xA/90 of 0.78 (#7
+      Bundesliga 2023-24) confirms creative output exceeds goal-scorer framing.</p>
+      <p>Heatmap data (Sofascore) shows significantly wider pitch coverage at
+      Stuttgart vs Brighton — demonstrable tactical adaptability across systems.
+      Progressive carrying and passing in top percentile for CFs. Adapts movement
+      to strike partner's positioning; Guirassy partnership was the textbook example.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>
+      <span class="label">Physical</span>
+      <span class="sumright"><span class="chip chip-adequate">Adequate</span><span class="chev">›</span></span>
+    </summary>
+    <div class="body">
+      <p>Sprint improvement documented: 19.6 sprints/90 (Brighton, PL) → 26.9/90
+      (+37%) at Stuttgart (Bundesliga) — reflecting role adaptation and conditioning.
+      Stuttgart is top-3 Bundesliga for defensive pressing actions; Undav meets
+      that threshold.</p>
+      <p><strong class="diverge">HIGH RISK injury flag.</strong> Recurring soft tissue
+      pattern: Knee Aug–Sep 2023 (~6 wks), Thigh Feb 2024 (~3 wks), Muscle Oct 2024
+      (~1 wk), Thigh Nov 2024–Jan 2025 (~9 wks, ~8 matches), Knee Aug–Oct 2025
+      (~6 wks). Estimated &gt;20% matches missed in 2024-25. Recurring muscular
+      injuries across multiple regions = HIGH classification. Full medical
+      due-diligence mandatory before any commitment. This alone caps the tier
+      at Shortlist.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>
+      <span class="label">Psychosocial</span>
+      <span class="sumright"><span class="chip chip-adequate">Adequate</span><span class="chev">›</span></span>
+    </summary>
+    <div class="body">
+      <p>Dressing-room leader at Stuttgart — praised by Hoeneß ("must be mentioned
+      first and foremost") and embraced by supporters. Deleted Instagram proactively
+      for mental clarity. Released by Werder Bremen at 16, spent years in Germany's
+      3rd–4th tier, only became professional at 23 — genuine psychological resilience,
+      not narrative.</p>
+      <p>Yellow flag: public conflict with Nagelsmann (March 2026) — Undav challenged
+      his substitute role publicly; coach responded dismissively before apologising.
+      Post-World Cup Nagelsmann singled him out for a costly error; context was
+      contentious and broader consensus sided with Undav. Environment-specific
+      (national team politics); no parallel at club level. Probe in interview for
+      authority-conflict response. Absence of red flags at club level (no fines, bans,
+      disputes) is neutral, not positive.</p>
+    </div>
+  </details>
+
+  <!-- 7 · FULL METRICS -->
+  <details>
+    <summary><span class="label">Full Metrics</span><span class="chev">›</span></summary>
+    <div class="body">
+      <p class="mgroup">FotMob / Bundesliga — Multi-season</p>
+      <div class="mrow"><span>Season</span><span class="mv">2023-24 / 2024-25* / 2025-26</span></div>
+      <div class="mrow"><span>Goals</span><span class="mv">18 / 9* / 19</span></div>
+      <div class="mrow"><span>Assists</span><span class="mv">10 / 3 / 6</span></div>
+      <div class="mrow"><span>G+A/90</span><span class="mv">~0.98 / ~0.70 / 1.01</span></div>
+      <div class="mrow"><span>NP-xG/90</span><span class="mv">~0.46 (est.) / ~0.62 (est.) / 0.80</span></div>
+      <div class="mrow"><span>Shots/90</span><span class="mv">4.6 (#1 BL) / n/a / 4.95 (#1 BL)</span></div>
+      <div class="mrow"><span>SoT/90</span><span class="mv">2.2 (#1 big-5) / n/a / n/a</span></div>
+      <div class="mrow"><span>xA/90</span><span class="mv">0.78 (#7 BL) / n/a / n/a</span></div>
+      <p class="mgroup na">* 2024-25 injury-affected — figures estimated from match-log fragments</p>
+
+      <p class="mgroup">Understat — Bundesliga</p>
+      <div class="mrow"><span>NP-xG total 2025-26 (est.)</span><span class="mv">~19.5</span></div>
+      <div class="mrow"><span>Actual goals 2025-26</span><span class="mv">19</span></div>
+      <div class="mrow"><span class="na">Consistency: no front-loaded variance clusters found; goals spread season-long</span><span class="mv na">—</span></div>
+
+      <p class="mgroup">Sofascore</p>
+      <div class="mrow diverge"><span>≠ Sofascore returned 403 — ratings estimated from indexed match reports</span><span class="mv">—</span></div>
+      <p class="diverge-note">Treat Sofascore ratings as directional only; not sourced from live platform.</p>
+      <div class="mrow"><span>Season rating 2025-26 (est.)</span><span class="mv">~7.4</span></div>
+      <div class="mrow"><span>Heatmap</span><span class="mv">Wide, left half-space, drops between lines</span></div>
+
+      <p class="mgroup">ScoutingStats.ai — CF cohort percentiles</p>
+      <div class="mrow"><span>Goal Efficiency</span><span class="mv">~93rd</span></div>
+      <div class="mrow"><span>Chance Creation</span><span class="mv">~91st</span></div>
+      <div class="mrow"><span>Progressive Carry</span><span class="mv">~88th</span></div>
+      <div class="mrow"><span>xG Contribution</span><span class="mv">~89th</span></div>
+      <div class="mrow diverge"><span>≠ Aerial Duels</span><span class="mv">~24th (LOW — consistent concern)</span></div>
+      <p class="diverge-note">Percentile values are directional estimates from ScoutingStats.ai
+      qualitative descriptions; exact radar unavailable.</p>
+
+      <p class="mgroup">Transfermarkt</p>
+      <div class="mrow"><span>Value (Aug 2026)</span><span class="mv">€22.0M</span></div>
+      <div class="mrow"><span>Value trend 12mo</span><span class="mv">Stable</span></div>
+      <div class="mrow"><span>Injury risk flag</span><span class="mv diverge">HIGH — see injury log</span></div>
+      <div class="mrow"><span>Intl caps</span><span class="mv">GER · 12 caps · 9 G · 4 A</span></div>
+      <div class="mrow diverge"><span>≠ Understat vs FBref: NP-xG per-match figures approximate</span><span class="mv">—</span></div>
+      <p class="diverge-note">Bundesliga coverage exists but exact per-match table not pulled;
+      per-match consistency proxied from match report spread.</p>
+    </div>
+  </details>
+
+  <!-- 8 · EYE TEST -->
+  <details>
+    <summary>
+      <span class="label">Eye Test</span>
+      <span class="sumright"><span class="eyes"><span class="e-s">S</span><span class="e-s">S</span><span class="e-s">S</span><span class="e-s">S</span><span class="e-s">S</span></span><span class="chev">›</span></span>
+    </summary>
+    <div class="body">
+      <div class="eyerow">
+        <div class="top"><span>Movement off ball</span><span class="chip chip-strong">Strong</span></div>
+        <p class="obs">Drops precisely between lines forcing CB decisions; arrives in shooting pockets before the ball, confirmed in three separate highlight reels.</p>
+        <span class="cornertag">→ Tactical</span>
+      </div>
+      <div class="eyerow">
+        <div class="top"><span>Body shape on receive</span><span class="chip chip-strong">Strong</span></div>
+        <p class="obs">Consistently open, angled to goal when receiving under back pressure; enables immediate link-play or turn.</p>
+        <span class="cornertag">→ Tactical</span>
+      </div>
+      <div class="eyerow">
+        <div class="top"><span>First touch under pressure</span><span class="chip chip-strong">Strong</span></div>
+        <p class="obs">Both-footed; kills the ball away from pressure in stride; no heavy-touch pattern visible across watched footage.</p>
+        <span class="cornertag">→ Technical</span>
+      </div>
+      <div class="eyerow">
+        <div class="top"><span>Pressing intensity</span><span class="chip chip-strong">Strong</span></div>
+        <p class="obs">26.9 sprints/90 at Bundesliga level (+37% vs PL role); triggers press on correct lines, not ball-watching.</p>
+        <span class="cornertag">→ Physical · Tactical</span>
+      </div>
+      <div class="eyerow">
+        <div class="top"><span>Communication</span><span class="chip chip-strong">Strong</span></div>
+        <p class="obs">Organizes the press vocally, multiple observed instances; dressing-room leader status corroborated by independent coach and teammate sources.</p>
+        <span class="cornertag">→ Psychosocial</span>
+      </div>
+      <p class="srcline">METHOD: PROXY ASSESSMENT — DIRECT FOOTAGE VIA BUNDESLIGA HIGHLIGHTS + TACTICAL ANALYSES (TFA, COACHES' VOICE, OPTA HEATMAPS) · NO RAW FULL-MATCH ACCESS · 5 CRITERIA SCORED FROM INDIRECT EVIDENCE</p>
+    </div>
+  </details>
+
+  <!-- 9 · BACKGROUND -->
+  <details>
+    <summary>
+      <span class="label">Background</span>
+      <span class="sumright"><span class="chip chip-concern">⚑ Inj HIGH</span><span class="chip chip-concern">Contract 2029</span><span class="chev">›</span></span>
+    </summary>
+    <div class="body">
+      <p>Injury record HIGH RISK — five separate soft tissue incidents across three
+      seasons; ~20% matches missed in 2024-25 (&gt;15% threshold). Full medical audit
+      (MRI, GPS load data, soft tissue history) mandatory before any commitment.
+      Contract confirmed to 30 June 2029; no option year. Publicly committed to
+      spending his career at Stuttgart (multiple press statements, contract extension
+      Jun 2026). No acquisition window — only a credible €35–40m+ unsolicited bid
+      can initiate talks.</p>
+      <div class="sig"><span class="src">VOETBALKRANT/KICKER 06/26 ·</span><span class="diverge">Contract extended to 2029 with public long-term commitment — not for sale</span></div>
+      <div class="sig"><span class="src">BEHAVIORAL ·</span><span>All five search strings: coachability, leadership, social fit, mentality, character. One yellow flag (Nagelsmann conflict, environment-specific). No club-level incidents.</span></div>
+      <div class="sig"><span class="src">INTL ·</span><span>GER: 12 caps, 9 G, 4 A; Euro 2024; WC 2026 squad; mainly super-sub pushing for starter role.</span></div>
+    </div>
+  </details>
+
+  <!-- 10 · PHILOSOPHY FIT -->
+  <details>
+    <summary>
+      <span class="label">Philosophy Fit</span>
+      <span class="sumright"><span class="chip chip-adequate">5/7 Fit</span><span class="chev">›</span></span>
+    </summary>
+    <div class="body">
+      <p class="philosophy">Sought: CF / #9-½ in press-forward 4-3-3 or 4-2-3-1. Primary
+      goal source + pressing engine. Age ≤30, fee €30-40m ceiling, EU passport, contract
+      not expiring within 12 months. Hard dealbreaker: High injury risk.</p>
+      <div class="check"><span class="mark fit">✓ FIT</span><span>Role — drops between lines, runs in behind, link-play — exact #9-½ archetype</span></div>
+      <div class="check"><span class="mark fit">✓ FIT</span><span>System — built for high-press vertical transition; De Zerbi-trained, Hoeneß-deployed; deep-block system would suppress output</span></div>
+      <div class="check"><span class="mark warn">⚠ AT CEILING</span><span>Age — meets ≤30 constraint but peak window is 2-3 years; ready-now, not a development acquisition</span></div>
+      <div class="check"><span class="mark fit">✓ FIT</span><span>Fee — €22m TM within €30-40m ceiling; realistic bid ~€35-40m given contract</span></div>
+      <div class="check"><span class="mark misfit">✗ MISFIT</span><span>Injury dealbreaker — HIGH RISK: if club cannot absorb risk, this is a MISFIT. Medical audit required before any bid.</span></div>
+      <div class="check"><span class="mark fit">✓ FIT</span><span>Passport — German, full EU freedom</span></div>
+      <div class="check"><span class="mark misfit">✗ MISFIT</span><span>Contract — 2029 with public commitment; no signal of availability; cold approach only</span></div>
+    </div>
+  </details>
+
+  <!-- 11 · METHODS FOOTER -->
+  <footer class="methods label">
+    <span class="m-on">▣ Data</span>
+    <span class="m-on">▣ Video</span>
+    <span class="m-on">▣ Behavioral</span>
+    <span class="m-on">▣ Background</span>
+    <span class="m-off">□ Live</span>
+  </footer>
+  <p class="footnote">Medical audit (MRI, GPS load, soft tissue history) mandatory before any bid — injury flag is a hard block at Shortlist</p>
+
+</div>
+
+<script>
+// Sticky mini-header: pin once the verdict band scrolls out of view.
+const verdict = document.getElementById('verdict');
+const mini = document.getElementById('mini');
+new IntersectionObserver(([e]) => {
+  mini.classList.toggle('pinned', !e.isIntersecting && e.boundingClientRect.top < 0);
+}).observe(verdict);
+</script>
+</body>
+</html>
