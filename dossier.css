@@ -25,10 +25,20 @@
 }
 
 /* ── POSITION PALETTE — override --accent per report body class ── */
-body.pos-fw  { --accent: #e8a020; }   /* Forward  — amber  */
-body.pos-mid { --accent: #6caddf; }   /* Midfield — blue   */
-body.pos-def { --accent: #9b59b6; }   /* Defender — purple */
-body.pos-gk  { --accent: #1abc9c; }   /* GK       — teal   */
+/*    pitch order: GK → CB → FB → WB → CDM → CM → CAM → W → SS → FW    */
+body.pos-gk  { --accent: #1abc9c; }   /* Goalkeeper       — teal        */
+body.pos-cb  { --accent: #9b59b6; }   /* Centre-back      — purple      */
+body.pos-fb  { --accent: #7d6ee7; }   /* Full-back        — indigo      */
+body.pos-wb  { --accent: #5d8fde; }   /* Wing-back        — cornflower  */
+body.pos-cdm { --accent: #2980b9; }   /* Defensive mid    — deep blue   */
+body.pos-cm  { --accent: #6caddf; }   /* Central mid      — sky blue    */
+body.pos-cam { --accent: #0abde3; }   /* Attacking mid    — cyan        */
+body.pos-w   { --accent: #e67e22; }   /* Winger           — orange      */
+body.pos-ss  { --accent: #f0a500; }   /* Second striker   — gold        */
+body.pos-fw  { --accent: #e8a020; }   /* Striker / CF     — amber       */
+/* broad aliases */
+body.pos-def { --accent: #9b59b6; }   /* Defender (= pos-cb)            */
+body.pos-mid { --accent: #6caddf; }   /* Midfielder (= pos-cm)          */
 
 /* ── RESET ───────────────────────────────────────────────── */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }

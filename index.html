@@ -254,6 +254,8 @@
     transition: background .15s;
     position: relative;
     overflow: hidden;
+    /* default position tokens — forward/amber */
+    --pc: #e8a020; --pb: rgba(232,160,32,.1); --pe: rgba(232,160,32,.25);
   }
 
   .report-card::before {
@@ -261,13 +263,24 @@
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 2px;
+    background: var(--pc);
   }
 
-  /* ── position top-stripe (replaces verdict stripe) ── */
-  .report-card.pos-fw::before  { background: #e8a020; }
-  .report-card.pos-mid::before { background: #6caddf; }
-  .report-card.pos-def::before { background: #9b59b6; }
-  .report-card.pos-gk::before  { background: #1abc9c; }
+  /* ── POSITION PALETTE — one line per position ─────── */
+  /*    pitch order: GK → CB → FB → WB → CDM → CM → CAM → W → SS → FW   */
+  .report-card.pos-gk  { --pc: #1abc9c; --pb: rgba(26,188,156,.1);  --pe: rgba(26,188,156,.25);  } /* Goalkeeper      */
+  .report-card.pos-cb  { --pc: #9b59b6; --pb: rgba(155,89,182,.1);  --pe: rgba(155,89,182,.25);  } /* Centre-back     */
+  .report-card.pos-fb  { --pc: #7d6ee7; --pb: rgba(125,110,231,.1); --pe: rgba(125,110,231,.25); } /* Full-back       */
+  .report-card.pos-wb  { --pc: #5d8fde; --pb: rgba(93,143,222,.1);  --pe: rgba(93,143,222,.25);  } /* Wing-back       */
+  .report-card.pos-cdm { --pc: #2980b9; --pb: rgba(41,128,185,.1);  --pe: rgba(41,128,185,.25);  } /* Defensive mid   */
+  .report-card.pos-cm  { --pc: #6caddf; --pb: rgba(108,173,223,.1); --pe: rgba(108,173,223,.25); } /* Central mid     */
+  .report-card.pos-cam { --pc: #0abde3; --pb: rgba(10,189,227,.1);  --pe: rgba(10,189,227,.25);  } /* Attacking mid   */
+  .report-card.pos-w   { --pc: #e67e22; --pb: rgba(230,126,34,.1);  --pe: rgba(230,126,34,.25);  } /* Winger          */
+  .report-card.pos-ss  { --pc: #f0a500; --pb: rgba(240,165,0,.1);   --pe: rgba(240,165,0,.25);   } /* Second striker  */
+  .report-card.pos-fw  { --pc: #e8a020; --pb: rgba(232,160,32,.1);  --pe: rgba(232,160,32,.25);  } /* Striker / CF    */
+  /* broad aliases */
+  .report-card.pos-def { --pc: #9b59b6; --pb: rgba(155,89,182,.1);  --pe: rgba(155,89,182,.25);  } /* = pos-cb        */
+  .report-card.pos-mid { --pc: #6caddf; --pb: rgba(108,173,223,.1); --pe: rgba(108,173,223,.25); } /* = pos-cm        */
 
   .report-card:hover { background: var(--surface); }
 
@@ -279,22 +292,19 @@
     margin-bottom: 16px;
   }
 
-  /* ── pos-badge: neutral base, colored by parent position class ── */
+  /* pos-badge, verdict-badge, card-link all inherit position color */
   .pos-badge {
     font-family: var(--mono);
     font-size: 10px;
     letter-spacing: .1em;
     padding: 3px 9px;
     border-radius: 2px;
-    border: 1px solid;
+    color: var(--pc);
+    background: var(--pb);
+    border: 1px solid var(--pe);
     white-space: nowrap;
     flex-shrink: 0;
   }
-
-  .report-card.pos-fw  .pos-badge { color: #e8a020; background: rgba(232,160,32,.1);  border-color: rgba(232,160,32,.25);  }
-  .report-card.pos-mid .pos-badge { color: #6caddf; background: rgba(108,173,223,.1); border-color: rgba(108,173,223,.25); }
-  .report-card.pos-def .pos-badge { color: #9b59b6; background: rgba(155,89,182,.1);  border-color: rgba(155,89,182,.25);  }
-  .report-card.pos-gk  .pos-badge { color: #1abc9c; background: rgba(26,188,156,.1);  border-color: rgba(26,188,156,.25);  }
 
   .verdict-badge {
     font-family: var(--mono);
@@ -303,19 +313,14 @@
     text-transform: uppercase;
     padding: 3px 9px;
     border-radius: 2px;
+    color: var(--pc);
+    background: var(--pb);
+    border: 1px solid var(--pe);
     white-space: nowrap;
     flex-shrink: 0;
   }
 
-  .report-card.pos-fw  .verdict-badge { color: #e8a020; background: rgba(232,160,32,.1);  border: 1px solid rgba(232,160,32,.25);  }
-  .report-card.pos-mid .verdict-badge { color: #6caddf; background: rgba(108,173,223,.1); border: 1px solid rgba(108,173,223,.25); }
-  .report-card.pos-def .verdict-badge { color: #9b59b6; background: rgba(155,89,182,.1);  border: 1px solid rgba(155,89,182,.25);  }
-  .report-card.pos-gk  .verdict-badge { color: #1abc9c; background: rgba(26,188,156,.1);  border: 1px solid rgba(26,188,156,.25);  }
-
-  .report-card.pos-fw  .card-link { color: #e8a020; }
-  .report-card.pos-mid .card-link { color: #6caddf; }
-  .report-card.pos-def .card-link { color: #9b59b6; }
-  .report-card.pos-gk  .card-link { color: #1abc9c; }
+  .card-link { color: var(--pc); }
 
   .card-name {
     font-family: var(--display);
