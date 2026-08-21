@@ -307,29 +307,15 @@
     flex-shrink: 0;
   }
 
-  .verdict-badge.shortlist {
-    background: rgba(232,160,32,.1);
-    color: var(--accent);
-    border: 1px solid rgba(232,160,32,.25);
-  }
+  .report-card.pos-fw  .verdict-badge { color: #e8a020; background: rgba(232,160,32,.1);  border: 1px solid rgba(232,160,32,.25);  }
+  .report-card.pos-mid .verdict-badge { color: #6caddf; background: rgba(108,173,223,.1); border: 1px solid rgba(108,173,223,.25); }
+  .report-card.pos-def .verdict-badge { color: #9b59b6; background: rgba(155,89,182,.1);  border: 1px solid rgba(155,89,182,.25);  }
+  .report-card.pos-gk  .verdict-badge { color: #1abc9c; background: rgba(26,188,156,.1);  border: 1px solid rgba(26,188,156,.25);  }
 
-  .verdict-badge.recommend {
-    background: rgba(46,204,113,.1);
-    color: var(--green);
-    border: 1px solid rgba(46,204,113,.25);
-  }
-
-  .verdict-badge.watch {
-    background: rgba(243,156,18,.1);
-    color: var(--yellow);
-    border: 1px solid rgba(243,156,18,.25);
-  }
-
-  .verdict-badge.pass {
-    background: rgba(231,76,60,.1);
-    color: var(--red);
-    border: 1px solid rgba(231,76,60,.25);
-  }
+  .report-card.pos-fw  .card-link { color: #e8a020; }
+  .report-card.pos-mid .card-link { color: #6caddf; }
+  .report-card.pos-def .card-link { color: #9b59b6; }
+  .report-card.pos-gk  .card-link { color: #1abc9c; }
 
   .card-name {
     font-family: var(--display);

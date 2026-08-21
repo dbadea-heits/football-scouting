@@ -24,6 +24,12 @@
   --concern:  #e74c3c;   /* red — Concern rating, divergence */
 }
 
+/* ── POSITION PALETTE — override --accent per report body class ── */
+body.pos-fw  { --accent: #e8a020; }   /* Forward  — amber  */
+body.pos-mid { --accent: #6caddf; }   /* Midfield — blue   */
+body.pos-def { --accent: #9b59b6; }   /* Defender — purple */
+body.pos-gk  { --accent: #1abc9c; }   /* GK       — teal   */
+
 /* ── RESET ───────────────────────────────────────────────── */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -150,10 +156,10 @@ h1 {
   padding-bottom: 2px;
   border-bottom: 3px solid;
 }
-.tier-pass      { color: var(--concern);  border-color: var(--concern);  }
-.tier-watch     { color: var(--adequate); border-color: var(--adequate); }
-.tier-shortlist { color: var(--accent);   border-color: var(--accent);   }
-.tier-recommend { color: var(--ink);      border-color: var(--ink);      }
+.tier-pass      { color: var(--accent); border-color: var(--accent); }
+.tier-watch     { color: var(--accent); border-color: var(--accent); }
+.tier-shortlist { color: var(--accent); border-color: var(--accent); }
+.tier-recommend { color: var(--accent); border-color: var(--accent); }
 
 .nextstep { font-family: 'DM Mono', monospace; font-size: 13px; margin-top: 10px; }
 .liveobs  { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); margin-top: 8px; }
