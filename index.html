@@ -263,10 +263,11 @@
     height: 2px;
   }
 
-  .report-card.shortlist::before { background: var(--accent); }
-  .report-card.recommend::before { background: var(--green); }
-  .report-card.watch::before     { background: var(--yellow); }
-  .report-card.pass::before      { background: var(--red); }
+  /* ── position top-stripe (replaces verdict stripe) ── */
+  .report-card.pos-fw::before  { background: #e8a020; }
+  .report-card.pos-mid::before { background: #6caddf; }
+  .report-card.pos-def::before { background: #9b59b6; }
+  .report-card.pos-gk::before  { background: #1abc9c; }
 
   .report-card:hover { background: var(--surface); }
 
@@ -278,18 +279,22 @@
     margin-bottom: 16px;
   }
 
+  /* ── pos-badge: neutral base, colored by parent position class ── */
   .pos-badge {
     font-family: var(--mono);
     font-size: 10px;
     letter-spacing: .1em;
-    color: var(--accent);
-    background: rgba(232,160,32,.1);
-    border: 1px solid rgba(232,160,32,.2);
     padding: 3px 9px;
     border-radius: 2px;
+    border: 1px solid;
     white-space: nowrap;
     flex-shrink: 0;
   }
+
+  .report-card.pos-fw  .pos-badge { color: #e8a020; background: rgba(232,160,32,.1);  border-color: rgba(232,160,32,.25);  }
+  .report-card.pos-mid .pos-badge { color: #6caddf; background: rgba(108,173,223,.1); border-color: rgba(108,173,223,.25); }
+  .report-card.pos-def .pos-badge { color: #9b59b6; background: rgba(155,89,182,.1);  border-color: rgba(155,89,182,.25);  }
+  .report-card.pos-gk  .pos-badge { color: #1abc9c; background: rgba(26,188,156,.1);  border-color: rgba(26,188,156,.25);  }
 
   .verdict-badge {
     font-family: var(--mono);
@@ -655,7 +660,7 @@
   <div class="card-grid">
 
     <!-- Deniz Undav -->
-    <a href="deniz-undav-report.html" class="report-card shortlist">
+    <a href="deniz-undav-report.html" class="report-card shortlist pos-fw">
       <div class="card-top">
         <span class="pos-badge">CF / #9½</span>
         <span class="verdict-badge shortlist">Shortlist</span>
@@ -683,7 +688,7 @@
     </a>
 
     <!-- Nicolò Tresoldi -->
-    <a href="nicolo-tresoldi-report.html" class="report-card shortlist">
+    <a href="nicolo-tresoldi-report.html" class="report-card shortlist pos-fw">
       <div class="card-top">
         <span class="pos-badge">CF</span>
         <span class="verdict-badge shortlist">Shortlist</span>
@@ -711,7 +716,7 @@
     </a>
 
     <!-- Lautaro Martínez -->
-    <a href="lautaro-martinez-report.html" class="report-card shortlist">
+    <a href="lautaro-martinez-report.html" class="report-card shortlist pos-fw">
       <div class="card-top">
         <span class="pos-badge">CF / #9</span>
         <span class="verdict-badge shortlist">Shortlist</span>
@@ -739,7 +744,7 @@
     </a>
 
     <!-- Orri Steinn Óskarsson -->
-    <a href="orri-oskarsson-report.html" class="report-card shortlist">
+    <a href="orri-oskarsson-report.html" class="report-card shortlist pos-fw">
       <div class="card-top">
         <span class="pos-badge">CF</span>
         <span class="verdict-badge shortlist">Shortlist</span>
@@ -767,7 +772,7 @@
     </a>
 
     <!-- Julián Álvarez -->
-    <a href="julian-alvarez-report.html" class="report-card watch">
+    <a href="julian-alvarez-report.html" class="report-card watch pos-fw">
       <div class="card-top">
         <span class="pos-badge">CF / False-9</span>
         <span class="verdict-badge watch">Watch</span>
@@ -795,7 +800,7 @@
     </a>
 
     <!-- Serhou Guirassy -->
-    <a href="serhou-guirassy-report.html" class="report-card shortlist">
+    <a href="serhou-guirassy-report.html" class="report-card shortlist pos-fw">
       <div class="card-top">
         <span class="pos-badge">CF / #9</span>
         <span class="verdict-badge shortlist">Shortlist</span>
@@ -823,7 +828,7 @@
     </a>
 
     <!-- Dominik Livaković -->
-    <a href="dominik-livakovic-report.html" class="report-card watch">
+    <a href="dominik-livakovic-report.html" class="report-card watch pos-gk">
       <div class="card-top">
         <span class="pos-badge">GK / Sweeper</span>
         <span class="verdict-badge watch">Watch</span>
@@ -851,7 +856,7 @@
     </a>
 
     <!-- Chupe -->
-    <a href="chupe-report.html" class="report-card shortlist">
+    <a href="chupe-report.html" class="report-card shortlist pos-fw">
       <div class="card-top">
         <span class="pos-badge">CF / #9</span>
         <span class="verdict-badge shortlist">Shortlist</span>
