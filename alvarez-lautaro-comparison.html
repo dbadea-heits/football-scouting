@@ -6,402 +6,15 @@
 <title>Álvarez vs Lautaro — Head-to-Head · FIFA Four Corners</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="comparison.css">
 <style>
 :root {
-  --bg:      #0b0d0f;
-  --surface: #111417;
-  --border:  #1e2329;
-  --border2: #2a3040;
-  --text:    #c8cdd6;
-  --muted:   #8896a8;
-  --white:   #edf0f5;
-  --mono:    'DM Mono', monospace;
-  --display: 'Syne', sans-serif;
-  --body:    'DM Sans', sans-serif;
-  --a:       #e8a020;   /* Álvarez — amber/watch */
-  --l:       #2ecc71;   /* Lautaro — green/shortlist */
-  --a-dim:   rgba(232,160,32,.12);
-  --l-dim:   rgba(46,204,113,.12);
-}
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--body);
-  font-size: 14px;
-  line-height: 1.7;
-  min-height: 100vh;
-}
-
-/* ── NAV ──────────────────────────────────────────── */
-.fi-nav {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 48px; height: 48px; border-bottom: 1px solid var(--border);
-  background: var(--bg); position: sticky; top: 0; z-index: 100; gap: 24px;
-}
-.fi-nav a {
-  font-family: var(--mono); font-size: 10px; letter-spacing: .12em;
-  text-transform: uppercase; color: var(--muted); text-decoration: none;
-  display: flex; align-items: center; gap: 7px; transition: color .15s;
-}
-.fi-nav a:hover { color: var(--a); }
-.fi-nav-brand {
-  font-family: var(--display); font-size: 12px; font-weight: 700;
-  color: var(--white); letter-spacing: .04em;
-}
-@media (max-width: 700px) { .fi-nav { padding: 0 20px; } }
-
-/* ── HEADER ──────────────────────────────────────── */
-.header {
-  position: relative;
-  border-bottom: 1px solid var(--border2);
-  padding: 48px 64px 40px;
-  overflow: hidden;
-}
-.header::before {
-  content: '';
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 50% 80% at 10% 50%, rgba(232,160,32,.07) 0%, transparent 70%),
-    radial-gradient(ellipse 50% 80% at 90% 50%, rgba(46,204,113,.06) 0%, transparent 70%);
-  pointer-events: none;
-}
-.header-inner { position: relative; }
-.label-pill {
-  font-family: var(--mono); font-size: 10px; letter-spacing: .16em;
-  text-transform: uppercase; color: var(--muted);
-  background: rgba(136,150,168,.08); border: 1px solid var(--border2);
-  padding: 4px 12px; border-radius: 2px; display: inline-block; margin-bottom: 16px;
-}
-.report-title {
-  font-family: var(--display); font-size: clamp(28px, 4vw, 52px);
-  font-weight: 800; color: var(--white); line-height: 1;
-  letter-spacing: -.02em; margin-bottom: 4px;
-}
-.report-title .a-name { color: var(--a); }
-.report-title .l-name { color: var(--l); }
-.header-sub {
-  font-family: var(--mono); font-size: 11px; color: var(--muted);
-  letter-spacing: .06em; margin-top: 10px;
-}
-.header-chips {
-  display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px;
-}
-.chip {
-  font-family: var(--mono); font-size: 9px; letter-spacing: .1em;
-  text-transform: uppercase; padding: 3px 10px; border-radius: 2px;
-}
-.chip-a { background: var(--a-dim); color: var(--a); border: 1px solid rgba(232,160,32,.3); }
-.chip-l { background: var(--l-dim); color: var(--l); border: 1px solid rgba(46,204,113,.3); }
-.chip-muted { background: rgba(136,150,168,.08); color: var(--muted); border: 1px solid var(--border2); }
-
-/* ── MAIN ─────────────────────────────────────────── */
-.main {
-  max-width: 1200px; margin: 0 auto;
-  padding: 48px 64px; display: flex; flex-direction: column; gap: 56px;
-}
-@media (max-width: 700px) {
-  .header { padding: 32px 20px 28px; }
-  .main   { padding: 32px 20px; }
-}
-
-/* ── SECTION LABEL ────────────────────────────────── */
-.section-label {
-  font-family: var(--mono); font-size: 9px; letter-spacing: .2em;
-  text-transform: uppercase; color: var(--muted);
-  margin-bottom: 24px; display: flex; align-items: center; gap: 10px;
-}
-.section-label::after { content: ''; flex: 1; height: 1px; background: var(--border2); }
-
-/* ── IDENTITY CARDS ───────────────────────────────── */
-.identity-grid {
-  display: grid; grid-template-columns: 1fr 60px 1fr; gap: 0; align-items: stretch;
-}
-.id-card {
-  background: var(--surface); border: 1px solid var(--border2);
-  padding: 28px 32px;
-}
-.id-card.a-card { border-left: 3px solid var(--a); }
-.id-card.l-card { border-right: 3px solid var(--l); }
-.id-vs {
-  display: flex; align-items: center; justify-content: center;
-  background: var(--bg); border-top: 1px solid var(--border2); border-bottom: 1px solid var(--border2);
-  font-family: var(--display); font-size: 16px; font-weight: 800;
-  color: var(--muted); letter-spacing: .04em;
-}
-.id-name {
-  font-family: var(--display); font-size: 22px; font-weight: 800;
-  color: var(--white); margin-bottom: 2px;
-}
-.id-club {
-  font-family: var(--mono); font-size: 10px; color: var(--muted);
-  letter-spacing: .06em; margin-bottom: 16px;
-}
-.id-fact-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 10px 24px;
-}
-.id-fact { }
-.id-fact-label {
-  font-family: var(--mono); font-size: 9px; letter-spacing: .1em;
-  text-transform: uppercase; color: var(--muted); margin-bottom: 2px;
-}
-.id-fact-val {
-  font-family: var(--mono); font-size: 12px; color: var(--white);
-}
-.id-fact-val.a { color: var(--a); }
-.id-fact-val.l { color: var(--l); }
-.id-verdict {
-  margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border);
-}
-.verdict-label {
-  font-family: var(--mono); font-size: 9px; letter-spacing: .14em;
-  text-transform: uppercase; color: var(--muted); margin-bottom: 6px;
-}
-.verdict-tier {
-  font-family: var(--mono); font-size: 11px; letter-spacing: .08em;
-  text-transform: uppercase; padding: 4px 12px; border-radius: 2px; display: inline-block;
-}
-.vt-watch { background: rgba(243,156,18,.1); color: #f39c12; border: 1px solid rgba(243,156,18,.25); }
-.vt-shortlist { background: rgba(232,160,32,.1); color: var(--a); border: 1px solid rgba(232,160,32,.25); }
-
-/* ── FOUR CORNERS MATRIX ──────────────────────────── */
-.fc-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1px;
-  background: var(--border2);
-  border: 1px solid var(--border2);
-}
-.fc-cell {
-  background: var(--surface);
-  padding: 24px 28px;
-}
-.fc-cell.header-cell {
-  background: var(--bg);
-  display: flex; align-items: center; justify-content: center;
-  padding: 14px 20px;
-}
-.fc-player-label {
-  font-family: var(--mono); font-size: 10px; letter-spacing: .12em;
-  text-transform: uppercase;
-}
-.fc-player-label.a { color: var(--a); }
-.fc-player-label.l { color: var(--l); }
-.fc-corner-name {
-  font-family: var(--mono); font-size: 9px; letter-spacing: .14em;
-  text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
-}
-.fc-rating {
-  display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
-}
-.fc-dot-row { display: flex; gap: 4px; }
-.fc-dot { font-size: 16px; }
-.fc-dot.strong { color: var(--a); }
-.fc-dot.l-strong { color: var(--l); }
-.fc-dot.adequate { color: var(--muted); }
-.fc-badge {
-  font-family: var(--mono); font-size: 9px; letter-spacing: .1em;
-  padding: 2px 8px; border-radius: 2px;
-}
-.fc-badge.strong { background: rgba(232,160,32,.12); color: var(--a); border: 1px solid rgba(232,160,32,.3); }
-.fc-badge.l-strong { background: rgba(46,204,113,.12); color: var(--l); border: 1px solid rgba(46,204,113,.3); }
-.fc-badge.adequate { background: rgba(136,150,168,.08); color: var(--muted); border: 1px solid var(--border2); }
-.fc-evidence {
-  font-size: 12px; color: var(--text); line-height: 1.6;
-}
-.fc-evidence strong { color: var(--white); }
-.fc-divider {
-  background: var(--bg);
-  display: flex; align-items: center; justify-content: center;
-}
-.fc-corner-heading {
-  font-family: var(--display); font-size: 13px; font-weight: 700;
-  color: var(--white); letter-spacing: .02em; text-align: center;
-}
-
-/* ── METRIC BARS ──────────────────────────────────── */
-.metric-section {
-  display: flex; flex-direction: column; gap: 0;
-  border: 1px solid var(--border2);
-}
-.metric-group-header {
-  background: var(--bg);
-  padding: 10px 20px;
-  font-family: var(--mono); font-size: 9px; letter-spacing: .18em;
-  text-transform: uppercase; color: var(--muted);
-  border-bottom: 1px solid var(--border);
-}
-.metric-row {
-  display: grid;
-  grid-template-columns: 1fr 180px 1fr;
-  align-items: center;
-  padding: 14px 20px;
-  border-bottom: 1px solid var(--border);
-  gap: 16px;
-}
-.metric-row:last-child { border-bottom: none; }
-.metric-row.diverge { background: rgba(232,160,32,.03); }
-.metric-label {
-  font-family: var(--mono); font-size: 10px; color: var(--muted);
-  letter-spacing: .06em; text-align: center;
-}
-.metric-bar-wrap {
-  display: flex; flex-direction: column; gap: 5px;
-}
-.bar-line {
-  display: flex; align-items: center; gap: 8px;
-}
-.bar-name {
-  font-family: var(--mono); font-size: 9px; letter-spacing: .06em;
-  color: var(--muted); width: 14px; text-align: right; flex-shrink: 0;
-}
-.bar-track {
-  flex: 1; height: 5px; background: var(--border2); border-radius: 2px; overflow: hidden;
-}
-.bar-fill { height: 100%; border-radius: 2px; transition: width .4s ease; }
-.bar-fill.a { background: var(--a); }
-.bar-fill.l { background: var(--l); }
-.bar-val {
-  font-family: var(--mono); font-size: 10px; color: var(--white);
-  width: 36px; flex-shrink: 0; font-weight: 500;
-}
-.bar-val.best-a { color: var(--a); }
-.bar-val.best-l { color: var(--l); }
-.metric-note {
-  font-size: 10px; color: var(--muted); line-height: 1.5;
-  grid-column: 1 / -1; padding: 0 0 6px;
-}
-.diverge-tag {
-  font-family: var(--mono); font-size: 9px; color: var(--a);
-  background: var(--a-dim); border: 1px solid rgba(232,160,32,.2);
-  padding: 1px 6px; border-radius: 2px; margin-left: 6px;
-}
-
-/* ── RADAR ────────────────────────────────────────── */
-.radar-wrap {
-  background: var(--surface); border: 1px solid var(--border2);
-  padding: 32px; display: flex; flex-direction: column; align-items: center; gap: 24px;
-}
-.radar-legend {
-  display: flex; gap: 28px; flex-wrap: wrap; justify-content: center;
-}
-.legend-item {
-  display: flex; align-items: center; gap: 8px;
-  font-family: var(--mono); font-size: 11px; color: var(--text);
-}
-.legend-swatch {
-  width: 12px; height: 12px; border-radius: 2px;
-}
-.legend-swatch.a { background: var(--a); }
-.legend-swatch.l { background: var(--l); }
-canvas { max-width: 460px; width: 100%; height: auto; }
-
-/* ── DIVERGENCE ───────────────────────────────────── */
-.divg-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
-}
-.divg-card {
-  background: var(--surface); border: 1px solid var(--border2);
-  padding: 22px 26px;
-}
-.divg-card.key { border-left: 3px solid var(--a); }
-.divg-title {
-  font-family: var(--mono); font-size: 9px; letter-spacing: .16em;
-  text-transform: uppercase; color: var(--a); margin-bottom: 8px;
-}
-.divg-body {
-  font-size: 12px; color: var(--text); line-height: 1.65;
-}
-.divg-body strong { color: var(--white); }
-.divg-body .a { color: var(--a); }
-.divg-body .l { color: var(--l); }
-
-/* ── ACQUISITION ──────────────────────────────────── */
-.acq-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
-}
-.acq-card {
-  background: var(--surface); border: 1px solid var(--border2); padding: 24px 28px;
-}
-.acq-card.a-card { border-top: 3px solid var(--a); }
-.acq-card.l-card { border-top: 3px solid var(--l); }
-.acq-player {
-  font-family: var(--display); font-size: 14px; font-weight: 700;
-  color: var(--white); margin-bottom: 14px;
-}
-.acq-row {
-  display: flex; justify-content: space-between; align-items: baseline;
-  padding: 6px 0; border-bottom: 1px solid var(--border);
-  font-family: var(--mono); font-size: 11px;
-}
-.acq-row:last-child { border-bottom: none; }
-.acq-key { color: var(--muted); }
-.acq-val { color: var(--white); }
-.acq-val.risk { color: #e74c3c; }
-.acq-val.ok   { color: var(--a); }
-.acq-val.good { color: var(--l); }
-
-/* ── VERDICT BOX ──────────────────────────────────── */
-.verdict-section {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
-}
-.verdict-box {
-  background: var(--surface); border: 1px solid var(--border2); padding: 28px 32px;
-}
-.verdict-box.a-box { border-top: 3px solid var(--a); }
-.verdict-box.l-box { border-top: 3px solid var(--l); }
-.verdict-player {
-  font-family: var(--mono); font-size: 9px; letter-spacing: .14em;
-  text-transform: uppercase; color: var(--muted); margin-bottom: 6px;
-}
-.verdict-tier-big {
-  font-family: var(--display); font-size: 20px; font-weight: 800;
-  margin-bottom: 14px;
-}
-.verdict-tier-big.a { color: var(--a); }
-.verdict-tier-big.l { color: var(--l); }
-.verdict-text {
-  font-size: 12px; color: var(--text); line-height: 1.7;
-}
-.verdict-text strong { color: var(--white); }
-.verdict-text .a { color: var(--a); }
-.verdict-text .l { color: var(--l); }
-
-.rec-box {
-  background: var(--surface); border: 1px solid var(--border2);
-  border-left: 3px solid var(--l); padding: 28px 32px;
-}
-.rec-label {
-  font-family: var(--mono); font-size: 9px; letter-spacing: .16em;
-  text-transform: uppercase; color: var(--l); margin-bottom: 12px;
-}
-.rec-text {
-  font-size: 13px; color: var(--text); line-height: 1.75;
-}
-.rec-text strong { color: var(--white); }
-.rec-text .a { color: var(--a); }
-.rec-text .l { color: var(--l); }
-
-/* ── FOOTER ───────────────────────────────────────── */
-footer {
-  padding: 28px 64px; border-top: 1px solid var(--border);
-  display: flex; justify-content: space-between; align-items: center;
-  flex-wrap: wrap; gap: 12px;
-}
-.footer-left, .footer-right {
-  font-family: var(--mono); font-size: 10px; color: var(--muted);
-}
-
-@media (max-width: 900px) {
-  .identity-grid { grid-template-columns: 1fr; }
-  .id-vs { display: none; }
-  .fc-grid { grid-template-columns: 1fr; }
-  .metric-row { grid-template-columns: 1fr; }
-  .metric-label { text-align: left; }
-  .divg-grid, .acq-grid, .verdict-section { grid-template-columns: 1fr; }
-  footer { padding: 20px; flex-direction: column; }
+  --p1:      #e8a020;               /* Álvarez */
+  --p1-dim:  rgba(232,160,32,.12);
+  --p1-glow: rgba(232,160,32,.07);
+  --p2:      #2ecc71;               /* Lautaro */
+  --p2-dim:  rgba(46,204,113,.12);
+  --p2-glow: rgba(46,204,113,.06);
 }
 </style>
 </head>
@@ -418,14 +31,14 @@ footer {
   <div class="header-inner">
     <div class="label-pill">Head-to-Head · Centre-Forward · FIFA Four Corners · Aug 2026</div>
     <h1 class="report-title">
-      <span class="a-name">Álvarez</span> vs <span class="l-name">Lautaro</span>
+      <span class="p1-name">Álvarez</span> vs <span class="p2-name">Lautaro</span>
     </h1>
     <p class="header-sub">
       Julián Álvarez — Atlético de Madrid · La Liga &nbsp;|&nbsp; Lautaro Martínez — Inter Milan · Serie A
     </p>
     <div class="header-chips">
-      <span class="chip chip-a">Four Corners: S · S · A · S</span>
-      <span class="chip chip-l">Four Corners: S · S · A · S</span>
+      <span class="chip chip-p1">Four Corners: S · S · A · S</span>
+      <span class="chip chip-p2">Four Corners: S · S · A · S</span>
       <span class="chip chip-muted">Identical Corner Profile — Metrics Decide</span>
     </div>
   </div>
@@ -439,7 +52,7 @@ footer {
     <div class="section-label">Player Identity</div>
     <div class="identity-grid">
 
-      <div class="id-card a-card">
+      <div class="id-card p1-card">
         <div class="id-name">Julián Álvarez</div>
         <div class="id-club">Atlético de Madrid · La Liga · 🇦🇷 ARG / 🇮🇹 ITA</div>
         <div class="id-fact-grid">
@@ -457,7 +70,7 @@ footer {
           </div>
           <div class="id-fact">
             <div class="id-fact-label">Release Clause</div>
-            <div class="id-fact-val a">€500M</div>
+            <div class="id-fact-val p1">€500M</div>
           </div>
           <div class="id-fact">
             <div class="id-fact-label">Contract</div>
@@ -484,7 +97,7 @@ footer {
 
       <div class="id-vs">VS</div>
 
-      <div class="id-card l-card">
+      <div class="id-card p2-card">
         <div class="id-name">Lautaro Martínez</div>
         <div class="id-club">Inter Milan · Serie A · 🇦🇷 ARG</div>
         <div class="id-fact-grid">
@@ -502,7 +115,7 @@ footer {
           </div>
           <div class="id-fact">
             <div class="id-fact-label">Release Clause</div>
-            <div class="id-fact-val a">None</div>
+            <div class="id-fact-val p1">None</div>
           </div>
           <div class="id-fact">
             <div class="id-fact-label">Contract</div>
@@ -523,7 +136,7 @@ footer {
         </div>
         <div class="id-verdict">
           <div class="verdict-label">Scout Verdict</div>
-          <span class="verdict-tier vt-shortlist">Shortlist — Medical Review Required</span>
+          <span class="verdict-tier vt-p2">Shortlist — Medical Review Required</span>
         </div>
       </div>
 
@@ -541,18 +154,18 @@ footer {
 
       <!-- TECHNICAL header row -->
       <div class="fc-cell header-cell">
-        <span class="fc-player-label a">Álvarez</span>
+        <span class="fc-player-label p1">Álvarez</span>
       </div>
       <div class="fc-cell header-cell" style="border-left:1px solid var(--border2)">
-        <span class="fc-player-label l">Lautaro</span>
+        <span class="fc-player-label p2">Lautaro</span>
       </div>
 
       <!-- TECHNICAL -->
       <div class="fc-cell">
         <div class="fc-corner-name">Technical</div>
         <div class="fc-rating">
-          <span class="fc-dot strong">●</span>
-          <span class="fc-badge strong">Strong</span>
+          <span class="fc-dot p1-strong">●</span>
+          <span class="fc-badge p1-strong">Strong</span>
         </div>
         <div class="fc-evidence">
           Ball-striking quality despite compact frame. First-time finishes with weaker foot under defensive contact. Pass completion <strong>83.67%</strong> in La Liga 2025-26. Key passes/90 of <strong>2.20</strong> — elite for a CF. Shot quality: npxG/90 = <strong>0.35 (87th pct)</strong>.
@@ -561,8 +174,8 @@ footer {
       <div class="fc-cell" style="border-left:1px solid var(--border2)">
         <div class="fc-corner-name">Technical</div>
         <div class="fc-rating">
-          <span class="fc-dot l-strong">●</span>
-          <span class="fc-badge l-strong">Strong</span>
+          <span class="fc-dot p2-strong">●</span>
+          <span class="fc-badge p2-strong">Strong</span>
         </div>
         <div class="fc-evidence">
           Ambidextrous finisher: significant goal share scored with non-dominant left foot. Dribble success <strong>48%</strong> (21/44 attempts). Low-driven box finishes show precise keeper-reading. Career xG/90 of <strong>0.66</strong> over 267 Serie A apps is the bedrock technical data point.
@@ -573,8 +186,8 @@ footer {
       <div class="fc-cell" style="border-top:1px solid var(--border2)">
         <div class="fc-corner-name">Tactical</div>
         <div class="fc-rating">
-          <span class="fc-dot strong">●</span>
-          <span class="fc-badge strong">Strong</span>
+          <span class="fc-dot p1-strong">●</span>
+          <span class="fc-badge p1-strong">Strong</span>
         </div>
         <div class="fc-evidence">
           Reads the phase before it develops: anticipates pass lines and receives in stride behind the line. Progressive passes/90 <strong>3.82</strong> — exceptional for a CF. Has adapted to two diametrically opposed systems (Guardiola/Simeone) without output regression. KP/90 improved 1.45 → <strong>2.20</strong> across two Atlético seasons.
@@ -583,8 +196,8 @@ footer {
       <div class="fc-cell" style="border-top:1px solid var(--border2);border-left:1px solid var(--border2)">
         <div class="fc-corner-name">Tactical</div>
         <div class="fc-rating">
-          <span class="fc-dot l-strong">●</span>
-          <span class="fc-badge l-strong">Strong</span>
+          <span class="fc-dot p2-strong">●</span>
+          <span class="fc-badge p2-strong">Strong</span>
         </div>
         <div class="fc-evidence">
           Drops between lines, spins defenders with planted-foot turn, executes third-man runs. In Inzaghi's 3-5-2, UCL 2024-25: <strong>9G from 4.8 xG (+4.2)</strong> — the most diagnostic single tactical output in this comparison. Shot selection under knockout pressure is elite. KP/90 career rising: 1.28 → <strong>1.51</strong>.
@@ -617,8 +230,8 @@ footer {
       <div class="fc-cell" style="border-top:1px solid var(--border2)">
         <div class="fc-corner-name">Psychosocial</div>
         <div class="fc-rating">
-          <span class="fc-dot strong">●</span>
-          <span class="fc-badge strong">Strong</span>
+          <span class="fc-dot p1-strong">●</span>
+          <span class="fc-badge p1-strong">Strong</span>
         </div>
         <div class="fc-evidence">
           Simeone (La Nación, Jun 2026): "Humility, hunger, work ethic, ambition, and leadership." Scaloni (FIFA, Jun 2026): "He does whatever his coach asks of him." Post-training individual finishing routines self-initiated. <strong>Zero red flags</strong> across River Plate, Man City, and Atlético careers. Post-WC2026 elimination: resilient public response.
@@ -627,8 +240,8 @@ footer {
       <div class="fc-cell" style="border-top:1px solid var(--border2);border-left:1px solid var(--border2)">
         <div class="fc-corner-name">Psychosocial</div>
         <div class="fc-rating">
-          <span class="fc-dot l-strong">●</span>
-          <span class="fc-badge l-strong">Strong</span>
+          <span class="fc-dot p2-strong">●</span>
+          <span class="fc-badge p2-strong">Strong</span>
         </div>
         <div class="fc-evidence">
           Proactively engaged sports psychologist for several years — his own admission. After Inter Club World Cup group exit (Jun 2025): demanded "top-level mentality" from teammates publicly — high-accountability leadership. Conte: "serious and focused, committed and working." Captain of both Inter and Argentina. Minor demerit: €5K FIGC fine (blasphemy, not a conduct issue).
@@ -649,26 +262,26 @@ footer {
         <div class="metric-bar-wrap">
           <div class="bar-line">
             <span class="bar-name">A</span>
-            <div class="bar-track"><div class="bar-fill a" style="width:75%"></div></div>
-            <span class="bar-val best-a">0.60</span>
+            <div class="bar-track"><div class="bar-fill p1" style="width:75%"></div></div>
+            <span class="bar-val best-p1">0.60</span>
           </div>
           <div class="bar-line">
             <span class="bar-name">L</span>
-            <div class="bar-track"><div class="bar-fill l" style="width:100%"></div></div>
-            <span class="bar-val best-l">0.80</span>
+            <div class="bar-track"><div class="bar-fill p2" style="width:100%"></div></div>
+            <span class="bar-val best-p2">0.80</span>
           </div>
         </div>
         <div class="metric-label">G/90<br><span style="font-size:9px;color:var(--muted)">A: 24-25 La Liga<br>L: 23-24 Serie A</span></div>
         <div class="metric-bar-wrap" style="direction:rtl">
           <div class="bar-line" style="flex-direction:row-reverse">
             <span class="bar-name" style="text-align:left">A</span>
-            <div class="bar-track"><div class="bar-fill a" style="width:75%"></div></div>
-            <span class="bar-val best-a" style="text-align:right">0.60</span>
+            <div class="bar-track"><div class="bar-fill p1" style="width:75%"></div></div>
+            <span class="bar-val best-p1" style="text-align:right">0.60</span>
           </div>
           <div class="bar-line" style="flex-direction:row-reverse">
             <span class="bar-name" style="text-align:left">L</span>
-            <div class="bar-track"><div class="bar-fill l" style="width:100%"></div></div>
-            <span class="bar-val best-l" style="text-align:right">0.80</span>
+            <div class="bar-track"><div class="bar-fill p2" style="width:100%"></div></div>
+            <span class="bar-val best-p2" style="text-align:right">0.80</span>
           </div>
         </div>
       </div>
@@ -677,26 +290,26 @@ footer {
         <div class="metric-bar-wrap">
           <div class="bar-line">
             <span class="bar-name">A</span>
-            <div class="bar-track"><div class="bar-fill a" style="width:62%"></div></div>
+            <div class="bar-track"><div class="bar-fill p1" style="width:62%"></div></div>
             <span class="bar-val">0.50</span>
           </div>
           <div class="bar-line">
             <span class="bar-name">L</span>
-            <div class="bar-track"><div class="bar-fill l" style="width:88%"></div></div>
-            <span class="bar-val best-l">0.70</span>
+            <div class="bar-track"><div class="bar-fill p2" style="width:88%"></div></div>
+            <span class="bar-val best-p2">0.70</span>
           </div>
         </div>
         <div class="metric-label">xG/90<span class="diverge-tag">≠</span><br><span style="font-size:9px;color:var(--muted)">A: 24-25 La Liga<br>L: 25-26 Serie A</span></div>
         <div class="metric-bar-wrap" style="direction:rtl">
           <div class="bar-line" style="flex-direction:row-reverse">
             <span class="bar-name" style="text-align:left">A</span>
-            <div class="bar-track"><div class="bar-fill a" style="width:62%"></div></div>
+            <div class="bar-track"><div class="bar-fill p1" style="width:62%"></div></div>
             <span class="bar-val" style="text-align:right">0.50</span>
           </div>
           <div class="bar-line" style="flex-direction:row-reverse">
             <span class="bar-name" style="text-align:left">L</span>
-            <div class="bar-track"><div class="bar-fill l" style="width:88%"></div></div>
-            <span class="bar-val best-l" style="text-align:right">0.70</span>
+            <div class="bar-track"><div class="bar-fill p2" style="width:88%"></div></div>
+            <span class="bar-val best-p2" style="text-align:right">0.70</span>
           </div>
         </div>
       </div>
@@ -710,12 +323,12 @@ footer {
         <div class="metric-bar-wrap">
           <div class="bar-line">
             <span class="bar-name">A</span>
-            <div class="bar-track"><div class="bar-fill a" style="width:75%"></div></div>
-            <span class="bar-val best-a">+2.84</span>
+            <div class="bar-track"><div class="bar-fill p1" style="width:75%"></div></div>
+            <span class="bar-val best-p1">+2.84</span>
           </div>
           <div class="bar-line">
             <span class="bar-name">L</span>
-            <div class="bar-track"><div class="bar-fill l" style="width:25%"></div></div>
+            <div class="bar-track"><div class="bar-fill p2" style="width:25%"></div></div>
             <span class="bar-val">+0.14</span>
           </div>
         </div>
@@ -723,12 +336,12 @@ footer {
         <div class="metric-bar-wrap" style="direction:rtl">
           <div class="bar-line" style="flex-direction:row-reverse">
             <span class="bar-name" style="text-align:left">A</span>
-            <div class="bar-track"><div class="bar-fill a" style="width:75%"></div></div>
-            <span class="bar-val best-a" style="text-align:right">+2.84</span>
+            <div class="bar-track"><div class="bar-fill p1" style="width:75%"></div></div>
+            <span class="bar-val best-p1" style="text-align:right">+2.84</span>
           </div>
           <div class="bar-line" style="flex-direction:row-reverse">
             <span class="bar-name" style="text-align:left">L</span>
-            <div class="bar-track"><div class="bar-fill l" style="width:25%"></div></div>
+            <div class="bar-track"><div class="bar-fill p2" style="width:25%"></div></div>
             <span class="bar-val" style="text-align:right">+0.14</span>
           </div>
         </div>
@@ -740,12 +353,12 @@ footer {
         <div class="metric-bar-wrap">
           <div class="bar-line">
             <span class="bar-name">A</span>
-            <div class="bar-track"><div class="bar-fill a" style="width:88%"></div></div>
-            <span class="bar-val best-a">2.20</span>
+            <div class="bar-track"><div class="bar-fill p1" style="width:88%"></div></div>
+            <span class="bar-val best-p1">2.20</span>
           </div>
           <div class="bar-line">
             <span class="bar-name">L</span>
-            <div class="bar-track"><div class="bar-fill l" style="width:61%"></div></div>
+            <div class="bar-track"><div class="bar-fill p2" style="width:61%"></div></div>
             <span class="bar-val">1.53</span>
           </div>
         </div>
@@ -753,12 +366,12 @@ footer {
         <div class="metric-bar-wrap" style="direction:rtl">
           <div class="bar-line" style="flex-direction:row-reverse">
             <span class="bar-name" style="text-align:left">A</span>
-            <div class="bar-track"><div class="bar-fill a" style="width:88%"></div></div>
-            <span class="bar-val best-a" style="text-align:right">2.20</span>
+            <div class="bar-track"><div class="bar-fill p1" style="width:88%"></div></div>
+            <span class="bar-val best-p1" style="text-align:right">2.20</span>
           </div>
           <div class="bar-line" style="flex-direction:row-reverse">
             <span class="bar-name" style="text-align:left">L</span>
-            <div class="bar-track"><div class="bar-fill l" style="width:61%"></div></div>
+            <div class="bar-track"><div class="bar-fill p2" style="width:61%"></div></div>
             <span class="bar-val" style="text-align:right">1.53</span>
           </div>
         </div>
@@ -773,26 +386,26 @@ footer {
         <div class="metric-bar-wrap">
           <div class="bar-line">
             <span class="bar-name">A</span>
-            <div class="bar-track"><div class="bar-fill a" style="width:63%"></div></div>
+            <div class="bar-track"><div class="bar-fill p1" style="width:63%"></div></div>
             <span class="bar-val">2.52</span>
           </div>
           <div class="bar-line">
             <span class="bar-name">L</span>
-            <div class="bar-track"><div class="bar-fill l" style="width:94%"></div></div>
-            <span class="bar-val best-l">3.76</span>
+            <div class="bar-track"><div class="bar-fill p2" style="width:94%"></div></div>
+            <span class="bar-val best-p2">3.76</span>
           </div>
         </div>
         <div class="metric-label">Shots/90<br><span style="font-size:9px;color:var(--muted)">Shot volume<br>proxy for effort</span></div>
         <div class="metric-bar-wrap" style="direction:rtl">
           <div class="bar-line" style="flex-direction:row-reverse">
             <span class="bar-name" style="text-align:left">A</span>
-            <div class="bar-track"><div class="bar-fill a" style="width:63%"></div></div>
+            <div class="bar-track"><div class="bar-fill p1" style="width:63%"></div></div>
             <span class="bar-val" style="text-align:right">2.52</span>
           </div>
           <div class="bar-line" style="flex-direction:row-reverse">
             <span class="bar-name" style="text-align:left">L</span>
-            <div class="bar-track"><div class="bar-fill l" style="width:94%"></div></div>
-            <span class="bar-val best-l" style="text-align:right">3.76</span>
+            <div class="bar-track"><div class="bar-fill p2" style="width:94%"></div></div>
+            <span class="bar-val best-p2" style="text-align:right">3.76</span>
           </div>
         </div>
       </div>
@@ -803,26 +416,26 @@ footer {
         <div class="metric-bar-wrap">
           <div class="bar-line">
             <span class="bar-name">A</span>
-            <div class="bar-track"><div class="bar-fill a" style="width:86%"></div></div>
-            <span class="bar-val best-a">~0.95</span>
+            <div class="bar-track"><div class="bar-fill p1" style="width:86%"></div></div>
+            <span class="bar-val best-p1">~0.95</span>
           </div>
           <div class="bar-line">
             <span class="bar-name">L</span>
-            <div class="bar-track"><div class="bar-fill l" style="width:90%"></div></div>
-            <span class="bar-val best-l">0.99</span>
+            <div class="bar-track"><div class="bar-fill p2" style="width:90%"></div></div>
+            <span class="bar-val best-p2">0.99</span>
           </div>
         </div>
         <div class="metric-label">Tackles/90<span class="diverge-tag">≠</span><br><span style="font-size:9px;color:var(--muted)">A: Statshub est.<br>L: FootyMetrics (63rd pct CF)</span></div>
         <div class="metric-bar-wrap" style="direction:rtl">
           <div class="bar-line" style="flex-direction:row-reverse">
             <span class="bar-name" style="text-align:left">A</span>
-            <div class="bar-track"><div class="bar-fill a" style="width:86%"></div></div>
-            <span class="bar-val best-a" style="text-align:right">~0.95</span>
+            <div class="bar-track"><div class="bar-fill p1" style="width:86%"></div></div>
+            <span class="bar-val best-p1" style="text-align:right">~0.95</span>
           </div>
           <div class="bar-line" style="flex-direction:row-reverse">
             <span class="bar-name" style="text-align:left">L</span>
-            <div class="bar-track"><div class="bar-fill l" style="width:90%"></div></div>
-            <span class="bar-val best-l" style="text-align:right">0.99</span>
+            <div class="bar-track"><div class="bar-fill p2" style="width:90%"></div></div>
+            <span class="bar-val best-p2" style="text-align:right">0.99</span>
           </div>
         </div>
       </div>
@@ -831,26 +444,26 @@ footer {
         <div class="metric-bar-wrap">
           <div class="bar-line">
             <span class="bar-name">A</span>
-            <div class="bar-track"><div class="bar-fill a" style="width:34%"></div></div>
-            <span class="bar-val best-a">0.66</span>
+            <div class="bar-track"><div class="bar-fill p1" style="width:34%"></div></div>
+            <span class="bar-val best-p1">0.66</span>
           </div>
           <div class="bar-line">
             <span class="bar-name">L</span>
-            <div class="bar-track"><div class="bar-fill l" style="width:97%"></div></div>
-            <span class="bar-val best-l">1.94</span>
+            <div class="bar-track"><div class="bar-fill p2" style="width:97%"></div></div>
+            <span class="bar-val best-p2">1.94</span>
           </div>
         </div>
         <div class="metric-label">Fouls/90<span class="diverge-tag">≠</span><br><span style="font-size:9px;color:var(--muted)">Pressing style proxy<br>FootyStats · 2025-26</span></div>
         <div class="metric-bar-wrap" style="direction:rtl">
           <div class="bar-line" style="flex-direction:row-reverse">
             <span class="bar-name" style="text-align:left">A</span>
-            <div class="bar-track"><div class="bar-fill a" style="width:34%"></div></div>
-            <span class="bar-val best-a" style="text-align:right">0.66</span>
+            <div class="bar-track"><div class="bar-fill p1" style="width:34%"></div></div>
+            <span class="bar-val best-p1" style="text-align:right">0.66</span>
           </div>
           <div class="bar-line" style="flex-direction:row-reverse">
             <span class="bar-name" style="text-align:left">L</span>
-            <div class="bar-track"><div class="bar-fill l" style="width:97%"></div></div>
-            <span class="bar-val best-l" style="text-align:right">1.94</span>
+            <div class="bar-track"><div class="bar-fill p2" style="width:97%"></div></div>
+            <span class="bar-val best-p2" style="text-align:right">1.94</span>
           </div>
         </div>
       </div>
@@ -859,12 +472,12 @@ footer {
         <div class="metric-bar-wrap">
           <div class="bar-line">
             <span class="bar-name">A</span>
-            <div class="bar-track"><div class="bar-fill a" style="width:30%"></div></div>
+            <div class="bar-track"><div class="bar-fill p1" style="width:30%"></div></div>
             <span class="bar-val">n/a</span>
           </div>
           <div class="bar-line">
             <span class="bar-name">L</span>
-            <div class="bar-track"><div class="bar-fill l" style="width:13%"></div></div>
+            <div class="bar-track"><div class="bar-fill p2" style="width:13%"></div></div>
             <span class="bar-val">0.29</span>
           </div>
         </div>
@@ -872,12 +485,12 @@ footer {
         <div class="metric-bar-wrap" style="direction:rtl">
           <div class="bar-line" style="flex-direction:row-reverse">
             <span class="bar-name" style="text-align:left">A</span>
-            <div class="bar-track"><div class="bar-fill a" style="width:0%"></div></div>
+            <div class="bar-track"><div class="bar-fill p1" style="width:0%"></div></div>
             <span class="bar-val" style="text-align:right;color:var(--muted)">n/a</span>
           </div>
           <div class="bar-line" style="flex-direction:row-reverse">
             <span class="bar-name" style="text-align:left">L</span>
-            <div class="bar-track"><div class="bar-fill l" style="width:13%"></div></div>
+            <div class="bar-track"><div class="bar-fill p2" style="width:13%"></div></div>
             <span class="bar-val" style="text-align:right">0.29</span>
           </div>
         </div>
@@ -894,26 +507,26 @@ footer {
         <div class="metric-bar-wrap">
           <div class="bar-line">
             <span class="bar-name">A</span>
-            <div class="bar-track"><div class="bar-fill a" style="width:66%"></div></div>
+            <div class="bar-track"><div class="bar-fill p1" style="width:66%"></div></div>
             <span class="bar-val">0.73</span>
           </div>
           <div class="bar-line">
             <span class="bar-name">L</span>
-            <div class="bar-track"><div class="bar-fill l" style="width:96%"></div></div>
-            <span class="bar-val best-l">1.06</span>
+            <div class="bar-track"><div class="bar-fill p2" style="width:96%"></div></div>
+            <span class="bar-val best-p2">1.06</span>
           </div>
         </div>
         <div class="metric-label">UCL G/90<br><span style="font-size:9px;color:var(--muted)">A: 25-26 (15 apps)<br>L: 24-25 (13 apps)</span></div>
         <div class="metric-bar-wrap" style="direction:rtl">
           <div class="bar-line" style="flex-direction:row-reverse">
             <span class="bar-name" style="text-align:left">A</span>
-            <div class="bar-track"><div class="bar-fill a" style="width:66%"></div></div>
+            <div class="bar-track"><div class="bar-fill p1" style="width:66%"></div></div>
             <span class="bar-val" style="text-align:right">0.73</span>
           </div>
           <div class="bar-line" style="flex-direction:row-reverse">
             <span class="bar-name" style="text-align:left">L</span>
-            <div class="bar-track"><div class="bar-fill l" style="width:96%"></div></div>
-            <span class="bar-val best-l" style="text-align:right">1.06</span>
+            <div class="bar-track"><div class="bar-fill p2" style="width:96%"></div></div>
+            <span class="bar-val best-p2" style="text-align:right">1.06</span>
           </div>
         </div>
       </div>
@@ -922,26 +535,26 @@ footer {
         <div class="metric-bar-wrap">
           <div class="bar-line">
             <span class="bar-name">A</span>
-            <div class="bar-track"><div class="bar-fill a" style="width:50%"></div></div>
+            <div class="bar-track"><div class="bar-fill p1" style="width:50%"></div></div>
             <span class="bar-val">10G</span>
           </div>
           <div class="bar-line">
             <span class="bar-name">L</span>
-            <div class="bar-track"><div class="bar-fill l" style="width:56%"></div></div>
-            <span class="bar-val best-l">9G</span>
+            <div class="bar-track"><div class="bar-fill p2" style="width:56%"></div></div>
+            <span class="bar-val best-p2">9G</span>
           </div>
         </div>
         <div class="metric-label">UCL Goals<br><span style="font-size:9px;color:var(--muted)">Raw total<br>vs xG context</span></div>
         <div class="metric-bar-wrap" style="direction:rtl">
           <div class="bar-line" style="flex-direction:row-reverse">
             <span class="bar-name" style="text-align:left">A</span>
-            <div class="bar-track"><div class="bar-fill a" style="width:50%"></div></div>
+            <div class="bar-track"><div class="bar-fill p1" style="width:50%"></div></div>
             <span class="bar-val" style="text-align:right">10G</span>
           </div>
           <div class="bar-line" style="flex-direction:row-reverse">
             <span class="bar-name" style="text-align:left">L</span>
-            <div class="bar-track"><div class="bar-fill l" style="width:56%"></div></div>
-            <span class="bar-val best-l" style="text-align:right">9G*</span>
+            <div class="bar-track"><div class="bar-fill p2" style="width:56%"></div></div>
+            <span class="bar-val best-p2" style="text-align:right">9G*</span>
           </div>
         </div>
       </div>
@@ -957,26 +570,26 @@ footer {
         <div class="metric-bar-wrap">
           <div class="bar-line">
             <span class="bar-name">A</span>
-            <div class="bar-track"><div class="bar-fill a" style="width:50%"></div></div>
+            <div class="bar-track"><div class="bar-fill p1" style="width:50%"></div></div>
             <span class="bar-val">133</span>
           </div>
           <div class="bar-line">
             <span class="bar-name">L</span>
-            <div class="bar-track"><div class="bar-fill l" style="width:100%"></div></div>
-            <span class="bar-val best-l">267</span>
+            <div class="bar-track"><div class="bar-fill p2" style="width:100%"></div></div>
+            <span class="bar-val best-p2">267</span>
           </div>
         </div>
         <div class="metric-label">League Apps<br><span style="font-size:9px;color:var(--muted)">La Liga / Serie A<br>evidence base</span></div>
         <div class="metric-bar-wrap" style="direction:rtl">
           <div class="bar-line" style="flex-direction:row-reverse">
             <span class="bar-name" style="text-align:left">A</span>
-            <div class="bar-track"><div class="bar-fill a" style="width:50%"></div></div>
+            <div class="bar-track"><div class="bar-fill p1" style="width:50%"></div></div>
             <span class="bar-val" style="text-align:right">133</span>
           </div>
           <div class="bar-line" style="flex-direction:row-reverse">
             <span class="bar-name" style="text-align:left">L</span>
-            <div class="bar-track"><div class="bar-fill l" style="width:100%"></div></div>
-            <span class="bar-val best-l" style="text-align:right">267</span>
+            <div class="bar-track"><div class="bar-fill p2" style="width:100%"></div></div>
+            <span class="bar-val best-p2" style="text-align:right">267</span>
           </div>
         </div>
       </div>
@@ -985,26 +598,26 @@ footer {
         <div class="metric-bar-wrap">
           <div class="bar-line">
             <span class="bar-name">A</span>
-            <div class="bar-track"><div class="bar-fill a" style="width:71%"></div></div>
+            <div class="bar-track"><div class="bar-fill p1" style="width:71%"></div></div>
             <span class="bar-val">0.47</span>
           </div>
           <div class="bar-line">
             <span class="bar-name">L</span>
-            <div class="bar-track"><div class="bar-fill l" style="width:100%"></div></div>
-            <span class="bar-val best-l">0.66</span>
+            <div class="bar-track"><div class="bar-fill p2" style="width:100%"></div></div>
+            <span class="bar-val best-p2">0.66</span>
           </div>
         </div>
         <div class="metric-label">Career xG/90<br><span style="font-size:9px;color:var(--muted)">Understat<br>La Liga / Serie A</span></div>
         <div class="metric-bar-wrap" style="direction:rtl">
           <div class="bar-line" style="flex-direction:row-reverse">
             <span class="bar-name" style="text-align:left">A</span>
-            <div class="bar-track"><div class="bar-fill a" style="width:71%"></div></div>
+            <div class="bar-track"><div class="bar-fill p1" style="width:71%"></div></div>
             <span class="bar-val" style="text-align:right">0.47</span>
           </div>
           <div class="bar-line" style="flex-direction:row-reverse">
             <span class="bar-name" style="text-align:left">L</span>
-            <div class="bar-track"><div class="bar-fill l" style="width:100%"></div></div>
-            <span class="bar-val best-l" style="text-align:right">0.66</span>
+            <div class="bar-track"><div class="bar-fill p2" style="width:100%"></div></div>
+            <span class="bar-val best-p2" style="text-align:right">0.66</span>
           </div>
         </div>
       </div>
@@ -1017,8 +630,8 @@ footer {
     <div class="section-label">Performance Radar — Five Axes</div>
     <div class="radar-wrap">
       <div class="radar-legend">
-        <div class="legend-item"><span class="legend-swatch a"></span>Julián Álvarez</div>
-        <div class="legend-item"><span class="legend-swatch l"></span>Lautaro Martínez</div>
+        <div class="legend-item"><span class="legend-swatch p1"></span>Julián Álvarez</div>
+        <div class="legend-item"><span class="legend-swatch p2"></span>Lautaro Martínez</div>
       </div>
       <canvas id="radar" width="460" height="460"></canvas>
       <p style="font-family:var(--mono);font-size:9px;color:var(--muted);text-align:center;max-width:420px">
@@ -1036,10 +649,10 @@ footer {
         <div class="divg-title">≠ Divergence 1 — Role Variant Within Same Position</div>
         <div class="divg-body">
           Both are classed "Centre-Forward" but perform fundamentally different sub-roles.
-          <strong class="a">Álvarez</strong> is a <strong>creative forward</strong>:
+          <strong class="p1">Álvarez</strong> is a <strong>creative forward</strong>:
           KP/90 of 2.20 and progressive passes/90 of 3.82 put him in attacking-midfielder territory.
           He links play and presses as much as he finishes.
-          <strong class="l">Lautaro</strong> is a <strong>pure box striker</strong>:
+          <strong class="p2">Lautaro</strong> is a <strong>pure box striker</strong>:
           xG/90 of 0.70 and Sh/90 of 3.76 show a player who lives in and around the penalty area.
           <em>Implication:</em> the right choice depends on which function the acquiring system needs more.
         </div>
@@ -1048,10 +661,10 @@ footer {
       <div class="divg-card key">
         <div class="divg-title">≠ Divergence 2 — UCL Clutch Coefficient</div>
         <div class="divg-body">
-          <strong class="l">Lautaro's</strong> most diagnostic single output: 9 UCL goals from 4.8 xG
+          <strong class="p2">Lautaro's</strong> most diagnostic single output: 9 UCL goals from 4.8 xG
           (+4.2) in 2024-25. Shot quality under knockout pressure consistently exceeds what his
           open-play numbers predict — a rare psychological and technical signal.
-          <strong class="a">Álvarez's</strong> UCL 2025-26 rate (0.73 G/90, 10G/15 apps) is elite
+          <strong class="p1">Álvarez's</strong> UCL 2025-26 rate (0.73 G/90, 10G/15 apps) is elite
           but generated with proportionate xG volume. Lautaro's overperformance in the highest-stakes
           games is the one metric that separates them on ability — not just role.
         </div>
@@ -1061,9 +674,9 @@ footer {
         <div class="divg-title">≠ Divergence 3 — Medical Risk vs Availability Risk</div>
         <div class="divg-body">
           The two players face inverted acquisition risks.
-          <strong class="a">Álvarez:</strong> pristine medical history (&lt;5% matches missed) but
+          <strong class="p1">Álvarez:</strong> pristine medical history (&lt;5% matches missed) but
           effectively unavailable — €500M clause, Atletico publicly rejecting all bids, no player exit signal.
-          <strong class="l">Lautaro:</strong> realistically acquirable (no release clause, agent meetings,
+          <strong class="p2">Lautaro:</strong> realistically acquirable (no release clause, agent meetings,
           €100-120M fee window) but two soleus injuries in the same leg within 56 days (Feb–Apr 2026)
           constitute a recurring soft-tissue red flag that requires independent medical clearance
           before any bid is submitted. You can only acquire one of them right now.
@@ -1073,10 +686,10 @@ footer {
       <div class="divg-card key">
         <div class="divg-title">≠ Divergence 4 — Career Sample Depth</div>
         <div class="divg-body">
-          <strong class="l">Lautaro</strong> has 267 Serie A appearances and a career xG/90 of 0.66
+          <strong class="p2">Lautaro</strong> has 267 Serie A appearances and a career xG/90 of 0.66
           over 18,810 minutes — one of the highest-confidence evidence bases available for a player
           of his generation. That number has held from 0.49 to 0.95 across eight seasons, then
-          re-stabilised. <strong class="a">Álvarez</strong> has 133 La Liga apps (4 seasons). His
+          re-stabilised. <strong class="p1">Álvarez</strong> has 133 La Liga apps (4 seasons). His
           career xG/90 of 0.47 is consistent but the sample is thinner. For a club weighting
           evidence confidence, Lautaro's depth is a real advantage.
         </div>
@@ -1087,11 +700,11 @@ footer {
         <div class="divg-title">≠ Divergence 5 — Pressing Mechanics: Precision vs Physical</div>
         <div class="divg-body">
           Both players are confirmed elite pressers — this is not in dispute. The divergence is in <em>method</em>.
-          <strong class="a">Álvarez</strong> presses with precision: fouls/90 of just <strong>0.66</strong>,
+          <strong class="p1">Álvarez</strong> presses with precision: fouls/90 of just <strong>0.66</strong>,
           relying on explosive acceleration, body angle, and lane-blocking to funnel opponents toward
           Atlético's trap zones (TFA, Feb 2026). He achieves pressing outcomes without
           committing fouls — a sign of technical pressing quality, not lower intensity.
-          <strong class="l">Lautaro</strong> presses with physicality: fouls/90 of <strong>1.94</strong>,
+          <strong class="p2">Lautaro</strong> presses with physicality: fouls/90 of <strong>1.94</strong>,
           one of the highest among Serie A forwards, with 24 tackles (14 won) and 7 interceptions
           in 2025-26 (FootyMetrics). His "Defensive contribution: Strong" WhoScored rating reflects
           raw defensive volume. Tackles/90 are near-equal (~0.95 vs 0.99) — the output metric
@@ -1108,7 +721,7 @@ footer {
     <div class="section-label">Acquisition Landscape — Current Window</div>
     <div class="acq-grid">
 
-      <div class="acq-card a-card">
+      <div class="acq-card p1-card">
         <div class="acq-player">Julián Álvarez</div>
         <div class="acq-row"><span class="acq-key">Transfermarkt Value</span><span class="acq-val">€120M</span></div>
         <div class="acq-row"><span class="acq-key">Realistic Ask</span><span class="acq-val risk">€500M (clause) — not negotiable</span></div>
@@ -1116,20 +729,20 @@ footer {
         <div class="acq-row"><span class="acq-key">Club Stance</span><span class="acq-val risk">Explicitly not for sale (Simeone, Jun 2025)</span></div>
         <div class="acq-row"><span class="acq-key">Recent Bids</span><span class="acq-val risk">RM €150M rejected; Barça €100M rejected</span></div>
         <div class="acq-row"><span class="acq-key">Player Signal</span><span class="acq-val">No exit request on record</span></div>
-        <div class="acq-row"><span class="acq-key">Medical Clearance</span><span class="acq-val good">Not required — clean record</span></div>
+        <div class="acq-row"><span class="acq-key">Medical Clearance</span><span class="acq-val ok-p2">Not required — clean record</span></div>
         <div class="acq-row"><span class="acq-key">Acquisition Path</span><span class="acq-val risk">None in current window</span></div>
       </div>
 
-      <div class="acq-card l-card">
+      <div class="acq-card p2-card">
         <div class="acq-player">Lautaro Martínez</div>
         <div class="acq-row"><span class="acq-key">Transfermarkt Value</span><span class="acq-val">€85M</span></div>
-        <div class="acq-row"><span class="acq-key">Realistic Ask</span><span class="acq-val ok">€100M–€120M (no release clause)</span></div>
+        <div class="acq-row"><span class="acq-key">Realistic Ask</span><span class="acq-val ok-p1">€100M–€120M (no release clause)</span></div>
         <div class="acq-row"><span class="acq-key">Contract Remaining</span><span class="acq-val">3 years (to Jun 2029)</span></div>
         <div class="acq-row"><span class="acq-key">Club Stance</span><span class="acq-val">Open — no public block</span></div>
-        <div class="acq-row"><span class="acq-key">Agent Activity</span><span class="acq-val ok">Confirmed meetings with Barcelona (Aug 2026)</span></div>
-        <div class="acq-row"><span class="acq-key">Player Signal</span><span class="acq-val ok">Indirect — agent briefings active</span></div>
+        <div class="acq-row"><span class="acq-key">Agent Activity</span><span class="acq-val ok-p1">Confirmed meetings with Barcelona (Aug 2026)</span></div>
+        <div class="acq-row"><span class="acq-key">Player Signal</span><span class="acq-val ok-p1">Indirect — agent briefings active</span></div>
         <div class="acq-row"><span class="acq-key">Medical Clearance</span><span class="acq-val risk">REQUIRED — soleus ×2 in 56 days Feb–Apr 2026</span></div>
-        <div class="acq-row"><span class="acq-key">Acquisition Path</span><span class="acq-val ok">Realistic — subject to medical + board</span></div>
+        <div class="acq-row"><span class="acq-key">Acquisition Path</span><span class="acq-val ok-p1">Realistic — subject to medical + board</span></div>
       </div>
 
     </div>
@@ -1140,9 +753,9 @@ footer {
     <div class="section-label">Head-to-Head Verdict</div>
 
     <div class="verdict-section" style="margin-bottom:14px">
-      <div class="verdict-box a-box">
+      <div class="verdict-box p1-box">
         <div class="verdict-player">Julián Álvarez</div>
-        <div class="verdict-tier-big a">Watch</div>
+        <div class="verdict-tier-big p1">Watch</div>
         <div class="verdict-text">
           <strong>Quality is not in question.</strong> Álvarez is a world-class creative forward —
           his Four Corners profile (S·S·A·S), clean injury history, and adaptability across elite systems
@@ -1152,12 +765,12 @@ footer {
           <strong>The verdict is Watch, not because of ability, but because there is no acquisition path.</strong>
           €500M clause, explicit club refusal, no player exit signal. Do not allocate budget,
           agent time, or negotiating capital to this player in the current window.
-          <span class="a">Revisit if: Simeone departs + player signals exit intent.</span>
+          <span class="p1">Revisit if: Simeone departs + player signals exit intent.</span>
         </div>
       </div>
-      <div class="verdict-box l-box">
+      <div class="verdict-box p2-box">
         <div class="verdict-player">Lautaro Martínez</div>
-        <div class="verdict-tier-big l">Shortlist</div>
+        <div class="verdict-tier-big p2">Shortlist</div>
         <div class="verdict-text">
           <strong>The only actionable target in this comparison.</strong> Lautaro is a technically
           elite, career-verified box striker with 267 Serie A appearances and a career xG/90 of 0.66
@@ -1165,7 +778,7 @@ footer {
           His UCL clutch (+4.2 overperformance in 2024-25) and captain-level leadership are
           differentiators. At €100M–€120M with no release clause, the fee is above Transfermarkt
           but below prohibitive.<br><br>
-          <strong class="l">Two gates before bid submission:</strong> (1) Independent musculoskeletal
+          <strong class="p2">Two gates before bid submission:</strong> (1) Independent musculoskeletal
           assessment of the bilateral soleus injury pattern — 48-hour turnaround.
           (2) Board sign-off on fee (exceeds initial €90M philosophy ceiling).
           If both gates clear: advance to live observation and open contact with agent.
@@ -1177,9 +790,9 @@ footer {
       <div class="rec-label">Acquisition Recommendation — If Both Were Available</div>
       <div class="rec-text">
         Head-to-head on ability, <strong>Lautaro edges on pure goalscoring</strong>
-        (xG/90: <span class="l">0.70</span> vs <span class="a">0.50</span>; career sample 267 vs 133 apps;
+        (xG/90: <span class="p2">0.70</span> vs <span class="p1">0.50</span>; career sample 267 vs 133 apps;
         UCL overperformance coefficient). <strong>Álvarez edges on creative contribution and age</strong>
-        (KP/90: <span class="a">2.20</span> vs <span class="l">1.53</span>; two years younger; cleaner medical).
+        (KP/90: <span class="p1">2.20</span> vs <span class="p2">1.53</span>; two years younger; cleaner medical).
         The right answer depends on system role: a <strong>team needing a pure finisher</strong> in a
         structured shape should weight Lautaro; a <strong>team needing a creative press-forward</strong>
         who links play and accelerates transitions should weight Álvarez. Both are Argentina teammates;
