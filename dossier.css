@@ -197,7 +197,7 @@ summary .chev {
 details[open] summary .chev { transform: rotate(90deg); }
 
 .body {
-  padding: 0 0 18px 12px;
+  padding: 0 14px 18px 12px;
   border-left: 1px solid var(--accent);
   margin-bottom: 14px;
 }
@@ -263,12 +263,14 @@ details[open] .body { background: var(--surface); }
 .mrow {
   display: flex;
   justify-content: space-between;
+  align-items: baseline;
   gap: 12px;
   font-family: 'DM Mono', monospace;
   font-size: 13px;
   padding: 4px 0;
 }
-.mrow .mv { font-weight: 500; white-space: nowrap; }
+.mrow > span:first-child { flex: 1; min-width: 0; overflow-wrap: break-word; }
+.mrow .mv { font-weight: 500; white-space: nowrap; flex-shrink: 0; text-align: right; }
 .diverge      { color: var(--concern); }
 .diverge-note { font-size: 12px; color: var(--concern); font-family: 'DM Sans', sans-serif; font-style: italic; padding: 2px 0 6px; }
 .na           { color: var(--muted); }
