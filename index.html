@@ -8,17 +8,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg:      #0b0d0f;
-    --surface: #111417;
-    --border:  #1e2329;
-    --border2: #2a3040;
-    --text:    #c8cdd6;
-    --muted:   #8896a8;
-    --accent:  #e8a020;
-    --green:   #2ecc71;
-    --yellow:  #f39c12;
-    --red:     #e74c3c;
-    --white:   #edf0f5;
+    --bg:      #182028;
+    --surface: #233038;
+    --border:  #2c3e48;
+    --border2: #38515e;
+    --text:    #d3dbdd;
+    --muted:   #8d969b;
+    --accent:  #ff5b04;
+    --green:   #f4d47c;
+    --yellow:  #ff5b04;
+    --white:   #fdf6e3;
     --mono:    'DM Mono', monospace;
     --display: 'Syne', sans-serif;
     --body:    'DM Sans', sans-serif;
@@ -117,7 +116,7 @@
   .tab-btn:hover { background: var(--surface); color: var(--text); }
 
   .tab-btn.active {
-    background: rgba(232,160,32,.12);
+    background: rgba(255,91,4,.12);
     color: var(--accent);
   }
 
@@ -142,8 +141,8 @@
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(ellipse 50% 120% at 95% 0%, rgba(232,160,32,.06) 0%, transparent 65%),
-      radial-gradient(ellipse 30% 80% at 5% 100%, rgba(46,204,113,.04) 0%, transparent 60%);
+      radial-gradient(ellipse 50% 120% at 95% 0%, rgba(255,91,4,.06) 0%, transparent 65%),
+      radial-gradient(ellipse 30% 80% at 5% 100%, rgba(7,80,86,.06) 0%, transparent 60%);
     pointer-events: none;
   }
 
@@ -255,7 +254,7 @@
     position: relative;
     overflow: hidden;
     /* default position tokens — forward/amber */
-    --pc: #e8a020; --pb: rgba(232,160,32,.1); --pe: rgba(232,160,32,.25);
+    --pc: #ff5b04; --pb: rgba(255,91,4,.1); --pe: rgba(255,91,4,.25);
   }
 
   .report-card::before {
@@ -268,19 +267,19 @@
 
   /* ── POSITION PALETTE — one line per position ─────── */
   /*    pitch order: GK → CB → FB → WB → CDM → CM → CAM → W → SS → FW   */
-  .report-card.pos-gk  { --pc: #1abc9c; --pb: rgba(26,188,156,.1);  --pe: rgba(26,188,156,.25);  } /* Goalkeeper      */
-  .report-card.pos-cb  { --pc: #9b59b6; --pb: rgba(155,89,182,.1);  --pe: rgba(155,89,182,.25);  } /* Centre-back     */
-  .report-card.pos-fb  { --pc: #7d6ee7; --pb: rgba(125,110,231,.1); --pe: rgba(125,110,231,.25); } /* Full-back       */
-  .report-card.pos-wb  { --pc: #5d8fde; --pb: rgba(93,143,222,.1);  --pe: rgba(93,143,222,.25);  } /* Wing-back       */
-  .report-card.pos-cdm { --pc: #2980b9; --pb: rgba(41,128,185,.1);  --pe: rgba(41,128,185,.25);  } /* Defensive mid   */
-  .report-card.pos-cm  { --pc: #6caddf; --pb: rgba(108,173,223,.1); --pe: rgba(108,173,223,.25); } /* Central mid     */
-  .report-card.pos-cam { --pc: #0abde3; --pb: rgba(10,189,227,.1);  --pe: rgba(10,189,227,.25);  } /* Attacking mid   */
-  .report-card.pos-w   { --pc: #e67e22; --pb: rgba(230,126,34,.1);  --pe: rgba(230,126,34,.25);  } /* Winger          */
-  .report-card.pos-ss  { --pc: #f0a500; --pb: rgba(240,165,0,.1);   --pe: rgba(240,165,0,.25);   } /* Second striker  */
-  .report-card.pos-fw  { --pc: #e8a020; --pb: rgba(232,160,32,.1);  --pe: rgba(232,160,32,.25);  } /* Striker / CF    */
+  .report-card.pos-gk  { --pc: #0ea5b4; --pb: rgba(14,165,180,.1);  --pe: rgba(14,165,180,.25);  } /* Goalkeeper      */
+  .report-card.pos-cb  { --pc: #0ea5b4; --pb: rgba(14,165,180,.1);  --pe: rgba(14,165,180,.25);  } /* Centre-back     */
+  .report-card.pos-fb  { --pc: #0ea5b4; --pb: rgba(14,165,180,.1);  --pe: rgba(14,165,180,.25);  } /* Full-back       */
+  .report-card.pos-wb  { --pc: #12bfcf; --pb: rgba(18,191,207,.1);  --pe: rgba(18,191,207,.25);  } /* Wing-back       */
+  .report-card.pos-cdm { --pc: #0ea5b4; --pb: rgba(14,165,180,.1);  --pe: rgba(14,165,180,.25);  } /* Defensive mid   */
+  .report-card.pos-cm  { --pc: #f4d47c; --pb: rgba(244,212,124,.1); --pe: rgba(244,212,124,.25); } /* Central mid     */
+  .report-card.pos-cam { --pc: #f4d47c; --pb: rgba(244,212,124,.1); --pe: rgba(244,212,124,.25); } /* Attacking mid   */
+  .report-card.pos-w   { --pc: #ff5b04; --pb: rgba(255,91,4,.1);    --pe: rgba(255,91,4,.25);    } /* Winger          */
+  .report-card.pos-ss  { --pc: #ff5b04; --pb: rgba(255,91,4,.1);    --pe: rgba(255,91,4,.25);    } /* Second striker  */
+  .report-card.pos-fw  { --pc: #ff5b04; --pb: rgba(255,91,4,.1);    --pe: rgba(255,91,4,.25);    } /* Striker / CF    */
   /* broad aliases */
-  .report-card.pos-def { --pc: #9b59b6; --pb: rgba(155,89,182,.1);  --pe: rgba(155,89,182,.25);  } /* = pos-cb        */
-  .report-card.pos-mid { --pc: #6caddf; --pb: rgba(108,173,223,.1); --pe: rgba(108,173,223,.25); } /* = pos-cm        */
+  .report-card.pos-def { --pc: #0ea5b4; --pb: rgba(14,165,180,.1);  --pe: rgba(14,165,180,.25);  } /* = pos-cb        */
+  .report-card.pos-mid { --pc: #f4d47c; --pb: rgba(244,212,124,.1); --pe: rgba(244,212,124,.25); } /* = pos-cm        */
 
   .report-card:hover { background: var(--surface); }
 
@@ -467,10 +466,10 @@
     height: 2px;
   }
 
-  .comp-card.type-multi::before   { background: #4a9f6e; }
-  .comp-card.type-forward::before { background: #e8a020; }
-  .comp-card.type-mid::before     { background: #6caddf; }
-  .comp-card.type-def::before     { background: #9b59b6; }
+  .comp-card.type-multi::before   { background: #0ea5b4; }
+  .comp-card.type-forward::before { background: #ff5b04; }
+  .comp-card.type-mid::before     { background: #f4d47c; }
+  .comp-card.type-def::before     { background: #0ea5b4; }
 
   .comp-card:hover { background: var(--surface); }
 
@@ -486,10 +485,10 @@
     width: fit-content;
   }
 
-  .comp-type-badge.type-multi   { background: rgba(74,159,110,.1); color: #4a9f6e; border: 1px solid rgba(74,159,110,.25); }
-  .comp-type-badge.type-forward { background: rgba(232,160,32,.1); color: var(--accent); border: 1px solid rgba(232,160,32,.25); }
-  .comp-type-badge.type-mid     { background: rgba(108,173,223,.1); color: #6caddf; border: 1px solid rgba(108,173,223,.25); }
-  .comp-type-badge.type-def     { background: rgba(155,89,182,.1); color: #9b59b6; border: 1px solid rgba(155,89,182,.25); }
+  .comp-type-badge.type-multi   { background: rgba(14,165,180,.1);  color: #0ea5b4; border: 1px solid rgba(14,165,180,.25);  }
+  .comp-type-badge.type-forward { background: rgba(255,91,4,.1);    color: var(--accent); border: 1px solid rgba(255,91,4,.25);    }
+  .comp-type-badge.type-mid     { background: rgba(244,212,124,.1); color: #f4d47c; border: 1px solid rgba(244,212,124,.25); }
+  .comp-type-badge.type-def     { background: rgba(14,165,180,.1);  color: #0ea5b4; border: 1px solid rgba(14,165,180,.25);  }
 
   .comp-title {
     font-family: var(--display);

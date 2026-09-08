@@ -5,35 +5,35 @@
  * the player color variables before this sheet is applied:
  *
  *   :root {
- *     --p1:      #e8a020;               <- left-player accent color
- *     --p1-dim:  rgba(232,160,32,.12);  <- tinted bg fill (chips, badges)
- *     --p1-glow: rgba(232,160,32,.07);  <- very faint header glow
- *     --p2:      #2ecc71;               <- right-player accent color
- *     --p2-dim:  rgba(46,204,113,.12);
- *     --p2-glow: rgba(46,204,113,.06);
+ *     --p1:      #ff5b04;               <- left-player accent color
+ *     --p1-dim:  rgba(255,91,4,.12);    <- tinted bg fill (chips, badges)
+ *     --p1-glow: rgba(255,91,4,.07);    <- very faint header glow
+ *     --p2:      #f4d47c;               <- right-player accent color
+ *     --p2-dim:  rgba(244,212,124,.12);
+ *     --p2-glow: rgba(244,212,124,.06);
  *   }
  */
 
 /* ── TOKENS ───────────────────────────────────────── */
 :root {
-  --bg:      #0b0d0f;
-  --surface: #111417;
-  --border:  #1e2329;
-  --border2: #2a3040;
-  --text:    #c8cdd6;
-  --muted:   #8896a8;
-  --white:   #edf0f5;
+  --bg:      #182028;
+  --surface: #233038;
+  --border:  #2c3e48;
+  --border2: #38515e;
+  --text:    #d3dbdd;
+  --muted:   #8d969b;
+  --white:   #fdf6e3;
   --mono:    'DM Mono', monospace;
   --display: 'Syne', sans-serif;
   --body:    'DM Sans', sans-serif;
 
   /* defaults — every comparison overrides these */
-  --p1:      #2ecc71;
-  --p1-dim:  rgba(46,204,113,.12);
-  --p1-glow: rgba(46,204,113,.07);
-  --p2:      #e8a020;
-  --p2-dim:  rgba(232,160,32,.12);
-  --p2-glow: rgba(232,160,32,.06);
+  --p1:      #ff5b04;
+  --p1-dim:  rgba(255,91,4,.12);
+  --p1-glow: rgba(255,91,4,.07);
+  --p2:      #f4d47c;
+  --p2-dim:  rgba(244,212,124,.12);
+  --p2-glow: rgba(244,212,124,.06);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -84,7 +84,7 @@ body {
 .label-pill {
   font-family: var(--mono); font-size: 10px; letter-spacing: .16em;
   text-transform: uppercase; color: var(--muted);
-  background: rgba(136,150,168,.08); border: 1px solid var(--border2);
+  background: rgba(141,150,155,.08); border: 1px solid var(--border2);
   padding: 4px 12px; border-radius: 2px; display: inline-block; margin-bottom: 16px;
 }
 .report-title {
@@ -105,7 +105,7 @@ body {
 }
 .chip-p1 { background: var(--p1-dim); color: var(--p1); border: 1px solid color-mix(in srgb, var(--p1) 30%, transparent); }
 .chip-p2 { background: var(--p2-dim); color: var(--p2); border: 1px solid color-mix(in srgb, var(--p2) 30%, transparent); }
-.chip-muted { background: rgba(136,150,168,.08); color: var(--muted); border: 1px solid var(--border2); }
+.chip-muted { background: rgba(141,150,155,.08); color: var(--muted); border: 1px solid var(--border2); }
 
 /* ── MAIN ─────────────────────────────────────────── */
 .main {
@@ -161,8 +161,8 @@ body {
 }
 /* semantic tiers (Watch uses a fixed orange; player-colored tiers use p1/p2) */
 .vt-watch {
-  background: rgba(243,156,18,.1); color: #f39c12;
-  border: 1px solid rgba(243,156,18,.25);
+  background: rgba(244,212,124,.1); color: #f4d47c;
+  border: 1px solid rgba(244,212,124,.25);
 }
 .vt-p1 {
   background: var(--p1-dim); color: var(--p1);
@@ -206,7 +206,7 @@ body {
   background: var(--p2-dim); color: var(--p2);
   border: 1px solid color-mix(in srgb, var(--p2) 30%, transparent);
 }
-.fc-badge.adequate { background: rgba(136,150,168,.08); color: var(--muted); border: 1px solid var(--border2); }
+.fc-badge.adequate { background: rgba(141,150,155,.08); color: var(--muted); border: 1px solid var(--border2); }
 .fc-evidence { font-size: 12px; color: var(--text); line-height: 1.6; }
 .fc-evidence strong { color: var(--white); }
 

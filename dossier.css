@@ -11,34 +11,34 @@
 
 /* ── TOKENS ──────────────────────────────────────────────── */
 :root {
-  --paper:    #0b0d0f;
-  --surface:  #111417;
-  --hairline: #1e2329;
-  --border2:  #2a3040;
-  --ink:      #edf0f5;
-  --muted:    #8896a8;
+  --paper:    #182028;
+  --surface:  #233038;
+  --hairline: #2c3e48;
+  --border2:  #38515e;
+  --ink:      #fdf6e3;
+  --muted:    #8d969b;
 
-  --accent:   #e8a020;   /* amber — verdict tier, accent chips, bar fill */
-  --strong:   #2ecc71;   /* green — Strong rating */
-  --adequate: #8896a8;   /* same as --muted — Adequate rating */
+  --accent:   #ff5b04;   /* orange — verdict tier, accent chips, bar fill */
+  --strong:   #f4d47c;   /* sand yellow — Strong rating */
+  --adequate: #8d969b;   /* same as --muted — Adequate rating */
   --concern:  #e74c3c;   /* red — Concern rating, divergence */
 }
 
 /* ── POSITION PALETTE — override --accent per report body class ── */
 /*    pitch order: GK → CB → FB → WB → CDM → CM → CAM → W → SS → FW    */
-body.pos-gk  { --accent: #1abc9c; }   /* Goalkeeper       — teal        */
-body.pos-cb  { --accent: #9b59b6; }   /* Centre-back      — purple      */
-body.pos-fb  { --accent: #7d6ee7; }   /* Full-back        — indigo      */
-body.pos-wb  { --accent: #5d8fde; }   /* Wing-back        — cornflower  */
-body.pos-cdm { --accent: #2980b9; }   /* Defensive mid    — deep blue   */
-body.pos-cm  { --accent: #6caddf; }   /* Central mid      — sky blue    */
-body.pos-cam { --accent: #0abde3; }   /* Attacking mid    — cyan        */
-body.pos-w   { --accent: #e67e22; }   /* Winger           — orange      */
-body.pos-ss  { --accent: #f0a500; }   /* Second striker   — gold        */
-body.pos-fw  { --accent: #e8a020; }   /* Striker / CF     — amber       */
+body.pos-gk  { --accent: #0ea5b4; }   /* Goalkeeper       — teal (midnight green family) */
+body.pos-cb  { --accent: #0ea5b4; }   /* Centre-back      — teal                         */
+body.pos-fb  { --accent: #0ea5b4; }   /* Full-back        — teal                         */
+body.pos-wb  { --accent: #12bfcf; }   /* Wing-back        — bright teal                  */
+body.pos-cdm { --accent: #0ea5b4; }   /* Defensive mid    — teal                         */
+body.pos-cm  { --accent: #f4d47c; }   /* Central mid      — sand yellow                  */
+body.pos-cam { --accent: #f4d47c; }   /* Attacking mid    — sand yellow                  */
+body.pos-w   { --accent: #ff5b04; }   /* Winger           — orange                       */
+body.pos-ss  { --accent: #ff5b04; }   /* Second striker   — orange                       */
+body.pos-fw  { --accent: #ff5b04; }   /* Striker / CF     — orange                       */
 /* broad aliases */
-body.pos-def { --accent: #9b59b6; }   /* Defender (= pos-cb)            */
-body.pos-mid { --accent: #6caddf; }   /* Midfielder (= pos-cm)          */
+body.pos-def { --accent: #0ea5b4; }   /* Defender                                        */
+body.pos-mid { --accent: #f4d47c; }   /* Midfielder                                      */
 
 /* ── RESET ───────────────────────────────────────────────── */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
