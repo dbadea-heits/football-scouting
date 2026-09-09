@@ -315,8 +315,8 @@
 const verdict = document.getElementById('verdict');
 const mini = document.getElementById('mini');
 new IntersectionObserver(([e]) => {
-  mini.setAttribute('aria-hidden', String(e.isIntersecting));
-}, { threshold: 0 }).observe(verdict);
+  mini.classList.toggle('pinned', !e.isIntersecting && e.boundingClientRect.top < 0);
+}).observe(verdict);
 </script>
 </body>
 </html>

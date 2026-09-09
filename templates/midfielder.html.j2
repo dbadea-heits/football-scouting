@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ title }}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #0b0d0f;
+  --surface: #111417;
+  --border:  #1e2329;
+  --border2: #2a3040;
+  --text:    #c8cdd6;
+  --muted:   #8896a8;
+  --accent:  #e8a020;
+  --green:   #2ecc71;
+  --yellow:  #f39c12;
+  --red:     #e74c3c;
+  --white:   #edf0f5;
+  --mono:    'DM Mono', monospace;
+  --display: 'Syne', sans-serif;
+  --body:    'DM Sans', sans-serif;
+  --yaya:    #6caddf;
+  --bernal:  #e8a020;
+  --bell:    #f39c12;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 14px;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* ── TOPNAV ──────────────────────────────────────── */
+.fi-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px; height: 48px; border-bottom: 1px solid var(--border);
+  background: var(--bg); position: sticky; top: 0; z-index: 100; gap: 24px;
+}
+.fi-nav a {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted); text-decoration: none;
+  display: flex; align-items: center; gap: 7px; transition: color .15s;
+}
+.fi-nav a:hover { color: var(--accent); }
+.fi-nav-brand {
+  font-family: var(--display); font-size: 12px; font-weight: 700;
+  color: var(--white); letter-spacing: .04em;
+}
+.fi-nav-sep { color: var(--border2); font-family: var(--mono); font-size: 12px; }
+.fi-nav-crumb {
+  font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: .08em;
+}
+
+/* ── HEADER ──────────────────────────────────────── */
+.header {
+  position: relative;
+  border-bottom: 1px solid var(--border2);
+  padding: 48px 64px 40px;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 80% at 85% 50%, rgba(232,160,32,.07) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 60% at 10% 20%, rgba(108,173,223,.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+.header-top {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 32px; flex-wrap: wrap;
+}
+.label-pill {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--accent);
+  background: rgba(232,160,32,.10); border: 1px solid rgba(232,160,32,.25);
+  padding: 4px 12px; border-radius: 2px; display: inline-block; margin-bottom: 16px;
+}
+.report-title {
+  font-family: var(--display);
+  font-size: clamp(32px, 4vw, 56px);
+  font-weight: 800;
+  color: var(--white);
+  line-height: 1;
+  letter-spacing: -.02em;
+  margin-bottom: 10px;
+}
+.report-sub {
+  font-family: var(--mono); font-size: 11px; color: var(--muted);
+  letter-spacing: .06em; text-transform: uppercase;
+}
+.header-meta {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--border); border: 1px solid var(--border);
+  border-radius: 4px; overflow: hidden; min-width: 280px; align-self: flex-start;
+}
+.meta-cell { background: var(--surface); padding: 16px 20px; }
+.meta-label {
+  font-family: var(--mono); font-size: 9px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 5px;
+}
+.meta-value {
+  font-family: var(--mono); font-size: 20px; color: var(--white); font-weight: 500;
+}
+.meta-value.accent { color: var(--accent); }
+
+/* ── SECTION LABEL ───────────────────────────────── */
+.section-label {
+  font-family: var(--mono); font-size: 9px; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--accent);
+  margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
+}
+.section-label::after {
+  content: ''; flex: 1; height: 1px; background: var(--border2);
+}
+
+/* ── PLAYER CARDS ────────────────────────────────── */
+.cards-section {
+  padding: 40px 64px;
+  border-bottom: 1px solid var(--border);
+}
+.grid-3 {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+}
+.card {
+  background: var(--surface); border: 1px solid var(--border2);
+  border-radius: 4px; padding: 22px 20px 20px; position: relative; overflow: hidden;
+}
+.card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+}
+{% for p in players %}{{ ('.card.' ~ p.card_cls ~ '::before').ljust(css_sel_width) }} { background: var(--{{ p.css_token }}); }
+{% endfor %}
+.player-name {
+  font-family: var(--display); font-size: 21px; font-weight: 700;
+  color: var(--white); margin-bottom: 3px; line-height: 1.1;
+}
+.player-sub {
+  font-family: var(--mono); font-size: 9px; color: var(--muted);
+  letter-spacing: .05em; text-transform: uppercase; margin-bottom: 14px;
+}
+.stat-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 5px 0; border-bottom: 1px solid var(--border);
+}
+.stat-row:last-child { border-bottom: none; }
+.stat-label { font-family: var(--mono); font-size: 10px; color: var(--muted); }
+.stat-val   { font-family: var(--mono); font-size: 11px; color: var(--text); font-weight: 500; }
+.stat-val.good { color: var(--green); }
+.stat-val.mid  { color: var(--yellow); }
+.stat-val.bad  { color: var(--red); }
+
+/* ── MAIN 2-COL LAYOUT ───────────────────────────── */
+.main {
+  display: grid; grid-template-columns: 1fr 380px;
+  gap: 0; align-items: start;
+}
+.col-left { border-right: 1px solid var(--border); }
+
+section {
+  padding: 40px 64px; border-bottom: 1px solid var(--border);
+}
+.col-right section { padding: 32px 28px; }
+
+/* ── STAT TABLE ──────────────────────────────────── */
+.stat-table {
+  width: 100%; border-collapse: collapse;
+  font-family: var(--mono); font-size: 11.5px;
+}
+.stat-table th {
+  text-align: left; font-size: 9px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted);
+  padding: 6px 12px 10px; border-bottom: 1px solid var(--border2); font-weight: 400;
+}
+.stat-table th:not(:first-child) { text-align: center; }
+.stat-table td {
+  padding: 7px 12px; color: var(--text); border-bottom: 1px solid var(--border);
+}
+.stat-table tr:last-child td { border-bottom: none; }
+.stat-table td:first-child { color: var(--muted); }
+.stat-table td:not(:first-child) { text-align: center; }
+.stat-table td.highlight { color: var(--white); font-weight: 500; }
+.stat-table td.accent    { color: var(--accent); }
+.stat-table td.good      { color: var(--green); }
+.stat-table td.bad       { color: var(--red); }
+
+.stat-table tr.section-row td {
+  background: rgba(232,160,32,.05); color: var(--accent);
+  font-size: 9px; letter-spacing: .15em; text-transform: uppercase;
+  padding: 8px 12px;
+  border-top: 1px solid var(--border2); border-bottom: 1px solid var(--border2);
+  font-weight: 400; text-align: left;
+}
+.badge {
+  display: inline-block; padding: 2px 8px; border-radius: 2px;
+  font-size: 10px; font-weight: 500;
+}
+.best {
+  background: rgba(46,204,113,.12); color: var(--green);
+  border: 1px solid rgba(46,204,113,.3);
+}
+
+/* ── SIDEBAR ─────────────────────────────────────── */
+.sidebar-block { padding: 28px 28px; border-bottom: 1px solid var(--border); }
+.sidebar-block:last-child { border-bottom: none; }
+
+.radar-wrap { width: 100%; display: flex; justify-content: center; margin-top: 8px; }
+.radar-wrap canvas { max-width: 100%; display: block; }
+
+.verdict-body { font-size: 13px; line-height: 1.65; color: var(--text); }
+.verdict-body p { margin-bottom: 14px; }
+.verdict-body p:last-child { margin-bottom: 0; }
+.verdict-body strong { color: var(--white); font-weight: 500; }
+
+/* ── FOOTER ──────────────────────────────────────── */
+footer {
+  padding: 28px 64px; border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 12px;
+}
+.footer-left  { font-family: var(--mono); font-size: 10px; color: var(--muted); }
+.footer-right { font-family: var(--mono); font-size: 10px; color: var(--muted); text-align: right; }
+
+/* ── RESPONSIVE ──────────────────────────────────── */
+@media (max-width: 900px) {
+  .main { grid-template-columns: 1fr; }
+  .col-left { border-right: none; }
+  .header { padding: 32px 24px 28px; }
+  section { padding: 28px 24px; }
+  .cards-section { padding: 28px 24px; }
+  footer { padding: 20px 24px; }
+  .header-meta { min-width: 0; width: 100%; }
+  .grid-3 { grid-template-columns: 1fr; }
+  .fi-nav { padding: 0 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ─── TOPNAV ──────────────────────────────────────── -->
+<nav class="fi-nav">
+  <a href="index.html#comparisons">← Back</a>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <span class="fi-nav-brand">Football Intelligence</span>
+    <span class="fi-nav-sep">·</span>
+    <span class="fi-nav-crumb">{{ nav_crumb }}</span>
+  </div>
+  <div></div>
+</nav>
+
+<!-- ─── HEADER ──────────────────────────────────────── -->
+<header class="header">
+  <div class="header-top">
+    <div>
+      <div class="label-pill">{{ label_pill }}</div>
+      <h1 class="report-title">{{ report_title }}</h1>
+      <p class="report-sub">{{ report_sub }}</p>
+    </div>
+    <div class="header-meta">
+      <div class="meta-cell">
+        <div class="meta-label">Players</div>
+        <div class="meta-value accent">{{ n_players }}</div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-label">Eras</div>
+        <div class="meta-value">{{ eras }}</div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-label">Dimensions</div>
+        <div class="meta-value">{{ n_axes }}</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ─── PLAYER CARDS ─────────────────────────────────── -->
+<div class="cards-section">
+  <div class="section-label">Player Profiles</div>
+  <div class="grid-3">
+
+{% for p in players %}    <div class="card {{ p.card_cls }}">
+      <div class="player-name">{{ p.name }}</div>
+      <div class="player-sub">{{ p.sub }}</div>
+{% for s in p.stats %}      <div class="stat-row"><span class="stat-label">{{ s.label }}</span><span class="stat-val{{ ' ' ~ s.cls if s.cls else '' }}">{{ s.val }}</span></div>
+{% endfor %}    </div>
+
+{% endfor %}  </div>
+</div>
+
+<!-- ─── MAIN 2-COL ────────────────────────────────────── -->
+<div class="main">
+
+  <!-- LEFT: H2H TABLE -->
+  <div class="col-left">
+    <section>
+      <div class="section-label">Head-to-Head · All Metrics</div>
+      <div style="overflow-x:auto">
+        <table class="stat-table">
+          <thead>
+            <tr>
+              <th>{{ th_metric }}</th>
+{% for p in players %}              <th>{{ p.name }}</th>
+{% endfor %}              <th>{{ th_best }}</th>
+            </tr>
+          </thead>
+          <tbody>
+{% for r in rows %}{% if r.kind == 'section' %}{% if not loop.first %}
+{% endif %}            <tr class="section-row"><td colspan="5">{{ r.label }}</td></tr>
+{% else %}            <tr>
+              <td>{{ r.label }}</td>
+{% for c in r.cells %}              <td>{{ c }}</td>
+{% endfor %}{% if r.winner %}              <td class="accent">{{ r.winner }}</td>
+{% else %}              <td>—</td>
+{% endif %}            </tr>
+{% endif %}{% endfor %}          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <!-- RIGHT: RADAR + VERDICT -->
+  <div class="col-right">
+    <div class="sidebar-block">
+      <div class="section-label">Radar Profile</div>
+      <p style="font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px;">{{ radar_caption }}</p>
+      <div class="radar-wrap">
+        <canvas id="r" width="500" height="500"></canvas>
+      </div>
+    </div>
+    <div class="sidebar-block">
+      <div class="section-label">Verdict</div>
+      <div class="verdict-body">
+{% for b in blocks %}        <p>{{ b }}</p>
+{% if not loop.last %}
+{% endif %}{% endfor %}      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<!-- ─── FOOTER ────────────────────────────────────────── -->
+<footer>
+  <div class="footer-left">
+    {{ footer_left }}
+  </div>
+  <div class="footer-right">
+    {{ footer_right }}
+  </div>
+</footer>
+
+<script>
+const c=document.getElementById('r').getContext('2d');
+const W=500,H=500,cx=250,cy=250,R=180;
+const L=[{% for a in axes %}'{{ a }}'{% if not loop.last %},{% endif %}{% endfor %}];
+const P={
+{% for p in players %}  '{{ p.radar_name }}':[{{ p.radar|join(',') }}]{% if not loop.last %},{% endif %}
+{% endfor %}};
+const CL={
+{%- for p in players %}'{{ p.radar_name }}':'{{ p.color }}'{% if not loop.last %},{% endif %}
+{%- endfor %}};
+const Mx=L.map((_,i)=>Math.max(...Object.values(P).map(p=>p[i])));
+const N=p=>p.map((v,i)=>(v/Mx[i])*100);
+function draw(){
+  c.clearRect(0,0,W,H);
+  for(let r=1;r<=5;r++){
+    const l=R/5*r;c.beginPath();
+    for(let i=0;i<L.length;i++){const a=Math.PI*2/L.length*i-Math.PI/2,x=cx+l*Math.cos(a),y=cy+l*Math.sin(a);i?c.lineTo(x,y):c.moveTo(x,y);}
+    c.closePath();c.strokeStyle='#1e2a4a';c.stroke();
+  }
+  c.fillStyle='#aabbdd';c.font='11px sans-serif';c.textAlign='center';
+  L.forEach((l,i)=>{const a=Math.PI*2/L.length*i-Math.PI/2;c.fillText(l,cx+(R+24)*Math.cos(a),cy+(R+24)*Math.sin(a));});
+  Object.entries(P).forEach(([n,v])=>{
+    const m=N(v);c.beginPath();
+    m.forEach((v,i)=>{const a=Math.PI*2/L.length*i-Math.PI/2,x=cx+(R*v/100)*Math.cos(a),y=cy+(R*v/100)*Math.sin(a);i?c.lineTo(x,y):c.moveTo(x,y);});
+    c.closePath();c.fillStyle=CL[n]+'25';c.fill();c.strokeStyle=CL[n];c.lineWidth=2.5;c.stroke();
+  });
+  let y=16;
+  Object.entries(CL).forEach(([n,cl])=>{c.fillStyle=cl;c.fillRect(12,y,12,12);c.fillStyle='#e0e6f0';c.font='12px sans-serif';c.textAlign='left';c.fillText(n,28,y+10);y+=20;});
+}
+draw();
+</script>
+</body>
+</html>

@@ -776,7 +776,7 @@
 <script>
 (function() {
   const canvas = document.getElementById('radar');
-  const ctx    = canvas.getContext('2d');
+  const ctx = canvas.getContext('2d');
   const W = 460, H = 460, cx = 230, cy = 230, R = 155;
   const AXES = ['Ball\nProgression', 'Anticipation', 'Distribution', 'Press Fit', 'Availability'];
 
@@ -813,7 +813,6 @@
     return [cx + (R * val / 100) * Math.cos(a), cy + (R * val / 100) * Math.sin(a)];
   }
 
-  /* grid rings */
   for (let r = 1; r <= 5; r++) {
     const frac = R / 5 * r;
     ctx.beginPath();
@@ -825,7 +824,6 @@
     ctx.closePath();
     ctx.strokeStyle = '#1e2a4a'; ctx.lineWidth = 1; ctx.stroke();
   }
-  /* spokes */
   for (let i = 0; i < n; i++) {
     const a = angle(i);
     ctx.beginPath(); ctx.moveTo(cx, cy);
@@ -833,21 +831,19 @@
     ctx.strokeStyle = '#1e2a4a'; ctx.lineWidth = 1; ctx.stroke();
   }
 
-  /* axis labels — split on \n for two-line labels */
   ctx.fillStyle = '#8896a8';
   ctx.font = '11px DM Mono, monospace';
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
   AXES.forEach((label, i) => {
-    const a    = angle(i);
-    const lx   = cx + (R + 30) * Math.cos(a);
-    const ly   = cy + (R + 30) * Math.sin(a);
+    const a = angle(i);
+    const lx = cx + (R + 30) * Math.cos(a);
+    const ly = cy + (R + 30) * Math.sin(a);
     const lines = label.split('\n');
-    const lh    = 14;
-    const top   = ly - (lines.length - 1) * lh / 2;
+    const lh = 14;
+    const top = ly - (lines.length - 1) * lh / 2;
     lines.forEach((line, j) => ctx.fillText(line, lx, top + j * lh));
   });
 
-  /* polygon draw helper */
   function drawPoly(data, color) {
     ctx.beginPath();
     data.forEach((v, i) => {
@@ -855,7 +851,7 @@
       i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
     });
     ctx.closePath();
-    ctx.fillStyle   = color + '28'; ctx.fill();
+    ctx.fillStyle = color + '28'; ctx.fill();
     ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.stroke();
     data.forEach((v, i) => {
       const [x, y] = pt(v, i);
@@ -864,8 +860,8 @@
     });
   }
 
-  drawPoly(P1_DATA, '#22c55e');   /* Inácio  */
-  drawPoly(P2_DATA, '#f43f5e');   /* Lukeba  */
+  drawPoly(P1_DATA, '#22c55e');
+  drawPoly(P2_DATA, '#f43f5e');
 })();
 </script>
 

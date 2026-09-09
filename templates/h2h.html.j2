@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ title }}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="comparison.css">
+<style>
+:root {
+  --p1:      {{ p1_color }};               /* {{ p1_style_label }} */
+  --p1-dim:  {{ p1_color_dim }};
+  --p1-glow: {{ p1_color_glow }};
+  --p2:      {{ p2_color }};               /* {{ p2_style_label }} */
+  --p2-dim:  {{ p2_color_dim }};
+  --p2-glow: {{ p2_color_glow }};
+}
+{% if style_note %}{{ style_note }}
+{% endif %}</style>
+</head>
+<body>
+
+<nav class="fi-nav">
+  <a href="index.html#comparisons">← Back</a>
+  <span class="fi-nav-brand">Football Intelligence · Head-to-Head</span>
+  <div></div>
+</nav>
+
+<!-- ─── HEADER ──────────────────────────────────────── -->
+<header class="header">
+  <div class="header-inner">
+    <div class="label-pill">{{ label_pill }}</div>
+    <h1 class="report-title">
+      <span class="p1-name">{{ p1_short }}</span> vs <span class="p2-name">{{ p2_short }}</span>
+    </h1>
+    <p class="header-sub">
+{{ header_sub }}
+    </p>
+    <div class="header-chips">
+      <span class="chip {{ chip1_cls }}">{{ chip1_label }}</span>
+      <span class="chip {{ chip2_cls }}">{{ chip2_label }}</span>
+      <span class="chip {{ chip3_cls }}">{{ chip3_label }}</span>
+    </div>
+  </div>
+</header>
+
+<!-- ─── MAIN ─────────────────────────────────────────── -->
+<div class="main">
+
+  <!-- {{ sections.identity.num }} · IDENTITY CARDS -->
+  <section>
+    <div class="section-label">{{ sections.identity.label }}</div>
+    <div class="identity-grid">
+
+      <div class="id-card p1-card">
+        <div class="id-name">{{ p1_name }}</div>
+        <div class="id-club">{{ p1_club_line }}</div>
+        <div class="id-fact-grid">
+{% for f in id_facts.p1 %}          <div class="id-fact">
+            <div class="id-fact-label">{{ f.label }}</div>
+            <div class="id-fact-val{{ ' ' ~ f.val_cls if f.val_cls else '' }}"{{ ' style="' ~ f.val_style ~ '"' if f.val_style else '' }}>{{ f.val }}</div>
+          </div>
+{% endfor %}        </div>
+        <div class="id-verdict">
+          <div class="verdict-label">Scout Verdict</div>
+          <span class="verdict-tier {{ p1_tier_cls }}">{{ p1_tier }}</span>
+        </div>
+      </div>
+
+      <div class="id-vs">VS</div>
+
+      <div class="id-card p2-card">
+        <div class="id-name">{{ p2_name }}</div>
+        <div class="id-club">{{ p2_club_line }}</div>
+        <div class="id-fact-grid">
+{% for f in id_facts.p2 %}          <div class="id-fact">
+            <div class="id-fact-label">{{ f.label }}</div>
+            <div class="id-fact-val{{ ' ' ~ f.val_cls if f.val_cls else '' }}"{{ ' style="' ~ f.val_style ~ '"' if f.val_style else '' }}>{{ f.val }}</div>
+          </div>
+{% endfor %}        </div>
+        <div class="id-verdict">
+          <div class="verdict-label">Scout Verdict</div>
+          <span class="verdict-tier {{ p2_tier_cls }}">{{ p2_tier }}</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- {{ sections.corners.num }} · FOUR CORNERS MATRIX -->
+  <section>
+    <div class="section-label">{{ sections.corners.label }}</div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:18px;font-family:var(--mono)">
+{{ corners_intro_html }}
+    </p>
+    <div class="fc-grid">
+
+{% if corners_header_comment %}      {{ corners_header_comment }}
+{% endif %}      <div class="fc-cell header-cell">
+        <span class="fc-player-label p1">{{ p1_short }}</span>
+      </div>
+      <div class="fc-cell header-cell" style="border-left:1px solid var(--border2)">
+        <span class="fc-player-label p2">{{ p2_short }}</span>
+      </div>
+{% for c in corners %}
+      <!-- {{ c.tag }} -->
+      <div class="fc-cell"{% if not loop.first %} style="border-top:1px solid var(--border2)"{% endif %}>
+        <div class="fc-corner-name">{{ c.name }}</div>
+        <div class="fc-rating">
+          <span class="fc-dot {{ c.p1.dot_cls }}">{{ c.p1.dot }}</span>
+          <span class="fc-badge {{ c.p1.badge_cls }}">{{ c.p1.badge_label }}</span>
+        </div>
+        <div class="fc-evidence">
+{{ c.p1.evidence_html }}
+        </div>
+      </div>
+      <div class="fc-cell" style="{% if not loop.first %}border-top:1px solid var(--border2);{% endif %}border-left:1px solid var(--border2)">
+        <div class="fc-corner-name">{{ c.name }}</div>
+        <div class="fc-rating">
+          <span class="fc-dot {{ c.p2.dot_cls }}">{{ c.p2.dot }}</span>
+          <span class="fc-badge {{ c.p2.badge_cls }}">{{ c.p2.badge_label }}</span>
+        </div>
+        <div class="fc-evidence">
+{{ c.p2.evidence_html }}
+        </div>
+      </div>
+{% endfor %}
+    </div>
+  </section>
+
+  <!-- {{ sections.metrics.num }} · KEY METRICS COMPARISON -->
+  <section>
+    <div class="section-label">{{ sections.metrics.label }}</div>
+{% if methodology_html %}    {{ methodology_html }}
+{% endif %}    <div class="metric-section">
+{% for m in metrics %}{% if m.kind != 'note' %}
+{% endif %}{% if m.kind == 'group' %}      <div class="metric-group-header">{{ m.group_label }}</div>
+{% elif m.kind == 'note' %}      <div class="metric-row" style="padding-top:4px;padding-bottom:10px">
+        <div class="metric-note" style="{{ m.note_style }}">
+{{ m.note_html }}
+        </div>
+      </div>
+{% else %}      <div class="metric-row{{ ' diverge' if m.diverge else '' }}">
+        <div class="metric-bar-wrap">
+{% for b in m.left %}          <div class="bar-line">
+            <span class="bar-name">{{ b.name }}</span>
+            <div class="bar-track"><div class="bar-fill {{ b.side }}" style="width:{{ b.width }}%"></div></div>
+            <span class="bar-val{{ b.cls }}"{{ ' style="color:var(--muted)"' if b.muted else '' }}>{{ b.val }}</span>
+          </div>
+{% endfor %}        </div>
+        <div class="metric-label">{{ m.label }}{% if m.diverge %}<span class="diverge-tag">≠</span>{% endif %}<br><span style="font-size:9px;color:var(--muted)">{{ m.sub_html }}</span></div>
+        <div class="metric-bar-wrap" style="direction:rtl">
+{% for b in m.right %}          <div class="bar-line" style="flex-direction:row-reverse">
+            <span class="bar-name" style="text-align:left">{{ b.name }}</span>
+            <div class="bar-track"><div class="bar-fill {{ b.side }}" style="width:{{ b.width }}%"></div></div>
+            <span class="bar-val{{ b.cls }}" style="text-align:right{{ ';color:var(--muted)' if b.muted else '' }}">{{ b.val }}</span>
+          </div>
+{% endfor %}        </div>
+      </div>
+{% endif %}{% endfor %}
+    </div>
+  </section>
+
+  <!-- {{ sections.radar.num }} · RADAR -->
+  <section>
+    <div class="section-label">{{ sections.radar.label }}</div>
+    <div class="radar-wrap">
+      <div class="radar-legend">
+        <div class="legend-item"><span class="legend-swatch p1"></span>{{ p1_name }}</div>
+        <div class="legend-item"><span class="legend-swatch p2"></span>{{ p2_name }}</div>
+      </div>
+      <canvas id="radar" width="460" height="460"></canvas>
+      {{ radar_caption_html }}
+    </div>
+  </section>
+
+  <!-- {{ sections.divergence.num }} · DIVERGENCE ANALYSIS -->
+  <section>
+    <div class="section-label">{{ sections.divergence.label }}</div>
+    <div class="divg-grid">
+{% for d in divg %}
+      <div class="divg-card key">
+        <div class="divg-title">{{ d.title }}</div>
+        <div class="divg-body">
+{{ d.body_html }}
+        </div>
+      </div>
+{% endfor %}
+    </div>
+  </section>
+{% if has_acquisition %}
+  <!-- {{ sections.acquisition.num }} · ACQUISITION LANDSCAPE -->
+  <section>
+    <div class="section-label">{{ sections.acquisition.label }}</div>
+    <div class="acq-grid">
+
+      <div class="acq-card p1-card">
+        <div class="acq-player">{{ p1_name }}</div>
+{% for a in acq.p1 %}        <div class="acq-row"><span class="acq-key">{{ a.key }}</span><span class="acq-val{{ ' ' ~ a.val_cls if a.val_cls else '' }}">{{ a.val }}</span></div>
+{% endfor %}      </div>
+
+      <div class="acq-card p2-card">
+        <div class="acq-player">{{ p2_name }}</div>
+{% for a in acq.p2 %}        <div class="acq-row"><span class="acq-key">{{ a.key }}</span><span class="acq-val{{ ' ' ~ a.val_cls if a.val_cls else '' }}">{{ a.val }}</span></div>
+{% endfor %}      </div>
+
+    </div>
+  </section>
+{% endif %}
+  <!-- {{ sections.verdict.num }} · VERDICT -->
+  <section>
+    <div class="section-label">{{ sections.verdict.label }}</div>
+
+    <div class="verdict-section" style="margin-bottom:14px">
+
+      <div class="verdict-box p1-box">
+        <div class="verdict-player">{{ p1_name }}</div>
+        <div class="verdict-tier-big p1">{{ p1_tier_big }}</div>
+        <div class="verdict-text">
+{{ p1_verdict_html }}
+        </div>
+      </div>
+
+      <div class="verdict-box p2-box">
+        <div class="verdict-player">{{ p2_name }}</div>
+        <div class="verdict-tier-big p2">{{ p2_tier_big }}</div>
+        <div class="verdict-text">
+{{ p2_verdict_html }}
+        </div>
+      </div>
+
+    </div>
+
+    <div class="rec-box">
+      <div class="rec-label">{{ rec_label }}</div>
+      <div class="rec-text">
+{{ rec_html }}
+      </div>
+    </div>
+  </section>
+
+</div><!-- /main -->
+
+<!-- ─── FOOTER ────────────────────────────────────────── -->
+<footer>
+  <div class="footer-left">{{ footer_left }}</div>
+  <div class="footer-right">{{ footer_right }}</div>
+</footer>
+
+<script>
+(function() {
+  const canvas = document.getElementById('radar');
+  const ctx = canvas.getContext('2d');
+  const W = 460, H = 460, cx = 230, cy = 230, R = 155;
+  const AXES = {{ radar_axes_js }};
+{% if radar_notes %}{{ radar_notes }}
+{% endif %}  const P1_DATA = {{ radar_p1_js }};{{ radar_p1_pad }}// {{ p1_short }}
+  const P2_DATA = {{ radar_p2_js }};{{ radar_p2_pad }}// {{ p2_short }}
+  const n = AXES.length;
+
+  function angle(i) { return (Math.PI * 2 / n) * i - Math.PI / 2; }
+  function pt(val, i) {
+    const a = angle(i);
+    return [cx + (R * val / 100) * Math.cos(a), cy + (R * val / 100) * Math.sin(a)];
+  }
+
+  for (let r = 1; r <= 5; r++) {
+    const frac = R / 5 * r;
+    ctx.beginPath();
+    for (let i = 0; i < n; i++) {
+      const a = angle(i);
+      const x = cx + frac * Math.cos(a), y = cy + frac * Math.sin(a);
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.strokeStyle = '#1e2a4a'; ctx.lineWidth = 1; ctx.stroke();
+  }
+  for (let i = 0; i < n; i++) {
+    const a = angle(i);
+    ctx.beginPath(); ctx.moveTo(cx, cy);
+    ctx.lineTo(cx + R * Math.cos(a), cy + R * Math.sin(a));
+    ctx.strokeStyle = '#1e2a4a'; ctx.lineWidth = 1; ctx.stroke();
+  }
+
+  ctx.fillStyle = '#8896a8';
+  ctx.font = '11px DM Mono, monospace';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  AXES.forEach((label, i) => {
+    const a = angle(i);
+{% if radar_multiline %}    const lx = cx + (R + {{ radar_label_radius }}) * Math.cos(a);
+    const ly = cy + (R + {{ radar_label_radius }}) * Math.sin(a);
+    const lines = label.split('\n');
+    const lh = 14;
+    const top = ly - (lines.length - 1) * lh / 2;
+    lines.forEach((line, j) => ctx.fillText(line, lx, top + j * lh));
+{% else %}    ctx.fillText(label, cx + (R + {{ radar_label_radius }}) * Math.cos(a), cy + (R + {{ radar_label_radius }}) * Math.sin(a));
+{% endif %}  });
+
+  function drawPoly(data, color) {
+    ctx.beginPath();
+    data.forEach((v, i) => {
+      const [x, y] = pt(v, i);
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    });
+    ctx.closePath();
+    ctx.fillStyle = color + '28'; ctx.fill();
+    ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.stroke();
+    data.forEach((v, i) => {
+      const [x, y] = pt(v, i);
+      ctx.beginPath(); ctx.arc(x, y, 3.5, 0, Math.PI * 2);
+      ctx.fillStyle = color; ctx.fill();
+    });
+  }
+
+{% if radar_p1_on_top %}  drawPoly(P2_DATA, '{{ p2_color }}');
+  drawPoly(P1_DATA, '{{ p1_color }}');
+{% else %}  drawPoly(P1_DATA, '{{ p1_color }}');
+  drawPoly(P2_DATA, '{{ p2_color }}');
+{% endif %}})();
+</script>
+
+</body>
+</html>

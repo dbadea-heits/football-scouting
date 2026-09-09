@@ -3,17 +3,18 @@
 update-stats.py — Football Intelligence · 2026-27 Season Data Fetcher
 
 Fetches current-season stats from FBref and Understat for all tracked players,
-then writes data/season-2627.json. Run weekly via GitHub Actions after matchday.
+upserts them into data/football.db, then rebuilds every generated artifact via
+scripts/build.py. Run weekly via GitHub Actions after matchday.
 
 Sources:
   - FBref: goals, assists, apps, minutes, progressive carries/passes (rendered HTML via Playwright)
   - Understat: xG, xA, key passes per 90 (XHR response intercepted via Playwright)
 
-Requires: pip install playwright beautifulsoup4 lxml && playwright install chromium
+Requires: pip install playwright beautifulsoup4 lxml jinja2 && playwright install chromium
 """
 
-import json
 import re
+import sqlite3
 import sys
 import time
 from datetime import datetime, timezone
@@ -28,7 +29,13 @@ CURRENT_SEASON = "2026-27"
 FBREF_SEASON   = "2026-2027"   # FBref URL format
 UNDERSTAT_YEAR = "2026"        # Understat season key
 
-OUT_PATH = Path(__file__).parent.parent / "data" / "season-2627.json"
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+import build  # noqa: E402
+from pages import season  # noqa: E402
+
+# Same path build.py reads (honours the FOOTBALL_DB override).
+DB_PATH = build.DB_PATH
 
 HEADERS = {
     "User-Agent": (
@@ -366,7 +373,7 @@ def format_val(v) -> str:
 
 
 def build_player_entry(player_id: str, cfg: dict, ctx: BrowserContext) -> dict:
-    """Fetch data and build the player JSON entry for season-2627.json."""
+    """Fetch data and build the player's 2026-27 overlay entry."""
     print(f"\n  [{player_id}]", flush=True)
 
     fbref_stats: dict = {}
@@ -456,22 +463,14 @@ def _is_positive(v) -> bool:
         return False
 
 
-# ── Load existing JSON (preserve structure) ────────────────────────────────────
+# ── Database round-trip ───────────────────────────────────────────────────────
+# data/football.db is the single source of truth; the shape of an overlay entry
+# (and the SQL that reads/writes it) lives in scripts/pages/season.py so the
+# scraper and the site build can never disagree about it.
 
-def load_existing() -> dict:
-    if OUT_PATH.exists():
-        with OUT_PATH.open() as f:
-            return json.load(f)
-    return {
-        "_comment": (
-            "2026-27 current season live data. "
-            "Updated weekly by scripts/update-stats.py."
-        ),
-        "season": CURRENT_SEASON,
-        "updated": "",
-        "matchweek": 0,
-        "players": {},
-    }
+def _db_entry(conn: sqlite3.Connection, player_id: str) -> dict | None:
+    """The player's stored 2026-27 entry, in `build_player_entry()`'s shape."""
+    return season.entry(conn, player_id)
 
 
 # ── Main ──────────────────────────────────────────────────────────────────────
@@ -486,42 +485,44 @@ def main():
 
     print(f"Updating {len(targets)} player(s) for {CURRENT_SEASON} …\n")
 
-    data = load_existing()
-    if "players" not in data:
-        data["players"] = {}
+    if not DB_PATH.exists():
+        print(f"{DB_PATH} not found — run: python scripts/init_db.py")
+        sys.exit(1)
 
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
     changed = False
-    with sync_playwright() as pw:
-        browser = pw.chromium.launch(headless=True)
-        ctx = browser.new_context(user_agent=BROWSER_UA)
+    try:
+        with sync_playwright() as pw:
+            browser = pw.chromium.launch(headless=True)
+            ctx = browser.new_context(user_agent=BROWSER_UA)
 
-        for player_id in targets:
-            cfg = PLAYERS[player_id]
-            entry = build_player_entry(player_id, cfg, ctx)
-            if data["players"].get(player_id) != entry:
-                data["players"][player_id] = entry
-                changed = True
-                print(f"  ✓ {player_id} updated")
-            else:
-                print(f"  = {player_id} unchanged")
+            for player_id in targets:
+                cfg = PLAYERS[player_id]
+                entry = build_player_entry(player_id, cfg, ctx)
+                if _db_entry(conn, player_id) != entry:
+                    season.upsert_entry(conn, player_id, entry)
+                    changed = True
+                    print(f"  ✓ {player_id} updated")
+                else:
+                    print(f"  = {player_id} unchanged")
 
-        browser.close()
+            browser.close()
+
+        if changed:
+            stamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+            matchweek = season.bump(conn, stamp)
+            conn.commit()
+            print(f"\nStored in {DB_PATH} · matchweek {matchweek} · {stamp}")
+        else:
+            print("\nNo changes — database unchanged")
+    finally:
+        conn.close()
 
     if changed:
-        data["updated"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-        data["matchweek"] = data.get("matchweek", 0) + 1
-        with OUT_PATH.open("w", encoding="utf-8") as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
-        print(f"\nWrote {OUT_PATH}")
-        js_path = OUT_PATH.with_suffix(".js")
-        with js_path.open("w", encoding="utf-8") as f:
-            f.write("/* Auto-generated by update-stats.py — do not edit directly */\n")
-            f.write("window.FI_SEASON_DATA = ")
-            json.dump(data, f, ensure_ascii=False, indent=2)
-            f.write(";\n")
-        print(f"Wrote {js_path}")
-    else:
-        print("\nNo changes — JSON unchanged")
+        # build.py owns artifact emission: every page plus data/season-2627.{json,js}
+        print("\nRebuilding site from the database …")
+        build.main()
 
 
 if __name__ == "__main__":

@@ -71,37 +71,66 @@
     "nicolo-tresoldi": {
       "signals": [
         {
-          "num": "—",
+          "num": "0.62",
           "bar": 0,
-          "pctl": "2026-27 · In progress"
+          "pctl": "2026-27 · Jupiler Pro League"
         },
         {
-          "num": "—",
+          "num": "-0.78",
           "bar": 0,
-          "pctl": "2026-27 · In progress"
+          "pctl": "2026-27 · Jupiler Pro League"
         },
         {
-          "num": "—",
+          "num": "3.52",
           "bar": 0,
-          "pctl": "2026-27 · In progress"
+          "pctl": "2026-27 · Jupiler Pro League"
         }
       ],
-      "current_block": [],
+      "current_block": [
+        {
+          "label": "All comps 2026-27",
+          "val": "7 apps · 615 min · 5G · 0A"
+        },
+        {
+          "label": "xG / 90",
+          "val": "0.78"
+        },
+        {
+          "label": "xA / 90",
+          "val": "0.08"
+        },
+        {
+          "label": "Goals / 90",
+          "val": "0.62"
+        },
+        {
+          "label": "Assists / 90",
+          "val": "0.00"
+        },
+        {
+          "label": "G+A / 90",
+          "val": "0.62"
+        },
+        {
+          "label": "Goals vs xG",
+          "val": "-0.78"
+        }
+      ],
       "card": [
         {
-          "val": "—",
+          "val": "0.62",
+          "cls": "good"
+        },
+        {
+          "val": "-0.78",
           "cls": ""
         },
         {
-          "val": "—",
-          "cls": ""
-        },
-        {
-          "val": "—",
-          "cls": ""
+          "val": "3.52",
+          "cls": "good"
         }
       ],
-      "mins": "—"
+      "mins": "615 min"
     },
     "lautaro-martinez": {
       "signals": [

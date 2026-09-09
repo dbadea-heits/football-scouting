@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ title }}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #0b0d0f;
+  --surface: #111417;
+  --border:  #1e2329;
+  --border2: #2a3040;
+  --text:    #c8cdd6;
+  --muted:   #8896a8;
+  --accent:  #e8a020;
+  --green:   #2ecc71;
+  --yellow:  #f39c12;
+  --red:     #e74c3c;
+  --white:   #edf0f5;
+  --mono:    'DM Mono', monospace;
+  --display: 'Syne', sans-serif;
+  --body:    'DM Sans', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 14px;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* ── NAV ──────────────────────────────────────────── */
+.fi-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px; height: 48px; border-bottom: 1px solid var(--border);
+  background: var(--bg); position: sticky; top: 0; z-index: 100; gap: 24px;
+}
+.fi-nav a {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted); text-decoration: none;
+  display: flex; align-items: center; gap: 7px; transition: color .15s;
+}
+.fi-nav a:hover { color: var(--accent); }
+.fi-nav-brand {
+  font-family: var(--display); font-size: 12px; font-weight: 700;
+  color: var(--white); letter-spacing: .04em;
+}
+@media (max-width: 700px) { .fi-nav { padding: 0 20px; } }
+
+/* ── HEADER ──────────────────────────────────────── */
+.header {
+  position: relative;
+  border-bottom: 1px solid var(--border2);
+  padding: 48px 64px 40px;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 80% at 85% 50%, rgba(232,160,32,.07) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 60% at 10% 20%, rgba(46,204,113,.04) 0%, transparent 70%);
+  pointer-events: none;
+}
+.header-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 32px;
+  flex-wrap: wrap;
+  position: relative;
+}
+.label-pill {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: rgba(232,160,32,.10);
+  border: 1px solid rgba(232,160,32,.25);
+  padding: 4px 12px;
+  border-radius: 2px;
+  display: inline-block;
+  margin-bottom: 16px;
+}
+.report-title {
+  font-family: var(--display);
+  font-size: clamp(32px, 4vw, 56px);
+  font-weight: 800;
+  color: var(--white);
+  line-height: 1;
+  letter-spacing: -.02em;
+  margin-bottom: 4px;
+}
+.header-meta {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  min-width: 300px;
+  align-self: flex-start;
+}
+.meta-cell {
+  background: var(--surface);
+  padding: 14px 18px;
+}
+.meta-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.meta-value {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--white);
+}
+.meta-value.accent { color: var(--accent); }
+
+/* ── MAIN ─────────────────────────────────────────── */
+.main {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 48px 64px;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+@media (max-width: 700px) {
+  .header { padding: 32px 20px 28px; }
+  .main   { padding: 32px 20px; }
+}
+
+/* ── SECTION LABEL ────────────────────────────────── */
+.section-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border2);
+}
+
+/* ── TOGGLES ──────────────────────────────────────── */
+.toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.toggle-btn {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  color: var(--muted);
+  padding: 5px 14px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.toggle-btn:hover {
+  color: var(--text);
+  border-color: var(--muted);
+}
+.toggle-btn.active {
+  background: rgba(232,160,32,.12);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+
+/* ── CARDS ────────────────────────────────────────── */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  padding: 20px 22px;
+  position: relative;
+  overflow: hidden;
+  transition: opacity .3s, transform .3s;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+}
+/* per-player color strips */
+.card.ferran::before    { background: linear-gradient(90deg, #1f77b4, #0d3a5c); }
+.card.mika::before      { background: linear-gradient(90deg, #ffd700, #8f7200); }
+.card.undav::before     { background: linear-gradient(90deg, #d62728, #7a1213); }
+.card.oskarsson::before { background: linear-gradient(90deg, #2ca02c, #145214); }
+.card.tresoldi::before  { background: linear-gradient(90deg, #9467bd, #4c3066); }
+.card.asllani::before   { background: linear-gradient(90deg, #ff7f0e, #964a06); }
+.card.cdk::before       { background: linear-gradient(90deg, #8c564b, #4a2d26); }
+.card.bro::before       { background: linear-gradient(90deg, #17becf, #0a5f69); }
+.card.jackson::before   { background: linear-gradient(90deg, #e377c2, #9c2d84); }
+.card.gyokeres::before  { background: linear-gradient(90deg, #bcbd22, #6b6e12); }
+.card.suarez::before    { background: linear-gradient(90deg, #94a3b8, #47546a); }
+.card.ayoze::before     { background: linear-gradient(90deg, #f59e0b, #b45309); }
+.card.watkins::before   { background: linear-gradient(90deg, #7c3aed, #4c1d95); }
+.card.hidden {
+  opacity: 0.08;
+  pointer-events: none;
+}
+.player-name {
+  font-family: var(--display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 2px;
+}
+.player-club {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: .06em;
+  margin-bottom: 4px;
+}
+.player-stat-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--muted);
+  margin-bottom: 10px;
+  letter-spacing: .04em;
+}
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--mono);
+  font-size: 11px;
+}
+.stat-row:last-child { border-bottom: none; }
+.stat-label { color: var(--muted); }
+.stat-value { color: var(--white); font-weight: 500; }
+.stat-value.good { color: var(--green); }
+.stat-value.ok   { color: var(--yellow); }
+.stat-value.bad  { color: var(--red); }
+
+/* ── RADAR ────────────────────────────────────────── */
+.chart-container {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.chart-container canvas {
+  max-width: 500px;
+  width: 100%;
+  height: auto;
+}
+
+/* ── TABLE ────────────────────────────────────────── */
+.table-scroll { overflow-x: auto; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--mono);
+  font-size: 11px;
+}
+th {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border2);
+  background: var(--bg);
+  text-align: left;
+  position: sticky;
+  top: 48px;
+}
+th:first-child { text-align: left; }
+td {
+  padding: 7px 12px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  text-align: center;
+}
+td:first-child { color: var(--muted); text-align: left; }
+tr:hover td { background: var(--surface); }
+.top-row td {
+  color: var(--accent) !important;
+  font-weight: 500;
+  border-top: 2px solid var(--border2);
+  background: var(--surface);
+}
+.col-hidden { display: none; }
+.rank-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 2px;
+  font-size: 10px;
+}
+.rank-badge.rank-best {
+  background: rgba(46,204,113,.12);
+  color: var(--green);
+  border: 1px solid rgba(46,204,113,.3);
+}
+.rank-mid {
+  background: rgba(243,156,18,.12);
+  color: var(--yellow);
+  border: 1px solid rgba(243,156,18,.3);
+  border-radius: 2px;
+}
+.rank-worst {
+  background: rgba(231,76,60,.12);
+  color: var(--red);
+  border: 1px solid rgba(231,76,60,.3);
+  border-radius: 2px;
+}
+
+/* ── VERDICT ──────────────────────────────────────── */
+.verdict-box {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  padding: 28px;
+}
+.verdict-box h2 {
+  font-family: var(--display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 16px;
+}
+.verdict-box p {
+  font-family: var(--body);
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.75;
+  margin-bottom: 12px;
+}
+.verdict-box p:last-child { margin-bottom: 0; }
+.verdict-box strong { color: var(--white); }
+
+/* ── FOOTER ───────────────────────────────────────── */
+footer {
+  padding: 28px 64px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.footer-left {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+}
+.footer-right {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  text-align: right;
+}
+
+@media (max-width: 700px) {
+  .cards-grid { grid-template-columns: 1fr; }
+  footer { padding: 20px; flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<nav class="fi-nav">
+  <a href="index.html#comparisons">← Back</a>
+  <span class="fi-nav-brand">{{ nav_brand }}</span>
+  <div></div>
+</nav>
+
+<!-- ─── HEADER ──────────────────────────────────────── -->
+<header class="header">
+  <div class="header-top">
+    <div>
+      <div class="label-pill">{{ label_pill }}</div>
+      <h1 class="report-title">{{ title }}</h1>
+    </div>
+    <div class="header-meta">
+      <div class="meta-cell">
+        <div class="meta-label">Players</div>
+        <div class="meta-value">{{ meta_players }}</div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-label">Leagues</div>
+        <div class="meta-value">{{ meta_leagues }}</div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-label">View</div>
+        <div class="meta-value accent">{{ meta_view }}</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ─── MAIN ─────────────────────────────────────────── -->
+<div class="main">
+
+  <!-- Filter Players -->
+  <section>
+    <div class="section-label">Filter Players</div>
+    <div id="toggles" class="toggles"></div>
+  </section>
+
+  <!-- Player Cards -->
+  <section>
+    <div id="cards" class="cards-grid"></div>
+  </section>
+
+  <!-- Radar -->
+  <section>
+    <div class="section-label">Radar — Goal-Scoring Profile</div>
+    <div class="chart-container">
+      <canvas id="radarChart" width="500" height="500"></canvas>
+    </div>
+  </section>
+
+  <!-- Detailed Metrics -->
+  <section>
+    <div class="section-label">Detailed Metrics</div>
+    <div class="table-scroll">
+      <table>
+        <thead><tr id="tableHead"></tr></thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Scouting Verdict -->
+  <section>
+    <div class="section-label">Scouting Verdict</div>
+    <div id="verdict">
+      <div class="verdict-box">
+{% for v in verdicts %}        <p>{{ v }}</p>
+{% endfor %}      </div>
+    </div>
+  </section>
+
+</div><!-- /main -->
+
+<!-- ─── FOOTER ────────────────────────────────────────── -->
+<footer>
+  <div class="footer-left">{{ footer_left }}</div>
+  <div class="footer-right">{{ footer_right }}</div>
+</footer>
+
+<script>
+const PLAYERS = [
+{% for p in players %}  {
+    id:'{{ p.id }}', key:'{{ p.key }}', cls:'{{ p.card_cls }}', cl:'{{ p.color }}',
+    name:'{{ p.name }}', club:'{{ p.club_line }}', val:'{{ p.val }}', age:'{{ p.age_line }}', pos:'{{ p.pos }}', app:'{{ p.apps }}',
+    stats:[
+{% for s in p.stats %}      ['{{ s.label }}','{{ s.val }}','{{ s.cls }}']{{ "," if not loop.last else "" }}
+{% endfor %}    ]
+  }{{ "," if not loop.last else "" }}
+{% endfor %}];
+
+const ALL_KEYS = PLAYERS.map(p=>p.key);
+const ALL_COLORS = Object.fromEntries(PLAYERS.map(p=>[p.key,p.cl]));
+
+const TABLE_ROWS = {
+{% for sec in table %}  '{{ sec.name }}': [
+{% for row in sec.rows %}    ['{{ row.metric }}', p=>({{ "{" }}{% for c in row.cells %}{{ c.player_id }}:'{{ c.val }}'{{ "," if not loop.last else "" }}{% endfor %}})[p.id]],
+{% endfor %}  ]{{ "," if not loop.last else "" }}
+{% endfor %}};
+
+const RADAR_METRICS = [{% for m in radar_metrics %}'{{ m }}'{{ "," if not loop.last else "" }}{% endfor %}];
+const RADAR_DATA = {
+{% for p in players %}  '{{ p.key }}':[{{ p.radar|join(',') }}]{{ "," if not loop.last else "" }}
+{% endfor %}};
+
+let visible = new Set([{% for k in default_visible %}'{{ k }}'{{ "," if not loop.last else "" }}{% endfor %}]);
+
+// build toggles
+const toggleDiv = document.getElementById('toggles');
+PLAYERS.forEach(p => {
+  const btn = document.createElement('button');
+  btn.className = 'toggle-btn' + (visible.has(p.key) ? ' active' : '');
+  btn.style.setProperty('--cl', p.cl);
+  btn.textContent = p.key;
+  btn.dataset.key = p.key;
+  btn.onclick = () => {
+    if (visible.has(p.key)) {
+      visible.delete(p.key);
+      btn.classList.remove('active');
+    } else {
+      visible.add(p.key);
+      btn.classList.add('active');
+    }
+    render();
+  };
+  toggleDiv.appendChild(btn);
+});
+
+// build cards
+function renderCards() {
+  const grid = document.getElementById('cards');
+  grid.innerHTML = '';
+  PLAYERS.forEach(p => {
+    const div = document.createElement('div');
+    div.className = `card ${p.cls}` + (visible.has(p.key) ? '' : ' hidden');
+    div.innerHTML = `
+      <div class="player-name">${p.name}</div>
+      <div class="player-club">${p.club} | Value: ${p.val}</div>
+      <div class="player-stat-label">${p.age} · ${p.pos} · ${p.app}</div>
+      ${p.stats.map(s => `<div class="stat-row"><span class="stat-label">${s[0]}</span><span class="stat-value ${s[2]}">${s[1]}</span></div>`).join('')}
+    `;
+    grid.appendChild(div);
+  });
+}
+
+// build table
+function renderTable() {
+  const head = document.getElementById('tableHead');
+  const body = document.getElementById('tableBody');
+  const visPlayers = PLAYERS.filter(p => visible.has(p.key));
+  head.innerHTML = '<th>Metric</th>' + visPlayers.map(p => `<th>${p.key}</th>`).join('');
+  body.innerHTML = '';
+  Object.entries(TABLE_ROWS).forEach(([section, rows]) => {
+    const secRow = document.createElement('tr');
+    secRow.className = 'top-row';
+    const secTd = document.createElement('td');
+    secTd.colSpan = visPlayers.length + 1;
+    secTd.style.cssText = 'color:#aabbdd;font-weight:700;text-align:left;padding-left:14px';
+    secTd.textContent = section;
+    secRow.appendChild(secTd);
+    body.appendChild(secRow);
+    rows.forEach(([label, fn]) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${label}</td>` + visPlayers.map(p => {
+        const v = fn(p);
+        const isBest = visPlayers.length > 1 && (() => {
+          const vals = visPlayers.map(p2 => {
+            const raw = fn(p2);
+            if (!raw || raw === 'n/a' || raw === 'n/a*' || raw === 'n/a*‡') return null;
+            const num = parseFloat(raw.replace(/,/g,''));
+            return isNaN(num) ? null : num;
+          }).filter(v => v !== null);
+          if (vals.length < 2) return false;
+          const vNum = parseFloat(v.replace(/,/g,''));
+          if (isNaN(vNum)) return false;
+          return vNum >= Math.max(...vals);
+        })();
+        return `<td>${isBest?`<span class="rank-badge rank-best">${v}</span>`:v}</td>`;
+      }).join('');
+      body.appendChild(tr);
+    });
+  });
+  // footnote
+  const foot = document.createElement('tr');
+  const footTd = document.createElement('td');
+  footTd.colSpan = visPlayers.length + 1;
+  footTd.style.cssText = 'color:#667799;font-size:0.75rem;padding-top:8px';
+  footTd.textContent = '{{ table_footnote }}';
+  foot.appendChild(footTd);
+  body.appendChild(foot);
+}
+
+// radar
+function renderRadar() {
+  const c = document.getElementById('radarChart').getContext('2d');
+  const W=500,H=500,cx=250,cy=250,R=180;
+  const visKeys = ALL_KEYS.filter(k => visible.has(k));
+  const L = RADAR_METRICS;
+  const P = Object.fromEntries(Object.entries(RADAR_DATA).filter(([k])=>visible.has(k)));
+  const CL = Object.fromEntries(Object.entries(ALL_COLORS).filter(([k])=>visible.has(k)));
+  c.clearRect(0,0,W,H);
+  if (visKeys.length === 0) return;
+  for(let r=1;r<=5;r++){
+    const l=R/5*r;c.beginPath();
+    for(let i=0;i<L.length;i++){
+      const a=Math.PI*2/L.length*i-Math.PI/2;
+      const x=cx+l*Math.cos(a),y=cy+l*Math.sin(a);
+      i?c.lineTo(x,y):c.moveTo(x,y);
+    }c.closePath();c.strokeStyle='#1e2a4a';c.stroke();
+  }
+  c.fillStyle='#aabbdd';c.font='11px sans-serif';c.textAlign='center';
+  L.forEach((l,i)=>{const a=Math.PI*2/L.length*i-Math.PI/2;c.fillText(l,cx+(R+20)*Math.cos(a),cy+(R+20)*Math.sin(a));});
+  const Mx=L.map((_,i)=>Math.max(...Object.values(P).map(p=>p[i]),1));
+  const N=p=>p.map((v,i)=>(Math.max(v,0)/Mx[i])*100);
+  Object.entries(P).forEach(([n,v])=>{
+    const m=N(v);c.beginPath();
+    m.forEach((v,i)=>{const a=Math.PI*2/L.length*i-Math.PI/2,x=cx+(R*v/100)*Math.cos(a),y=cy+(R*v/100)*Math.sin(a);i?c.lineTo(x,y):c.moveTo(x,y);});
+    c.closePath();c.fillStyle=CL[n]+'30';c.fill();c.strokeStyle=CL[n];c.lineWidth=2;c.stroke();
+  });
+  Object.entries(CL).forEach(([n,cl],i)=>{
+    const x = i % 2 ? 300 : 20;
+    const y = 20 + Math.floor(i / 2) * 18;
+    c.fillStyle=cl;c.fillRect(x,y,12,12);
+    c.fillStyle='#e0e6f0';c.font='12px sans-serif';c.textAlign='left';c.fillText(n,x+18,y+10);
+  });
+}
+
+function render() {
+  renderCards();
+  renderTable();
+  renderRadar();
+}
+
+render();
+</script>
+
+</body>
+</html>

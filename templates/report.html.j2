@@ -1,0 +1,250 @@
+{% macro letter(e) -%}
+{% if e.letter_cls %}<span class="{{ e.letter_cls }}"{{ ' title="' ~ e.title ~ '"' if e.title else '' }}>{{ e.letter }}</span>{% else %}<span style="color:var(--muted)">{{ e.letter }}</span>{% endif %}
+{%- endmacro -%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scout Report — {{ heading }}</title>
+<link rel="stylesheet" href="dossier.css">
+</head>
+<body{{ ' class="' ~ pos_class ~ '"' if pos_class else '' }} data-player="{{ player_id }}">
+
+<nav class="topnav">
+  <a href="index.html#reports">← Hub</a>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <span class="topnav-brand">Football Intelligence</span>
+    <span class="topnav-sep">·</span>
+    <span class="topnav-crumb">{{ crumb }} · Full Profile</span>
+  </div>
+  <div class="season-toggle" role="group" aria-label="Season">
+    <button class="season-btn" data-season="2025-26" onclick="setSeason('2025-26')">2025-26</button>
+    <button class="season-btn" data-season="2026-27" onclick="setSeason('2026-27')">2026-27 <span class="season-live" aria-label="live"></span></button>
+  </div>
+</nav>
+<div class="season-banner">2026-27 Season · Data updated weekly after matchday · Values replace 2025-26 figures when available</div>
+
+<div id="mini" aria-hidden="true">
+  <span class="name">{{ mini }}</span>
+{%- if notes.mini %}
+  <!--{{ notes.mini }}-->
+{%- endif %}
+  <span class="chip {{ mini_chip_cls }}">{{ mini_chip }}</span>
+</div>
+
+<div class="col">
+
+  <!-- 1 · MASTHEAD -->
+  <header class="masthead">
+    <span class="label">{{ kicker }}</span><br>
+    <span class="label">{{ date_line }}</span>
+  </header>
+
+  <!-- 2 · IDENTITY -->
+  <h1>{{ heading }}</h1>
+  <p class="posline">{{ posline }}</p>
+  <div class="facts">
+{%- for f in facts %}
+    <div><span class="label">{{ f.label }}</span><span class="val{{ ' ' ~ f.risk_cls if f.risk_cls else '' }}">{{ f.val }}</span></div>
+{%- endfor %}
+  </div>
+{%- if facts_footnote %}
+  <p class="footnote" style="font-size:0.72rem;margin-top:-4px;">{{ facts_footnote }}</p>
+{%- endif %}
+
+  <!-- 3 · VERDICT BAND -->
+  <section class="verdict" id="verdict">
+    <span class="tier tier-{{ verdict_tier }}">{{ tier }}</span>
+    <p class="nextstep">{{ nextstep_html }}</p>
+    <details>
+      <summary><span class="label">Rationale</span><span class="chev">›</span></summary>
+      <div class="body">
+{%- for p in verdict_prose %}
+        <p>{{ p }}</p>
+{%- endfor %}
+      </div>
+    </details>
+    <p class="liveobs">{{ liveobs_html }}</p>
+  </section>
+
+  <!--{{ notes.signalrow }}-->
+  <section class="signals">
+{%- for s in signals %}
+    <div>
+      <span class="num">{{ s.num }}</span>
+      <span class="label">{{ s.label }}</span>
+      <div class="bar"><i style="width:{{ s.bar }}%"></i></div>
+      <span class="pctl">{{ s.pctl }}</span>
+    </div>
+{%- endfor %}
+  </section>
+{%- if signals_footnote %}
+  <p class="footnote">{{ signals_footnote }}</p>
+{%- endif %}
+
+  <!-- 5 · DORMANT POTENTIAL -->
+  <details>
+    <summary>
+      <span class="label">Dormant Potential</span>
+      <span class="sumright"><span class="chip {{ dormant_chip_cls }}">{{ dormant_chip_label }}</span><span class="chev">›</span></span>
+    </summary>
+    <div class="body">
+{%- for p in dormant_prose %}
+      <p>{{ p }}</p>
+{%- endfor %}
+    </div>
+  </details>
+
+  <!-- 6 · FOUR CORNERS -->
+{%- if notes.dots %}
+  <!--{{ notes.dots }}-->
+{%- endif %}
+  <div class="fc-head">
+    <span class="label">Four Corners</span>
+{%- if inline %}
+    <span class="dots">{% for c in corners %}<span class="{{ c.dot_cls }}">{{ glyphs[c.dot_cls] }}</span>{% endfor %}</span>
+{%- else %}
+    <span class="dots">
+{%- for c in corners %}
+      <span class="{{ c.dot_cls }}"{{ ' title="' ~ c.dot_title ~ '"' if c.dot_title else '' }}>{{ glyphs[c.dot_cls] }}</span>
+{%- endfor %}
+    </span>
+{%- endif %}
+  </div>
+{%- for c in corners %}
+{%- if c.comment %}
+
+  <!--{{ c.comment }}-->
+  <details>
+{%- else %}
+
+  <details>
+{%- endif %}
+    <summary>
+      <span class="label">{{ c.corner }}</span>
+      <span class="sumright"><span class="chip {{ c.chip_cls }}">{{ c.chip_label }}</span>{% if c.chip2_label %}<span class="chip {{ c.chip2_cls }}">{{ c.chip2_label }}</span>{% endif %}<span class="chev">›</span></span>
+    </summary>
+    <div class="body">{{ c.prose_html }}</div>
+  </details>
+{%- endfor %}
+
+  <!-- 7 · FULL METRICS -->
+  <details>
+    <summary><span class="label">Full Metrics</span><span class="chev">›</span></summary>
+    <div class="body">
+{%- for m in metrics %}
+{%- if m.kind == 'blank' %}{{ '\n' }}
+{%- elif m.kind.startswith('group') %}
+      <p class="mgroup{{ ' na' if m.kind == 'group-na' else '' }}">{{ m.label }}</p>
+{%- elif m.kind.startswith('row') %}
+      <div class="mrow{{ ' diverge' if m.kind == 'row-diverge' else '' }}"><span{{ ' class="' ~ m.label_cls ~ '"' if m.label_cls else '' }}>{{ m.label }}</span><span class="mv{{ ' ' ~ m.val_cls if m.val_cls else '' }}">{{ m.val }}</span></div>
+{%- else %}
+      <p class="{{ m.label_cls }}"{{ ' style="' ~ m.val_cls ~ '"' if m.val_cls else '' }}>{{ m.label }}</p>
+{%- endif %}
+{%- endfor %}
+    </div>
+  </details>
+
+  <!-- 8 · EYE TEST -->
+{%- if notes.eyes %}
+  <!--{{ notes.eyes }}-->
+{%- endif %}
+  <details>
+    <summary>
+      <span class="label">Eye Test</span>
+{%- if inline %}
+      <span class="sumright"><span class="eyes">{% for e in eye_rows %}{{ letter(e) }}{% endfor %}</span><span class="chev">›</span></span>
+{%- else %}
+      <span class="sumright">
+        <span class="eyes">
+{%- for e in eye_rows %}
+          {{ letter(e) }}
+{%- endfor %}
+        </span>
+        <span class="chev">›</span>
+      </span>
+{%- endif %}
+    </summary>
+    <div class="body">
+{%- for e in eye_rows %}
+      <div class="eyerow">
+        <div class="top"><span>{{ e.criterion }}</span><span class="chip {{ e.chip_cls }}">{{ e.chip_label }}</span></div>
+        <p class="obs">{{ e.obs_html }}</p>
+        <span class="cornertag">{{ e.cornertag }}</span>
+      </div>
+{%- endfor %}
+      <p class="srcline">{{ srcline }}</p>
+{%- for n in eye_notes %}
+      <p class="diverge-note">{{ n }}</p>
+{%- endfor %}
+    </div>
+  </details>
+
+  <!-- 9 · BACKGROUND -->
+{%- if notes.background %}
+  <!--{{ notes.background }}-->
+{%- endif %}
+  <details>
+    <summary>
+      <span class="label">Background</span>
+{%- if inline %}
+      <span class="sumright"><span class="chip {{ bg_chip1_cls }}">{{ bg_chip1_label }}</span>{% if bg_chip2_label %}<span class="chip {{ bg_chip2_cls }}">{{ bg_chip2_label }}</span>{% endif %}<span class="chev">›</span></span>
+{%- else %}
+      <span class="sumright">
+        <span class="chip {{ bg_chip1_cls }}">{{ bg_chip1_label }}</span>
+{%- if bg_chip2_label %}
+        <span class="chip {{ bg_chip2_cls }}">{{ bg_chip2_label }}</span>
+{%- endif %}
+        <span class="chev">›</span>
+      </span>
+{%- endif %}
+    </summary>
+    <div class="body">
+{%- for p in bg_prose %}
+      <p>{{ p }}</p>
+{%- endfor %}
+{%- for s in bg_sigs %}
+      <div class="sig"><span class="src{{ ' ' ~ s.src_cls if s.src_cls else '' }}">{{ s.src }}</span><span{{ ' class="' ~ s.text_cls ~ '"' if s.text_cls else '' }}>{{ s.text }}</span></div>
+{%- endfor %}
+    </div>
+  </details>
+
+  <!-- 10 · PHILOSOPHY FIT -->
+  <details>
+    <summary>
+      <span class="label">Philosophy Fit</span>
+      <span class="sumright"><span class="chip {{ philosophy_chip_cls }}">{{ philosophy_tally }}</span><span class="chev">›</span></span>
+    </summary>
+    <div class="body">
+      <p class="philosophy">{{ philosophy_html }}</p>
+{%- for c in checks %}
+      <div class="check"><span class="mark {{ c.mark_cls }}">{{ c.mark }}</span><span>{{ c.text }}</span></div>
+{%- endfor %}
+    </div>
+  </details>
+
+  <!-- 11 · METHODS FOOTER -->
+  <footer class="methods label">
+{%- for m in methods %}
+    <span class="m-{{ 'on' if m.on else 'off' }}">{{ '▣' if m.on else '□' }} {{ m.label }}</span>
+{%- endfor %}
+  </footer>
+{%- if closing_footnote %}
+  <p class="footnote">{{ closing_footnote }}</p>
+{%- endif %}
+
+</div>
+
+<script src="data/season-2627.js"></script>
+<script src="season-toggle.js"></script>
+<script>
+// Sticky mini-header: pin once the verdict band scrolls out of view.
+const verdict = document.getElementById('verdict');
+const mini = document.getElementById('mini');
+new IntersectionObserver(([e]) => {
+  mini.classList.toggle('pinned', !e.isIntersecting && e.boundingClientRect.top < 0);
+}).observe(verdict);
+</script>
+</body>
+</html>

@@ -410,6 +410,7 @@
 <script src="data/season-2627.js"></script>
 <script src="season-toggle.js"></script>
 <script>
+// Sticky mini-header: pin once the verdict band scrolls out of view.
 const verdict = document.getElementById('verdict');
 const mini = document.getElementById('mini');
 new IntersectionObserver(([e]) => {

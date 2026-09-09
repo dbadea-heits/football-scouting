@@ -695,7 +695,6 @@
         </div>
       </div>
 
-
       <div class="divg-card key">
         <div class="divg-title">≠ Divergence 5 — Pressing Mechanics: Precision vs Physical</div>
         <div class="divg-body">
@@ -713,6 +712,7 @@
           a high-energy counterpressing system where physical recovery of the ball is prioritised.
         </div>
       </div>
+
     </div>
   </section>
 
@@ -753,6 +753,7 @@
     <div class="section-label">Head-to-Head Verdict</div>
 
     <div class="verdict-section" style="margin-bottom:14px">
+
       <div class="verdict-box p1-box">
         <div class="verdict-player">Julián Álvarez</div>
         <div class="verdict-tier-big p1">Watch</div>
@@ -768,6 +769,7 @@
           <span class="p1">Revisit if: Simeone departs + player signals exit intent.</span>
         </div>
       </div>
+
       <div class="verdict-box p2-box">
         <div class="verdict-player">Lautaro Martínez</div>
         <div class="verdict-tier-big p2">Shortlist</div>
@@ -784,6 +786,7 @@
           If both gates clear: advance to live observation and open contact with agent.
         </div>
       </div>
+
     </div>
 
     <div class="rec-box">
@@ -811,18 +814,14 @@
 </footer>
 
 <script>
-// ── Radar ──────────────────────────────────────────────────────────────────
 (function() {
   const canvas = document.getElementById('radar');
   const ctx = canvas.getContext('2d');
   const W = 460, H = 460, cx = 230, cy = 230, R = 155;
-
   const AXES = ['xG/90', 'G/90', 'KP/90', 'UCL G/90', 'Shots/90'];
   // normalized 0-100 against elite CF benchmarks
-  const A_DATA = [62, 71, 88, 66, 63];   // Álvarez
-  const L_DATA = [88, 94, 61, 96, 94];   // Lautaro
-  const A_COLOR = '#e8a020';
-  const L_COLOR = '#2ecc71';
+  const P1_DATA = [62, 71, 88, 66, 63];   // Álvarez
+  const P2_DATA = [88, 94, 61, 96, 94];   // Lautaro
   const n = AXES.length;
 
   function angle(i) { return (Math.PI * 2 / n) * i - Math.PI / 2; }
@@ -831,7 +830,6 @@
     return [cx + (R * val / 100) * Math.cos(a), cy + (R * val / 100) * Math.sin(a)];
   }
 
-  // grid rings
   for (let r = 1; r <= 5; r++) {
     const frac = R / 5 * r;
     ctx.beginPath();
@@ -841,35 +839,23 @@
       i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
     }
     ctx.closePath();
-    ctx.strokeStyle = '#1e2a4a';
-    ctx.lineWidth = 1;
-    ctx.stroke();
+    ctx.strokeStyle = '#1e2a4a'; ctx.lineWidth = 1; ctx.stroke();
   }
-
-  // spokes
   for (let i = 0; i < n; i++) {
     const a = angle(i);
-    ctx.beginPath();
-    ctx.moveTo(cx, cy);
+    ctx.beginPath(); ctx.moveTo(cx, cy);
     ctx.lineTo(cx + R * Math.cos(a), cy + R * Math.sin(a));
-    ctx.strokeStyle = '#1e2a4a';
-    ctx.lineWidth = 1;
-    ctx.stroke();
+    ctx.strokeStyle = '#1e2a4a'; ctx.lineWidth = 1; ctx.stroke();
   }
 
-  // axis labels
   ctx.fillStyle = '#8896a8';
   ctx.font = '11px DM Mono, monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
   AXES.forEach((label, i) => {
     const a = angle(i);
-    const lx = cx + (R + 22) * Math.cos(a);
-    const ly = cy + (R + 22) * Math.sin(a);
-    ctx.fillText(label, lx, ly);
+    ctx.fillText(label, cx + (R + 22) * Math.cos(a), cy + (R + 22) * Math.sin(a));
   });
 
-  // draw polygon
   function drawPoly(data, color) {
     ctx.beginPath();
     data.forEach((v, i) => {
@@ -877,24 +863,17 @@
       i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
     });
     ctx.closePath();
-    ctx.fillStyle = color + '28';
-    ctx.fill();
-    ctx.strokeStyle = color;
-    ctx.lineWidth = 2;
-    ctx.stroke();
-
-    // dots
+    ctx.fillStyle = color + '28'; ctx.fill();
+    ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.stroke();
     data.forEach((v, i) => {
       const [x, y] = pt(v, i);
-      ctx.beginPath();
-      ctx.arc(x, y, 3.5, 0, Math.PI * 2);
-      ctx.fillStyle = color;
-      ctx.fill();
+      ctx.beginPath(); ctx.arc(x, y, 3.5, 0, Math.PI * 2);
+      ctx.fillStyle = color; ctx.fill();
     });
   }
 
-  drawPoly(L_DATA, L_COLOR);
-  drawPoly(A_DATA, A_COLOR);
+  drawPoly(P2_DATA, '#2ecc71');
+  drawPoly(P1_DATA, '#e8a020');
 })();
 </script>
 
