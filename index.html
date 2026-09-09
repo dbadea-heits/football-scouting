@@ -127,6 +127,7 @@
     letter-spacing: .08em;
     white-space: nowrap;
   }
+  .tab-short { display: none; }
 
   /* ── HERO ────────────────────────────────────────── */
   .hero {
@@ -338,6 +339,14 @@
     letter-spacing: .06em;
     text-transform: uppercase;
     margin-bottom: 20px;
+  }
+
+  .card-mins {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--accent);
+    letter-spacing: .06em;
+    margin-top: 3px;
   }
 
   .card-stats {
@@ -571,14 +580,182 @@
     color: var(--muted);
   }
 
+  /* ── SEASON TOGGLE ───────────────────────────────── */
+  .season-toggle {
+    display: flex;
+    gap: 0;
+    border: 1px solid var(--border2);
+    border-radius: 3px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .season-btn {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    background: transparent;
+    border: none;
+    border-right: 1px solid var(--border2);
+    color: var(--muted);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background .15s, color .15s;
+  }
+
+  .season-btn:last-child { border-right: none; }
+  .season-btn:hover { background: var(--surface); color: var(--text); }
+
+  .season-btn.active {
+    background: rgba(255, 91, 4, .12);
+    color: var(--accent);
+  }
+
+  .season-live {
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    background: #3cb371;
+    border-radius: 50%;
+    margin-left: 4px;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+  }
+
+  /* Season banner */
+  .season-banner {
+    padding: 8px 48px;
+    background: rgba(255, 91, 4, .07);
+    border-bottom: 1px solid rgba(255, 91, 4, .18);
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    display: none;
+  }
+
+  body[data-season="2026-27"] .season-banner { display: block; }
+
   /* ── RESPONSIVE ──────────────────────────────────── */
   @media (max-width: 700px) {
-    .topnav { padding: 0 20px; }
-    .hero { padding: 36px 20px 32px; }
-    .section-header { padding: 24px 20px 16px; }
-    .card-grid { grid-template-columns: 1fr; }
-    footer { padding: 20px; }
+
+    /* ── NAV: 2-row layout ──────────────────────────────── */
+    .topnav {
+      padding: 8px 16px 0;
+      height: auto;
+      min-height: 44px;
+      flex-wrap: wrap;
+      gap: 0;
+      align-items: center;
+    }
+
+    .brand { flex: 1; min-width: 0; }
+    .brand-sub { display: none; }
+
+    .tab-bar {
+      order: 10;
+      flex: 0 0 100%;
+      border-radius: 0;
+      border: none;
+      border-top: 1px solid var(--border2);
+      margin-top: 6px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      text-align: center;
+      padding: 8px 4px;
+      font-size: 9px;
+    }
+
+    .tab-full { display: none; }
+    .tab-short { display: inline; }
+
     .nav-meta { display: none; }
+
+    /* ── SEASON BANNER ──────────────────────────────────── */
+    .season-banner { padding: 8px 16px; }
+
+    /* ── HERO → thin stats strip ────────────────────────── */
+    .hero { padding: 14px 16px; }
+    .hero::before { display: none; }
+    .hero-eyebrow,
+    .hero-title,
+    .hero-desc { display: none; }
+    .hero-stats { margin-top: 0; gap: 0; justify-content: space-around; }
+    .hero-divider { display: none; }
+    .hero-stat-val { font-size: 20px; }
+    .hero-stat-label { font-size: 8px; }
+
+    /* ── SECTION HEADER ─────────────────────────────────── */
+    .section-header { display: none; }
+
+    /* ── REPORT CARD: compact 2-col grid ─────────────────── */
+    .report-card {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      padding: 14px 16px;
+      gap: 0 12px;
+    }
+
+    .card-top {
+      grid-column: 1 / -1;
+      grid-row: 1;
+      margin-bottom: 4px;
+    }
+
+    .card-info {
+      grid-column: 1;
+      grid-row: 2;
+      align-self: center;
+    }
+
+    .card-stats {
+      grid-column: 2;
+      grid-row: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: center;
+      align-self: center;
+      background: transparent;
+      border: none;
+      margin-bottom: 0;
+    }
+
+    .card-footer { display: none; }
+
+    .card-name { font-size: 17px; margin-bottom: 2px; }
+    .card-club { margin-bottom: 0; font-size: 9px; }
+
+    .card-stat:not(:first-child) { display: none; }
+    .card-stat { background: transparent; padding: 0; text-align: right; }
+    .card-stat-val { font-size: 18px; }
+    .card-stat-label { font-size: 8px; }
+
+    /* ── CARD GRID ──────────────────────────────────────── */
+    .card-grid { grid-template-columns: 1fr; }
+
+    /* ── PLACEHOLDER CARD ───────────────────────────────── */
+    .placeholder-card { min-height: 60px; gap: 8px; }
+
+    /* ── COMPARISON CARDS ───────────────────────────────── */
+    .comp-card { padding: 14px 16px; }
+    .comp-type-badge { margin-bottom: 8px; font-size: 8px; padding: 2px 7px; }
+    .comp-title { font-size: 16px; margin-bottom: 6px; }
+    .comp-subtitle { display: none; }
+    .comp-players { margin-bottom: 0; gap: 4px; }
+    .player-chip { font-size: 9px; padding: 3px 7px; }
+    .comp-footer { display: none; }
+
+    /* ── FOOTER ─────────────────────────────────────────── */
+    footer { padding: 20px 16px; }
+    .footer-right { display: none; }
   }
 </style>
 </head>
@@ -603,15 +780,20 @@
 
   <div class="tab-bar" role="tablist">
     <button class="tab-btn active" data-tab="reports" role="tab" onclick="navigate('reports')">
-      Individual Reports
+      <span class="tab-full">Individual Reports</span><span class="tab-short">Reports</span>
     </button>
     <button class="tab-btn" data-tab="comparisons" role="tab" onclick="navigate('comparisons')">
       Comparisons
     </button>
   </div>
 
+  <div class="season-toggle" role="group" aria-label="Season">
+    <button class="season-btn" data-season="2025-26" onclick="setSeason('2025-26')">2025-26</button>
+    <button class="season-btn" data-season="2026-27" onclick="setSeason('2026-27')">2026-27 <span class="season-live" aria-label="live"></span></button>
+  </div>
   <div class="nav-meta" id="navMeta">12 reports · 6 comparisons</div>
 </nav>
+<div class="season-banner">2026-27 Season · Data updated weekly after matchday · Values replace 2025-26 figures when available</div>
 
 <!-- ─── HERO ──────────────────────────────────────────────── -->
 <div class="hero">
@@ -650,13 +832,16 @@
   <div class="card-grid">
 
     <!-- Deniz Undav -->
-    <a href="deniz-undav-report.html" class="report-card shortlist pos-fw">
+    <a href="deniz-undav-report.html" class="report-card shortlist pos-fw" data-player="deniz-undav">
       <div class="card-top">
         <span class="pos-badge">CF / #9½</span>
         <span class="verdict-badge shortlist">Shortlist</span>
       </div>
-      <div class="card-name">Deniz Undav</div>
-      <div class="card-club">VfB Stuttgart · Bundesliga · 30 yrs · 🇩🇪</div>
+      <div class="card-info">
+        <div class="card-name">Deniz Undav</div>
+        <div class="card-club">VfB Stuttgart · Bundesliga · 30 yrs · 🇩🇪</div>
+        <div class="card-mins">2,500 min</div>
+      </div>
       <div class="card-stats">
         <div class="card-stat">
           <div class="card-stat-label">G/90</div>
@@ -678,13 +863,16 @@
     </a>
 
     <!-- Nicolò Tresoldi -->
-    <a href="nicolo-tresoldi-report.html" class="report-card shortlist pos-fw">
+    <a href="nicolo-tresoldi-report.html" class="report-card watch pos-fw" data-player="nicolo-tresoldi">
       <div class="card-top">
         <span class="pos-badge">CF</span>
-        <span class="verdict-badge shortlist">Shortlist</span>
+        <span class="verdict-badge watch">Watch</span>
       </div>
-      <div class="card-name">Nicolò Tresoldi</div>
-      <div class="card-club">Club Brugge KV · JPL · 21 yrs · 🇩🇪</div>
+      <div class="card-info">
+        <div class="card-name">Nicolò Tresoldi</div>
+        <div class="card-club">Club Brugge KV · JPL · 22 yrs · 🇩🇪</div>
+        <div class="card-mins">2,200 min</div>
+      </div>
       <div class="card-stats">
         <div class="card-stat">
           <div class="card-stat-label">G/90</div>
@@ -706,13 +894,16 @@
     </a>
 
     <!-- Lautaro Martínez -->
-    <a href="lautaro-martinez-report.html" class="report-card shortlist pos-fw">
+    <a href="lautaro-martinez-report.html" class="report-card shortlist pos-fw" data-player="lautaro-martinez">
       <div class="card-top">
         <span class="pos-badge">CF / #9</span>
         <span class="verdict-badge shortlist">Shortlist</span>
       </div>
-      <div class="card-name">Lautaro Martínez</div>
-      <div class="card-club">Inter Milan · Serie A · 28 yrs · 🇦🇷</div>
+      <div class="card-info">
+        <div class="card-name">Lautaro Martínez</div>
+        <div class="card-club">Inter Milan · Serie A · 28 yrs · 🇦🇷</div>
+        <div class="card-mins">3,000 min</div>
+      </div>
       <div class="card-stats">
         <div class="card-stat">
           <div class="card-stat-label">G/90</div>
@@ -734,13 +925,16 @@
     </a>
 
     <!-- Orri Steinn Óskarsson -->
-    <a href="orri-oskarsson-report.html" class="report-card shortlist pos-fw">
+    <a href="orri-oskarsson-report.html" class="report-card shortlist pos-fw" data-player="orri-oskarsson">
       <div class="card-top">
         <span class="pos-badge">CF</span>
         <span class="verdict-badge shortlist">Shortlist</span>
       </div>
-      <div class="card-name">Orri Steinn Óskarsson</div>
-      <div class="card-club">Real Sociedad · La Liga · 21 yrs · 🇮🇸</div>
+      <div class="card-info">
+        <div class="card-name">Orri Steinn Óskarsson</div>
+        <div class="card-club">Real Sociedad · La Liga · 21 yrs · 🇮🇸</div>
+        <div class="card-mins">1,800 min</div>
+      </div>
       <div class="card-stats">
         <div class="card-stat">
           <div class="card-stat-label">G/90</div>
@@ -762,13 +956,16 @@
     </a>
 
     <!-- Julián Álvarez -->
-    <a href="julian-alvarez-report.html" class="report-card watch pos-fw">
+    <a href="julian-alvarez-report.html" class="report-card watch pos-fw" data-player="julian-alvarez">
       <div class="card-top">
         <span class="pos-badge">CF / False-9</span>
         <span class="verdict-badge watch">Watch</span>
       </div>
-      <div class="card-name">Julián Álvarez</div>
-      <div class="card-club">Atlético de Madrid · La Liga · 26 yrs · 🇦🇷</div>
+      <div class="card-info">
+        <div class="card-name">Julián Álvarez</div>
+        <div class="card-club">Atlético de Madrid · La Liga · 26 yrs · 🇦🇷</div>
+        <div class="card-mins">2,800 min</div>
+      </div>
       <div class="card-stats">
         <div class="card-stat">
           <div class="card-stat-label">G/90</div>
@@ -790,13 +987,16 @@
     </a>
 
     <!-- Serhou Guirassy -->
-    <a href="serhou-guirassy-report.html" class="report-card shortlist pos-fw">
+    <a href="serhou-guirassy-report.html" class="report-card shortlist pos-fw" data-player="serhou-guirassy">
       <div class="card-top">
         <span class="pos-badge">CF / #9</span>
         <span class="verdict-badge shortlist">Shortlist</span>
       </div>
-      <div class="card-name">Serhou Guirassy</div>
-      <div class="card-club">Borussia Dortmund · Bundesliga · 30 yrs · 🇬🇳</div>
+      <div class="card-info">
+        <div class="card-name">Serhou Guirassy</div>
+        <div class="card-club">Borussia Dortmund · Bundesliga · 30 yrs · 🇬🇳</div>
+        <div class="card-mins">2,700 min</div>
+      </div>
       <div class="card-stats">
         <div class="card-stat">
           <div class="card-stat-label">G/90</div>
@@ -818,13 +1018,16 @@
     </a>
 
     <!-- Dominik Livaković -->
-    <a href="dominik-livakovic-report.html" class="report-card watch pos-gk">
+    <a href="dominik-livakovic-report.html" class="report-card watch pos-gk" data-player="dominik-livakovic">
       <div class="card-top">
         <span class="pos-badge">GK / Sweeper</span>
         <span class="verdict-badge watch">Watch</span>
       </div>
-      <div class="card-name">Dominik Livaković</div>
-      <div class="card-club">Dinamo Zagreb (loan) · HNL · 31 yrs · 🇭🇷</div>
+      <div class="card-info">
+        <div class="card-name">Dominik Livaković</div>
+        <div class="card-club">Dinamo Zagreb (loan) · HNL · 31 yrs · 🇭🇷</div>
+        <div class="card-mins">2,500 min</div>
+      </div>
       <div class="card-stats">
         <div class="card-stat">
           <div class="card-stat-label">Sv %</div>
@@ -846,13 +1049,16 @@
     </a>
 
     <!-- Chupe -->
-    <a href="chupe-report.html" class="report-card shortlist pos-fw">
+    <a href="chupe-report.html" class="report-card shortlist pos-fw" data-player="chupe">
       <div class="card-top">
         <span class="pos-badge">CF / #9</span>
         <span class="verdict-badge shortlist">Shortlist</span>
       </div>
-      <div class="card-name">Carlos Ruiz Rubio "Chupe"</div>
-      <div class="card-club">Málaga CF · LaLiga · 21 yrs · 🇪🇸</div>
+      <div class="card-info">
+        <div class="card-name">Carlos Ruiz Rubio "Chupe"</div>
+        <div class="card-club">Málaga CF · LaLiga · 21 yrs · 🇪🇸</div>
+        <div class="card-mins">2,100 min</div>
+      </div>
       <div class="card-stats">
         <div class="card-stat">
           <div class="card-stat-label">G/90</div>
@@ -874,13 +1080,16 @@
     </a>
 
     <!-- Jorge Salinas Viadero -->
-    <a href="george-salinas-report.html" class="report-card shortlist pos-fb">
+    <a href="george-salinas-report.html" class="report-card shortlist pos-fb" data-player="george-salinas">
       <div class="card-top">
         <span class="pos-badge">LB / CB</span>
         <span class="verdict-badge shortlist">Shortlist</span>
       </div>
-      <div class="card-name">Jorge Salinas Viadero</div>
-      <div class="card-club">Racing de Santander · LaLiga · 19 yrs · 🇪🇸</div>
+      <div class="card-info">
+        <div class="card-name">Jorge Salinas Viadero</div>
+        <div class="card-club">Racing de Santander · LaLiga · 19 yrs · 🇪🇸</div>
+        <div class="card-mins">1,900 min</div>
+      </div>
       <div class="card-stats">
         <div class="card-stat">
           <div class="card-stat-label">Assists</div>
@@ -902,13 +1111,16 @@
     </a>
 
     <!-- Castello Lukeba -->
-    <a href="castello-lukeba-report.html" class="report-card shortlist pos-cb">
+    <a href="castello-lukeba-report.html" class="report-card shortlist pos-cb" data-player="castello-lukeba">
       <div class="card-top">
         <span class="pos-badge">CB / Left-footed</span>
         <span class="verdict-badge shortlist">Shortlist</span>
       </div>
-      <div class="card-name">Castello Lukeba</div>
-      <div class="card-club">RB Leipzig · Bundesliga · 23 yrs · 🇫🇷</div>
+      <div class="card-info">
+        <div class="card-name">Castello Lukeba</div>
+        <div class="card-club">RB Leipzig · Bundesliga · 23 yrs · 🇫🇷</div>
+        <div class="card-mins">2,800 min</div>
+      </div>
       <div class="card-stats">
         <div class="card-stat">
           <div class="card-stat-label">Rec/90</div>
@@ -930,13 +1142,16 @@
     </a>
 
     <!-- Gonçalo Inácio -->
-    <a href="goncalo-inacio-report.html" class="report-card shortlist pos-cb">
+    <a href="goncalo-inacio-report.html" class="report-card shortlist pos-cb" data-player="goncalo-inacio">
       <div class="card-top">
         <span class="pos-badge">CB / Left-footed</span>
         <span class="verdict-badge shortlist">Shortlist</span>
       </div>
-      <div class="card-name">Gonçalo Inácio</div>
-      <div class="card-club">Sporting CP · Primeira Liga · 24 yrs · 🇵🇹</div>
+      <div class="card-info">
+        <div class="card-name">Gonçalo Inácio</div>
+        <div class="card-club">Sporting CP · Primeira Liga · 24 yrs · 🇵🇹</div>
+        <div class="card-mins">2,800 min</div>
+      </div>
       <div class="card-stats">
         <div class="card-stat">
           <div class="card-stat-label">Prog Pass/90</div>
@@ -958,13 +1173,16 @@
     </a>
 
     <!-- Gabriel Jesus -->
-    <a href="gabriel-jesus-report.html" class="report-card watch pos-fw">
+    <a href="gabriel-jesus-report.html" class="report-card watch pos-fw" data-player="gabriel-jesus">
       <div class="card-top">
         <span class="pos-badge">CF / Wide Fwd</span>
         <span class="verdict-badge watch">Watch</span>
       </div>
-      <div class="card-name">Gabriel Jesus</div>
-      <div class="card-club">Arsenal → Barcelona · PL · 29 yrs · 🇧🇷</div>
+      <div class="card-info">
+        <div class="card-name">Gabriel Jesus</div>
+        <div class="card-club">Arsenal → Barcelona · PL · 29 yrs · 🇧🇷</div>
+        <div class="card-mins">1,600 min</div>
+      </div>
       <div class="card-stats">
         <div class="card-stat">
           <div class="card-stat-label">xG/90</div>
@@ -1133,6 +1351,8 @@
   </div>
 </footer>
 
+<script src="data/season-2627.js"></script>
+<script src="season-toggle.js"></script>
 <script>
   const VIEWS = ['reports', 'comparisons'];
 

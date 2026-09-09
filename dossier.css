@@ -318,6 +318,93 @@ details[open] .body { background: var(--surface); }
 
 /* ── RESPONSIVE ──────────────────────────────────────────── */
 @media (max-width: 700px) {
-  .topnav { padding: 0 16px; }
-  .col    { padding: 0 16px 48px; }
+  /* Nav: ← Hub + season toggle is enough — breadcrumb redundant when h1 is visible */
+  .topnav       { padding: 0 16px; }
+  .topnav-brand { display: none; }
+  .topnav-sep   { display: none; }
+  .topnav-crumb { display: none; }
+
+  /* Layout */
+  .col { padding: 0 16px 40px; }
+
+  /* Season banner */
+  .season-banner { padding: 7px 16px; }
+
+  /* Above-fold: shorten dead space before player name */
+  .masthead { padding-top: 16px; }
+  h1 { font-size: 26px; margin-top: 10px; }
+
+  /* Signal row: tighter numbers fit the 3-col grid without pctl overflow */
+  .signals .num { font-size: 20px; }
+
+  /* Verdict tier: proportional to reduced h1 */
+  .tier { font-size: 22px; }
+}
+
+/* ── SEASON TOGGLE ──────────────────────────────────────────── */
+.season-toggle {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--border2);
+  border-radius: 3px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.season-btn {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  background: transparent;
+  border: none;
+  border-right: 1px solid var(--border2);
+  color: var(--muted);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .15s, color .15s;
+}
+
+.season-btn:last-child { border-right: none; }
+.season-btn:hover { background: var(--hairline); color: var(--ink); }
+
+.season-btn.active {
+  background: rgba(255, 91, 4, .12);
+  color: var(--accent);
+}
+
+.season-live {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  background: #3cb371;
+  border-radius: 50%;
+  margin-left: 4px;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
+}
+
+/* Season banner — shown when 2026-27 is active */
+.season-banner {
+  display: none;
+  padding: 7px 24px;
+  background: rgba(255, 91, 4, .07);
+  border-bottom: 1px solid rgba(255, 91, 4, .18);
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+
+body[data-season="2026-27"] .season-banner { display: block; }
+
+/* Current-season metrics injected block */
+.metrics-current {
+  border-bottom: 1px solid var(--hairline);
+  margin-bottom: 4px;
+  padding-bottom: 4px;
 }

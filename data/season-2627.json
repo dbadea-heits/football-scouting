@@ -1,0 +1,602 @@
+{
+  "_comment": "2026-27 current season live data. Updated weekly by scripts/update-stats.py. All values start as pending and are filled in after each matchweek.",
+  "season": "2026-27",
+  "updated": "2026-09-09T09:34:37Z",
+  "matchweek": 3,
+  "players": {
+    "deniz-undav": {
+      "signals": [
+        {
+          "num": "0.07",
+          "bar": 0,
+          "pctl": "2026-27 · Bundesliga"
+        },
+        {
+          "num": "-0.1",
+          "bar": 0,
+          "pctl": "2026-27 · Bundesliga"
+        },
+        {
+          "num": "—",
+          "bar": 0,
+          "pctl": "2026-27 · In progress"
+        }
+      ],
+      "current_block": [
+        {
+          "label": "All comps 2026-27",
+          "val": "2 apps · 145 min · 0G · 0A"
+        },
+        {
+          "label": "xG / 90",
+          "val": "0.07"
+        },
+        {
+          "label": "xA / 90",
+          "val": "0.06"
+        },
+        {
+          "label": "Goals / 90",
+          "val": "0.00"
+        },
+        {
+          "label": "Assists / 90",
+          "val": "0.00"
+        },
+        {
+          "label": "G+A / 90",
+          "val": "0.00"
+        },
+        {
+          "label": "Goals vs xG",
+          "val": "-0.1"
+        }
+      ],
+      "card": [
+        {
+          "val": "0.07",
+          "cls": "good"
+        },
+        {
+          "val": "-0.1",
+          "cls": ""
+        },
+        {
+          "val": "—",
+          "cls": ""
+        }
+      ],
+      "mins": "145 min"
+    },
+    "nicolo-tresoldi": {
+      "signals": [
+        {
+          "num": "—",
+          "bar": 0,
+          "pctl": "2026-27 · In progress"
+        },
+        {
+          "num": "—",
+          "bar": 0,
+          "pctl": "2026-27 · In progress"
+        },
+        {
+          "num": "—",
+          "bar": 0,
+          "pctl": "2026-27 · In progress"
+        }
+      ],
+      "current_block": [],
+      "card": [
+        {
+          "val": "—",
+          "cls": ""
+        },
+        {
+          "val": "—",
+          "cls": ""
+        },
+        {
+          "val": "—",
+          "cls": ""
+        }
+      ],
+      "mins": "—"
+    },
+    "lautaro-martinez": {
+      "signals": [
+        {
+          "num": "0.77",
+          "bar": 0,
+          "pctl": "2026-27 · Serie A"
+        },
+        {
+          "num": "1.14",
+          "bar": 0,
+          "pctl": "2026-27 · Serie A"
+        },
+        {
+          "num": "-1.0",
+          "bar": 0,
+          "pctl": "2026-27 · Serie A"
+        }
+      ],
+      "current_block": [
+        {
+          "label": "All comps 2026-27",
+          "val": "3 apps · 235 min · 2G · 0A"
+        },
+        {
+          "label": "xG / 90",
+          "val": "1.14"
+        },
+        {
+          "label": "xA / 90",
+          "val": "0.18"
+        },
+        {
+          "label": "Goals / 90",
+          "val": "0.77"
+        },
+        {
+          "label": "Assists / 90",
+          "val": "0.00"
+        },
+        {
+          "label": "G+A / 90",
+          "val": "0.77"
+        },
+        {
+          "label": "Goals vs xG",
+          "val": "-1.0"
+        }
+      ],
+      "card": [
+        {
+          "val": "0.77",
+          "cls": "good"
+        },
+        {
+          "val": "1.14",
+          "cls": "good"
+        },
+        {
+          "val": "-1.0",
+          "cls": ""
+        }
+      ],
+      "mins": "235 min"
+    },
+    "orri-oskarsson": {
+      "signals": [
+        {
+          "num": "0.33",
+          "bar": 0,
+          "pctl": "2026-27 · La Liga"
+        },
+        {
+          "num": "—",
+          "bar": 0,
+          "pctl": "2026-27 · In progress"
+        },
+        {
+          "num": "-1.7",
+          "bar": 0,
+          "pctl": "2026-27 · La Liga"
+        }
+      ],
+      "current_block": [
+        {
+          "label": "All comps 2026-27",
+          "val": "4 apps · 273 min · 1G · 0A"
+        },
+        {
+          "label": "xG / 90",
+          "val": "0.90"
+        },
+        {
+          "label": "xA / 90",
+          "val": "0.03"
+        },
+        {
+          "label": "Goals / 90",
+          "val": "0.33"
+        },
+        {
+          "label": "Assists / 90",
+          "val": "0.00"
+        },
+        {
+          "label": "G+A / 90",
+          "val": "0.33"
+        },
+        {
+          "label": "Goals vs xG",
+          "val": "-1.7"
+        }
+      ],
+      "card": [
+        {
+          "val": "0.33",
+          "cls": "good"
+        },
+        {
+          "val": "—",
+          "cls": ""
+        },
+        {
+          "val": "-1.7",
+          "cls": ""
+        }
+      ],
+      "mins": "273 min"
+    },
+    "julian-alvarez": {
+      "signals": [
+        {
+          "num": "0.28",
+          "bar": 0,
+          "pctl": "2026-27 · La Liga"
+        },
+        {
+          "num": "0.00",
+          "bar": 0,
+          "pctl": "2026-27 · La Liga"
+        },
+        {
+          "num": "4.00",
+          "bar": 0,
+          "pctl": "2026-27 · La Liga"
+        }
+      ],
+      "current_block": [
+        {
+          "label": "All comps 2026-27",
+          "val": "2 apps · 45 min · 0G · 0A"
+        },
+        {
+          "label": "xG / 90",
+          "val": "0.28"
+        },
+        {
+          "label": "xA / 90",
+          "val": "0.08"
+        },
+        {
+          "label": "Goals / 90",
+          "val": "0.00"
+        },
+        {
+          "label": "Assists / 90",
+          "val": "0.00"
+        },
+        {
+          "label": "G+A / 90",
+          "val": "0.00"
+        },
+        {
+          "label": "Goals vs xG",
+          "val": "-0.1"
+        }
+      ],
+      "card": [
+        {
+          "val": "0.28",
+          "cls": "good"
+        },
+        {
+          "val": "0.00",
+          "cls": ""
+        },
+        {
+          "val": "4.00",
+          "cls": "good"
+        }
+      ],
+      "mins": "45 min"
+    },
+    "serhou-guirassy": {
+      "signals": [
+        {
+          "num": "0.41",
+          "bar": 0,
+          "pctl": "2026-27 · Bundesliga"
+        },
+        {
+          "num": "1.50",
+          "bar": 0,
+          "pctl": "2026-27 · Bundesliga"
+        },
+        {
+          "num": "—",
+          "bar": 0,
+          "pctl": "2026-27 · In progress"
+        }
+      ],
+      "current_block": [
+        {
+          "label": "All comps 2026-27",
+          "val": "2 apps · 180 min · 2G · 1A"
+        },
+        {
+          "label": "xG / 90",
+          "val": "0.41"
+        },
+        {
+          "label": "xA / 90",
+          "val": "0.21"
+        },
+        {
+          "label": "Goals / 90",
+          "val": "1.00"
+        },
+        {
+          "label": "Assists / 90",
+          "val": "0.50"
+        },
+        {
+          "label": "G+A / 90",
+          "val": "1.50"
+        },
+        {
+          "label": "Goals vs xG",
+          "val": "+1.2"
+        }
+      ],
+      "card": [
+        {
+          "val": "0.41",
+          "cls": "good"
+        },
+        {
+          "val": "1.50",
+          "cls": "good"
+        },
+        {
+          "val": "—",
+          "cls": ""
+        }
+      ],
+      "mins": "180 min"
+    },
+    "dominik-livakovic": {
+      "signals": [
+        {
+          "num": "—",
+          "bar": 0,
+          "pctl": "2026-27 · In progress"
+        },
+        {
+          "num": "—",
+          "bar": 0,
+          "pctl": "2026-27 · In progress"
+        },
+        {
+          "num": "—",
+          "bar": 0,
+          "pctl": "2026-27 · In progress"
+        }
+      ],
+      "current_block": [],
+      "card": [
+        {
+          "val": "—",
+          "cls": ""
+        },
+        {
+          "val": "—",
+          "cls": ""
+        },
+        {
+          "val": "—",
+          "cls": ""
+        }
+      ],
+      "mins": "—"
+    },
+    "chupe": {
+      "signals": [
+        {
+          "num": "—",
+          "bar": 0,
+          "pctl": "2026-27 · In progress"
+        },
+        {
+          "num": "—",
+          "bar": 0,
+          "pctl": "2026-27 · In progress"
+        },
+        {
+          "num": "—",
+          "bar": 0,
+          "pctl": "2026-27 · In progress"
+        }
+      ],
+      "current_block": [],
+      "card": [
+        {
+          "val": "—",
+          "cls": ""
+        },
+        {
+          "val": "—",
+          "cls": ""
+        },
+        {
+          "val": "—",
+          "cls": ""
+        }
+      ],
+      "mins": "—"
+    },
+    "george-salinas": {
+      "signals": [
+        {
+          "num": "—",
+          "bar": 0,
+          "pctl": "2026-27 · In progress"
+        },
+        {
+          "num": "—",
+          "bar": 0,
+          "pctl": "2026-27 · In progress"
+        },
+        {
+          "num": "—",
+          "bar": 0,
+          "pctl": "2026-27 · In progress"
+        }
+      ],
+      "current_block": [],
+      "card": [
+        {
+          "val": "—",
+          "cls": ""
+        },
+        {
+          "val": "—",
+          "cls": ""
+        },
+        {
+          "val": "—",
+          "cls": ""
+        }
+      ],
+      "mins": "—"
+    },
+    "castello-lukeba": {
+      "signals": [
+        {
+          "num": "—",
+          "bar": 0,
+          "pctl": "2026-27 · In progress"
+        },
+        {
+          "num": "—",
+          "bar": 0,
+          "pctl": "2026-27 · In progress"
+        },
+        {
+          "num": "0.00",
+          "bar": 0,
+          "pctl": "2026-27 · Bundesliga"
+        }
+      ],
+      "current_block": [
+        {
+          "label": "All comps 2026-27",
+          "val": "1 apps · 90 min · 0G · 0A"
+        },
+        {
+          "label": "xG / 90",
+          "val": "0.02"
+        },
+        {
+          "label": "xA / 90",
+          "val": "0.00"
+        },
+        {
+          "label": "Goals / 90",
+          "val": "0.00"
+        },
+        {
+          "label": "Assists / 90",
+          "val": "0.00"
+        },
+        {
+          "label": "G+A / 90",
+          "val": "0.00"
+        },
+        {
+          "label": "Goals vs xG",
+          "val": "-0.0"
+        }
+      ],
+      "card": [
+        {
+          "val": "—",
+          "cls": ""
+        },
+        {
+          "val": "—",
+          "cls": ""
+        },
+        {
+          "val": "0.00",
+          "cls": ""
+        }
+      ],
+      "mins": "90 min"
+    },
+    "goncalo-inacio": {
+      "signals": [
+        {
+          "num": "—",
+          "bar": 0,
+          "pctl": "2026-27 · In progress"
+        },
+        {
+          "num": "—",
+          "bar": 0,
+          "pctl": "2026-27 · In progress"
+        },
+        {
+          "num": "—",
+          "bar": 0,
+          "pctl": "2026-27 · In progress"
+        }
+      ],
+      "current_block": [],
+      "card": [
+        {
+          "val": "—",
+          "cls": ""
+        },
+        {
+          "val": "—",
+          "cls": ""
+        },
+        {
+          "val": "—",
+          "cls": ""
+        }
+      ],
+      "mins": "—"
+    },
+    "gabriel-jesus": {
+      "signals": [
+        {
+          "num": "—",
+          "bar": 0,
+          "pctl": "2026-27 · In progress"
+        },
+        {
+          "num": "—",
+          "bar": 0,
+          "pctl": "2026-27 · In progress"
+        },
+        {
+          "num": "—",
+          "bar": 0,
+          "pctl": "2026-27 · In progress"
+        }
+      ],
+      "current_block": [],
+      "card": [
+        {
+          "val": "—",
+          "cls": ""
+        },
+        {
+          "val": "—",
+          "cls": ""
+        },
+        {
+          "val": "—",
+          "cls": ""
+        }
+      ],
+      "mins": "—"
+    }
+  }
+}
