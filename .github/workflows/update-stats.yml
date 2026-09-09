@@ -1,0 +1,63 @@
+name: Update 2026-27 Season Stats
+
+on:
+  # Monday 09:00 UTC — after weekend PL / La Liga / Bundesliga / Serie A matchdays
+  # Wednesday 09:00 UTC — after mid-week UCL / Copa del Rey fixtures
+  schedule:
+    - cron: '0 9 * * 1'
+    - cron: '0 9 * * 3'
+
+  # Manual trigger: Actions → Run workflow (optionally pass player IDs)
+  workflow_dispatch:
+    inputs:
+      players:
+        description: 'Space-separated player IDs to update (blank = all)'
+        required: false
+        default: ''
+
+concurrency:
+  group: update-stats
+  cancel-in-progress: false   # never cancel a running stats update
+
+jobs:
+  fetch-and-commit:
+    name: Fetch stats & commit regenerated site
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write          # needs push access to commit the DB + generated pages
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          pip install playwright beautifulsoup4 lxml jinja2
+          playwright install --with-deps chromium
+
+      - name: Fetch current season stats
+        run: |
+          if [ -n "${{ github.event.inputs.players }}" ]; then
+            python scripts/update-stats.py ${{ github.event.inputs.players }}
+          else
+            python scripts/update-stats.py
+          fi
+
+      - name: Commit regenerated site (if changed)
+        run: |
+          git config user.name  "Stats Bot"
+          git config user.email "stats-bot@football-intelligence.local"
+          git add data/ *.html
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            MATCHWEEK=$(python -c "import sqlite3; print(sqlite3.connect('data/football.db').execute(\"SELECT matchweek FROM seasons WHERE season='2026-27'\").fetchone()[0])")
+            git commit -m "stats: 2026-27 matchweek ${MATCHWEEK} update [skip ci]"
+            git push
+          fi
