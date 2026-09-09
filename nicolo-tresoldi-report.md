@@ -15,23 +15,33 @@ Observation methods:
   [x] Background       [ ] Live (not conducted — REQUIRED before Recommend)
 
 VIDEO METHOD — CHANGED THIS REFRESH
-Gemini video-scout agent: two public YouTube sources watched natively
-(frames + audio, nothing downloaded), 21:54 total —
+Gemini video-scout agent: four public YouTube sources watched natively
+(frames + audio, nothing downloaded), 34:14 total —
   1. Belgian Supercup highlights v Union SG, 13:42 (identified: lineup
      graphic 00:18, shirt #7 + commentary name-check 02:24, 04:44)
   2. Club Brugge / Germany U21 goals-and-skills compilation, 08:12
      (identified: #7 Brugge, #9 Germany U21, jersey name, commentary)
-This supersedes the previous report's frame-sampling method, whose
-"Strong" movement and pressing scores could not be reproduced.
+  3. Club Brugge v Gent official match highlights, 30/08/26, 06:10
+     (identified: lineup graphic 00:15, shirt #7) — HE DID NOT SCORE
+  4. Lommel v Club Brugge official match highlights, 04/09/26, 06:10
+     (identified: shirt #7, commentary 01:03, 03:19) — HE DID NOT SCORE
+Sources 3 and 4 were located via the FotMob match detail view, which
+carries an official-highlights link per fixture, posted the day after the
+match. Deliberately chosen because he blanked in both (ratings 6.2 and
+6.5): footage of a forward when it is NOT working is more diagnostic than
+any goals compilation. This method supersedes the previous report's
+frame-sampling pass, whose "Strong" movement and pressing scores could
+not be reproduced.
 
-CRITICAL FOOTAGE SHORTFALL: no full-match and no Champions League footage
-is publicly available. The Club Brugge v Aston Villa (08/09/26) upload
-that appeared to be match highlights contains ONLY post-match press
-conferences — verified by the agent, which returned player_identified=false
-and correctly scored nothing. Consequently pressing intensity and
-communication are UNSCORED, and first touch under pressure remains
-untested against top-5-league intensity. That was the single question this
-refresh existed to answer, and it is still open.
+FOOTAGE SHORTFALL: still no full-match footage and still nothing from the
+Champions League. The Aston Villa fixture (08/09/26) had no highlights
+package on FotMob at the time of writing — the day-after posting window
+had not yet delivered it — and the YouTube upload that appeared to be
+match highlights contains ONLY post-match press conferences, verified by
+the agent, which returned player_identified=false and correctly scored
+nothing. Consequently first touch under pressure remains untested against
+top-5-league intensity, and communication remains unscored across all
+34 minutes. Re-run the eye test on the Villa fixture once FotMob posts it.
 
 ───────────────────────────────────────────────────────────────
 PHILOSOPHY FIT
@@ -45,10 +55,13 @@ no High injury risk.
 
 - Role — FIT. Still a pure box operator: 16 of 17 JPL shots taken inside the
   penalty area (26/27), 32 opposition-box touches in 435 minutes.
-- System (press) — UNVERIFIED, downgraded from FIT. Pressing intensity could
-  not be scored on any available footage, and no 26/27 pressing/recovery
-  data was obtainable (FBref 403). The 25/26 basis for this FIT — 54
-  recoveries, 14 possessions won in the final third — is now a year old.
+- System (press) — PARTIAL, still not FIT. One pressing instance is now on
+  video: a high central block with "moderate closing speed" against Gent
+  (01:08). That is presence, not the fast close on the correct angle the
+  role demands, and it is a single sighting in 34 minutes. No 26/27
+  pressing/recovery data was obtainable (FBref 403), so the 25/26 basis
+  for the original FIT — 54 recoveries, 14 possessions won in the final
+  third — is still a year old and uncorroborated.
 - Goal source — FIT, with a caveat. 5 goals in 7 apps, but 2 are penalties;
   only 3 of 5 came from open play.
 - Age ≤23 — FIT (22).
@@ -68,29 +81,47 @@ VIDEO EYE TEST — GEMINI VIDEO SCOUT
 ───────────────────────────────────────────────────────────────
 | Criterion                 | Corner            | Score        | Conf.  | n |
 |---------------------------|-------------------|--------------|--------|---|
-| Movement off ball         | Tactical          | Adequate     | Medium | 5 |
-| Body shape on receive     | Tactical          | Adequate     | Medium | 3 |
-| First touch under pressure| Technical         | Adequate     | Medium | 4 |
-| Pressing intensity        | Physical/Tactical | INCONCLUSIVE | Low    | 0 |
+| Movement off ball         | Tactical          | Adequate     | Medium | 9 |
+| Body shape on receive     | Tactical          | Adequate     | Medium | 4 |
+| First touch under pressure| Technical         | Adequate     | Medium | 5 |
+| Pressing intensity        | Physical/Tactical | Adequate     | Low    | 1 |
 | Communication             | Psychosocial      | INCONCLUSIVE | Low    | 0 |
 
-- Movement off ball: blind-side runs and timely box arrivals across four
-  compilation sequences (00:21, 02:05, 03:04, 07:15) plus anticipation of a
-  loose second ball to arrive first in the six-yard box (Supercup 02:24).
-  Adequate, not Strong: every instance is a successful clip selected by an
-  editor; no failed or decoy runs are observable.
+- Movement off ball: nine instances across all four sources — blind-side
+  runs and box arrivals in the compilation (00:21, 02:05, 03:04, 07:15),
+  anticipation of a loose second ball to arrive first in the six-yard box
+  (Supercup 02:24), central box attacks on low crosses and rebounds
+  (Lommel 00:59, 03:14), and central box occupation against Gent (01:17,
+  03:04). Adequate, not Strong, and the match packages explain why: Gent
+  shows "limited dynamic movement away from defenders" and static
+  positioning during key attacks, which the editor-selected compilation
+  clips conceal entirely.
 - Body shape on receive: half-turned stance on transition receives (00:21,
-  01:06, 05:27) — compilation-derived only. The Supercup reel showed no
-  open-play receives at all (Inconclusive there).
-- First touch under pressure: clean touches setting up quick finishes with a
-  defender in contact (01:16, 02:08, 05:41) and a first-time finish on a
-  bouncing ball among defenders (Supercup 02:24). Scored Adequate rather
-  than Strong because all four instances are against Belgian domestic or
-  U21 opposition — this does NOT address the top-5-league press question.
-- Pressing intensity: zero observable instances across 21:54 of footage.
-  Both sources omit out-of-possession work entirely. Unscored, not passed.
-- Communication: no organising, pointing or structural calls visible.
-  Highlights and compilations cut before any of it. Unscored, not passed.
+  01:06, 05:27) and body angled forward for a first-time box shot (Lommel
+  00:59). The Supercup and Gent packages showed no clear open-play
+  receives at all — Inconclusive in both.
+- First touch under pressure: clean touches setting up quick finishes with
+  a defender in contact (01:16, 02:08, 05:41), a first-time finish on a
+  bouncing ball among defenders (Supercup 02:24), and a first-time strike
+  under tight tracking (Lommel 00:59). Scored Adequate rather than Strong
+  because every instance is Belgian domestic, Belgian second-tier or U21
+  opposition — this still does NOT address the top-5-league press question.
+- Pressing intensity: one observable instance across 34:14 — holding a high
+  central block with "moderate closing speed" against Gent (01:08). Scored
+  Adequate on a single sighting, and note what it is not: the role demands
+  a fast close on the correct angle that forces play one way, which one
+  moderate-speed instance does not evidence. The other three sources omit
+  out-of-possession work entirely.
+- Communication: no organising, pointing or structural calls visible in any
+  of the four sources. Unscored, not passed — but 34 minutes of footage
+  producing zero instances is itself becoming a signal worth testing live.
+
+The Gent package produced the most decision-relevant negative in this
+refresh, and only because it covers a match he did not score in: "low
+overall match involvement and static central positioning during key
+attacks", with movement described as "limited dynamic movement away from
+defenders". Against Lommel he attacked central box space well and had a
+header disallowed by VAR — but that was second-tier opposition.
 
 Convergence worth noting: the agent independently described the Supercup
 goal as an early six-yard-box arrival finishing a rebound (02:24), and
@@ -119,9 +150,12 @@ Rating: Adequate
 TACTICAL
 Downgraded from Strong. The previous Strong rested substantially on a
 frame-sampling video pass that reported near-post arrivals, double
-movements and lane-cutting pressing; watched properly, the same class of
-footage supports only Adequate movement and cannot evidence pressing at
-all. The positional discipline is intact — pure central box occupation,
+movements and lane-cutting pressing; watched properly across four sources,
+the same class of footage supports only Adequate movement and a single
+moderate-speed pressing instance. Worse for the role, the one top-tier
+league match reviewed in which he did not score (Gent, 30/08) shows low
+involvement and static central positioning during his team's key attacks.
+The positional discipline is intact — pure central box occupation,
 32 opposition-box touches in 435 minutes — but the creative contribution
 has thinned: xA 0.40 and 4 key passes in 435 JPL minutes (0.08 xA/90)
 against 3.73 xA in 2,507 minutes last season (0.13/90). His own post-match
@@ -281,11 +315,26 @@ SOURCE-TO-SOURCE DIVERGENCES (Plan-Do-Review log)
   684 min): goals/90 93rd, goal involvement 94th, shots/90 95th.
   Note a FootyStats data defect: it states he has taken no career penalties,
   yet he converted one against Aston Villa — its penalty field is stale.
+- ≠ Lommel fixture competition: FotMob's match log labels the 04/09/2026
+  away fixture "First Division A", but the video analysis identified the
+  opposition level as Belgian second division (Challenger Pro League).
+  The footage corrects the data source here, and it matters: the disallowed
+  header and the clean first-time strike in that match are second-tier
+  evidence and must not be weighted as top-flight output.
+- Video sourcing: sources 3 and 4 came from the FotMob match detail view,
+  which carries an official-highlights link per fixture (posted the day
+  after the match). This is now the preferred discovery route and is
+  recorded in the skill's SOURCES.md. Two further fixtures had no
+  highlights container at the time of writing: OH Leuven (15/08) and
+  Kortrijk (07/08). The Cercle Brugge package (23/08, MewvuAZIGe4) exists
+  and was left unwatched — he scored in it, so it adds goal-clip bias
+  rather than the blank-match evidence this refresh needed.
 - Video: the Aston Villa "highlights" video (zK8FAlqDTnQ) was tested and
   rejected — it contains only post-match press conferences with Emery,
   McGinn, Jackson, Leko and Sommer. The eye-test agent returned
   player_identified=false and scored nothing, which is the correct outcome
-  and is logged here rather than hidden.
+  and is logged here rather than hidden. FotMob had no highlights package
+  for that fixture yet either.
 
 DATA APPENDIX
 26/27 ALL COMPETITIONS to 09/09/2026 — 7 apps, 7 starts, 615 min, 5 G, 0 A
