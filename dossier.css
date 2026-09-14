@@ -70,12 +70,12 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ── LAYOUT ──────────────────────────────────────────────── */
 /* Narrow screens: one column, rails stacked in document order.
-   From 1080px the dossier splits into a sticky identity rail (masthead →
-   signal row) and a scrolling detail rail (the accordions), so the wide
-   viewport carries the page instead of two empty gutters. */
+   From 1080px the dossier splits into a sticky identity rail and a scrolling
+   detail rail. From 1280px the detail rail gains a live inspector so the
+   selected section stays visible beside the section index. */
 .col { max-width: 480px; margin: 0 auto; padding: 0 24px 48px; }
+.rail-inspector { display: none; }
 
 @media (min-width: 1080px) {
   .col {
@@ -94,6 +94,26 @@ body {
   /* The identity rail already holds the name: the sticky mini-header is a
      small-screen device only. */
   #mini { display: none; }
+}
+
+@media (min-width: 1280px) {
+  .col {
+    max-width: 1480px;
+    padding-left: 32px;
+    padding-right: 32px;
+    grid-template-columns: minmax(300px, .9fr) minmax(300px, 1.05fr) minmax(360px, 1.25fr);
+    column-gap: 32px;
+  }
+  .rail-detail { min-width: 0; }
+  .rail-inspector {
+    display: block;
+    position: sticky;
+    top: 24px;
+    min-width: 0;
+    border: 1px solid var(--border2);
+    background: var(--surface);
+  }
+  .rail-inspector:not(.is-active) { display: none; }
 }
 
 /* ── TOPNAV ──────────────────────────────────────────────── */
@@ -272,6 +292,49 @@ details[open] .body { background: var(--surface); }
 .body p { margin-bottom: 10px; }
 .body p:last-child { margin-bottom: 0; }
 .sumright { display: flex; align-items: center; gap: 8px; }
+/* ── DESKTOP DETAIL INSPECTOR ─────────────────────────────── */
+.panel-kicker { color: var(--muted); padding: 16px 18px 0; }
+.panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 18px 14px;
+}
+.panel-title {
+  font-family: var(--display);
+  font-size: var(--fs-lg);
+  line-height: 1.15;
+  font-weight: 700;
+}
+.panel-close {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--border2);
+  border-radius: 3px;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: var(--fs-md);
+  line-height: 1;
+  cursor: pointer;
+  transition: color .15s, border-color .15s, background .15s;
+}
+.panel-close:hover,
+.panel-close:focus-visible {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--paper);
+}
+.panel-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.panel-rule { border-top: 1px solid var(--hairline); }
+.panel-content > .body {
+  margin: 0;
+  padding: 18px;
+  border-left: 0;
+  background: transparent;
+}
 
 /* ── CHIPS ───────────────────────────────────────────────── */
 .chip {
