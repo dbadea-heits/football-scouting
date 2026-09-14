@@ -72,10 +72,11 @@ body {
 
 /* Narrow screens: one column, rails stacked in document order.
    From 1080px the dossier splits into a sticky identity rail and a scrolling
-   detail rail. From 1280px the detail rail gains a live inspector so the
-   selected section stays visible beside the section index. */
+   detail rail. From 1280px the selected section opens as an off-canvas drawer
+   from the right edge, creating the third visible reading surface. */
 .col { max-width: 480px; margin: 0 auto; padding: 0 24px 48px; }
-.rail-inspector { display: none; }
+.rail-inspector,
+.drawer-scrim { display: none; }
 
 @media (min-width: 1080px) {
   .col {
@@ -97,23 +98,44 @@ body {
 }
 
 @media (min-width: 1280px) {
-  .col {
-    max-width: 1480px;
-    padding-left: 32px;
-    padding-right: 32px;
-    grid-template-columns: minmax(300px, .9fr) minmax(300px, 1.05fr) minmax(360px, 1.25fr);
-    column-gap: 32px;
+  .drawer-scrim {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 29;
+    background: rgba(0, 0, 0, .28);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity .24s ease, visibility 0s linear .24s;
+  }
+  .drawer-scrim.is-active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition-delay: 0s;
   }
   .rail-detail { min-width: 0; }
   .rail-inspector {
     display: block;
-    position: sticky;
-    top: 24px;
+    position: fixed;
+    inset: 0 0 0 auto;
+    z-index: 30;
+    width: min(520px, calc(100vw - 28px));
     min-width: 0;
-    border: 1px solid var(--border2);
-    background: var(--surface);
+    overflow-y: auto;
+    background: var(--paper);
+    border-left: 1px solid var(--border2);
+    box-shadow: -18px 0 40px rgba(0, 0, 0, .28);
+    transform: translateX(100%);
+    visibility: hidden;
+    transition: transform .24s cubic-bezier(.22, .61, .36, 1), visibility 0s linear .24s;
   }
-  .rail-inspector:not(.is-active) { display: none; }
+  .rail-inspector.is-active {
+    transform: translateX(0);
+    visibility: visible;
+    transition-delay: 0s;
+  }
 }
 
 /* ── TOPNAV ──────────────────────────────────────────────── */
@@ -292,14 +314,15 @@ details[open] .body { background: var(--surface); }
 .body p { margin-bottom: 10px; }
 .body p:last-child { margin-bottom: 0; }
 .sumright { display: flex; align-items: center; gap: 8px; }
-/* ── DESKTOP DETAIL INSPECTOR ─────────────────────────────── */
-.panel-kicker { color: var(--muted); padding: 16px 18px 0; }
+
+/* ── DESKTOP DETAIL DRAWER ────────────────────────────────── */
+.panel-kicker { color: var(--muted); padding: 28px 28px 0; }
 .panel-heading {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 8px 18px 14px;
+  padding: 8px 28px 20px;
 }
 .panel-title {
   font-family: var(--display);
@@ -309,8 +332,8 @@ details[open] .body { background: var(--surface); }
 }
 .panel-close {
   flex: none;
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   border: 1px solid var(--border2);
   border-radius: 3px;
   background: transparent;
@@ -325,14 +348,14 @@ details[open] .body { background: var(--surface); }
 .panel-close:focus-visible {
   color: var(--accent);
   border-color: var(--accent);
-  background: var(--paper);
+  background: var(--surface);
 }
 .panel-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .panel-rule { border-top: 1px solid var(--hairline); }
 .panel-content > .body {
-  margin: 0;
-  padding: 18px;
-  border-left: 0;
+  margin: 24px 28px 40px;
+  padding: 0 0 0 18px;
+  border-left: 2px solid var(--accent);
   background: transparent;
 }
 
