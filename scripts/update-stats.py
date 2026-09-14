@@ -2,32 +2,47 @@
 """
 update-stats.py — Football Intelligence · 2026-27 Season Data Fetcher
 
-Fetches current-season stats from FBref and Understat for all tracked players,
-upserts them into data/football.db, then rebuilds every generated artifact via
-scripts/build.py. Run weekly via GitHub Actions after matchday.
+Fetches current-season stats for every tracked player, upserts them into
+data/football.db, then rebuilds every generated artifact via scripts/build.py.
+Run weekly via GitHub Actions after matchday.
 
-Sources:
-  - FBref: goals, assists, apps, minutes, progressive carries/passes (rendered HTML via Playwright)
-  - Understat: xG, xA, key passes per 90 (XHR response intercepted via Playwright)
+Source: FotMob (Opta-derived). One browser context is kept on fotmob.com and
+the JSON endpoints are called same-origin from the page:
 
-Requires: pip install playwright beautifulsoup4 lxml jinja2 && playwright install chromium
+  /api/data/playerData?id={id}                      → season / tournament index
+  /api/data/playerStats?playerId={id}&seasonId={e}  → per-tournament deep stats
+
+Club competitions of the current season are aggregated into one "all comps"
+line; national-team tournaments are excluded (see NATIONAL_COMP_RE).
+
+FBref was the previous source and is no longer usable: every request — headless
+Chromium, headed Chrome, plain HTTP, third-party readers — is answered with a
+Cloudflare 403 interstitial. Understat was the xG/xA source and only ever
+covered the big five leagues; FotMob supersedes both.
+
+Every slot is filled only with the metric its stored caption names; a caption
+with no 2026-27 equivalent (progressive passes and carries, deep progressions,
+GK top speed, or any caption pinned to a past season or single competition)
+stays "—". check_labels() aborts the run if the registry and the captions in
+the database ever disagree, and a fetch that returns nothing never overwrites
+values already stored.
+
+Requires: pip install playwright jinja2 && playwright install chromium
 """
 
+import json
 import re
 import sqlite3
 import sys
-import time
 from datetime import datetime, timezone
 from pathlib import Path
 
-from bs4 import BeautifulSoup
-from playwright.sync_api import sync_playwright, BrowserContext
+from playwright.sync_api import sync_playwright, Page
 
 # ── Constants ─────────────────────────────────────────────────────────────────
 
 CURRENT_SEASON = "2026-27"
-FBREF_SEASON   = "2026-2027"   # FBref URL format
-UNDERSTAT_YEAR = "2026"        # Understat season key
+FOTMOB_SEASON  = "2026/2027"   # FotMob statSeasons key
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
@@ -37,143 +52,7 @@ from pages import season  # noqa: E402
 # Same path build.py reads (honours the FOOTBALL_DB override).
 DB_PATH = build.DB_PATH
 
-HEADERS = {
-    "User-Agent": (
-        "Mozilla/5.0 (compatible; FootballIntelligence/1.0; "
-        "+https://github.com/football-intelligence/scouting)"
-    ),
-    "Accept-Language": "en-US,en;q=0.9",
-}
-
-# Polite delay between requests (seconds)
-REQUEST_DELAY = 2.5
-
-# ── Player registry ───────────────────────────────────────────────────────────
-# Each entry: player-id → config dict
-#
-# fbref_id:      FBref player page ID (in URL: /players/{id}/)
-# understat_id:  Understat player ID (in URL: /player/{id})
-# position:      "fw" | "cb" | "fb" | "gk" | "cm" etc.  (drives which metrics to pull)
-# signal_labels: list of 3 label strings shown in the .signals row (must match HTML)
-# signal_keys:   list of 3 stat keys this script will populate (see _extract_* funcs)
-# league:        fbref league short-name for stat table lookup
-#
-# FBref IDs: visit player page and copy from URL.
-# Understat IDs: only covers PL, La Liga, Bundesliga, Serie A, Ligue 1.
-#   For other leagues (JPL, HNL, Primeira Liga) understat_id = None.
-
-PLAYERS = {
-    "deniz-undav": {
-        "name": "Deniz Undav",
-        "fbref_id":     "dd549382",
-        "understat_id": 10804,        # Bundesliga — covered
-        "position": "fw",
-        "signal_labels": ["NP-xG / 90", "Goals − xG", "Shots on target / 90"],
-        "signal_keys":   ["np_xg90",   "goals_minus_xg", "sot90"],
-        "league": "Bundesliga",
-    },
-    "nicolo-tresoldi": {
-        "name": "Nicolò Tresoldi",
-        "fbref_id":     "3860ab13",
-        "understat_id": None,         # JPL — not covered by Understat
-        "position": "fw",
-        "signal_labels": ["NP-xG / 90", "Goals − xG", "Shots on target / 90"],
-        "signal_keys":   ["np_xg90",   "goals_minus_xg", "sot90"],
-        "league": "Belgian Pro League",
-    },
-    "lautaro-martinez": {
-        "name": "Lautaro Martínez",
-        "fbref_id":     "f7036e1c",
-        "understat_id": 7006,         # Serie A — covered
-        "position": "fw",
-        "signal_labels": ["G/90", "xG / 90", "Goals − xG"],
-        "signal_keys":   ["g90", "xg90", "goals_minus_xg"],
-        "league": "Serie A",
-    },
-    "orri-oskarsson": {
-        "name": "Orri Steinn Óskarsson",
-        "fbref_id":     "d0b8e745",
-        "understat_id": 13048,        # La Liga — covered
-        "position": "fw",
-        "signal_labels": ["G/90", "Shots on target / 90", "Goals − xG"],
-        "signal_keys":   ["g90", "sot90", "goals_minus_xg"],
-        "league": "La Liga",
-    },
-    "julian-alvarez": {
-        "name": "Julián Álvarez",
-        "fbref_id":     "15ab5a2b",
-        "understat_id": 10846,        # La Liga — covered
-        "position": "fw",
-        "signal_labels": ["xG / 90", "G+A / 90", "Key passes / 90"],
-        "signal_keys":   ["xg90", "ga90", "kp90"],
-        "league": "La Liga",
-    },
-    "serhou-guirassy": {
-        "name": "Serhou Guirassy",
-        "fbref_id":     "923f4dda",
-        "understat_id": 3738,         # Bundesliga — covered
-        "position": "fw",
-        "signal_labels": ["xG / 90", "G+A / 90", "Shot on target %"],
-        "signal_keys":   ["xg90", "ga90", "sot_pct"],
-        "league": "Bundesliga",
-    },
-    "dominik-livakovic": {
-        "name": "Dominik Livaković",
-        "fbref_id":     "58f077c0",
-        "understat_id": None,         # HNL — not covered by Understat
-        "position": "gk",
-        "signal_labels": ["Save %", "PSxG − GA", "Pass completion %"],
-        "signal_keys":   ["save_pct", "psxg_minus_ga", "pass_pct"],
-        "league": "HNL",
-    },
-    "chupe": {
-        "name": "Carlos Ruiz Rubio",
-        "fbref_id":     "4eb8be46",
-        "understat_id": None,         # La Liga 2 — not covered by Understat
-        "position": "fw",
-        "signal_labels": ["G/90", "xG / 90", "Shot on target %"],
-        "signal_keys":   ["g90", "xg90", "sot_pct"],
-        "league": "La Liga 2",
-    },
-    "george-salinas": {
-        "name": "Jorge Salinas Viadero",
-        "fbref_id":     "a44995b7",
-        "understat_id": None,         # La Liga 2 — not covered by Understat
-        "position": "fb",
-        "signal_labels": ["Assists / 90", "Prog. carries / 90", "G+A / 90"],
-        "signal_keys":   ["a90", "prog_carries90", "ga90"],
-        "league": "La Liga 2",
-    },
-    "castello-lukeba": {
-        "name": "Castello Lukeba",
-        "fbref_id":     "5b9512c5",
-        "understat_id": 9511,         # Bundesliga — covered
-        "position": "cb",
-        "signal_labels": ["Prog. passes / 90", "Prog. carries / 90", "xA / 90"],
-        "signal_keys":   ["prog_passes90", "prog_carries90", "xa90"],
-        "league": "Bundesliga",
-    },
-    "goncalo-inacio": {
-        "name": "Gonçalo Inácio",
-        "fbref_id":     "33651873",
-        "understat_id": None,         # Primeira Liga — not covered by Understat
-        "position": "cb",
-        "signal_labels": ["Prog. passes / 90", "Prog. carries / 90", "xA / 90"],
-        "signal_keys":   ["prog_passes90", "prog_carries90", "xa90"],
-        "league": "Primeira Liga",
-    },
-    "gabriel-jesus": {
-        "name": "Gabriel Jesus",
-        "fbref_id":     "b66315ae",
-        "understat_id": 5543,         # La Liga (Barcelona) — covered
-        "position": "fw",
-        "signal_labels": ["xG / 90", "Prog. carries / 90", "G+A / 90"],
-        "signal_keys":   ["xg90", "prog_carries90", "ga90"],
-        "league": "La Liga",
-    },
-}
-
-# ── Playwright scrapers ───────────────────────────────────────────────────────
+FOTMOB_HOME = "https://www.fotmob.com/"
 
 BROWSER_UA = (
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
@@ -181,184 +60,447 @@ BROWSER_UA = (
     "Chrome/127.0.0.0 Safari/537.36"
 )
 
+# One full match of football is the floor for publishing any per-90 rate.
+MIN_RATE_MINUTES = 90
 
-def _fbref_player_url(fbref_id: str) -> str:
-    return f"https://fbref.com/en/players/{fbref_id}/all_comps/stats/"
+# National-team competitions are dropped from the club "all comps" aggregate.
+# "FIFA Club World Cup" is a club tournament and must survive the World Cup rule.
+NATIONAL_COMP_RE = re.compile(
+    r"(?<!club )world cup|nations league|^euro\b|european championship"
+    r"|copa am[eé]rica|africa cup|asian cup|gold cup|olympic|friendl",
+    re.IGNORECASE,
+)
+
+# ── Player registry ───────────────────────────────────────────────────────────
+# Each entry: player-id → config dict
+#
+# fotmob_id:     FotMob player page ID (in URL: /players/{id})
+# position:      "fw" | "cb" | "fb" | "gk" | "cm"  (drives which metrics are read)
+# signals:       one (label, key) pair per slot of the report's .signals row.
+# card:          one (label, key) pair per slot of the index hub's stat card.
+#
+# Each label is the caption stored in the DB (signal_defs / card_stats) for that
+# slot — the season toggle swaps only the number, never the caption, so a slot
+# may only be filled with the very metric its caption names. A `None` key means
+# the caption is tied to a past season ("xG / 90 (BL 24-25)"), to one specific
+# competition ("UCL goals"), to a career total, or to a metric FotMob does not
+# carry (progressive passes and carries, deep progressions, GK top speed).
+# Those slots stay "—" for 2026-27 rather than borrowing a foreign number.
+#
+# The competition shown beside each number is derived from the player's
+# current-season domestic tournament on FotMob, so it can never go stale.
+
+PLAYERS = {
+    "deniz-undav": {
+        "name": "Deniz Undav",
+        "fotmob_id": 661519,
+        "position": "fw",
+        "signals": [
+            ("NP-xG/90",    "np_xg90"),
+            ("Goals − xG",  "goals_minus_xg"),
+            ("Shots/90",    "shots90"),
+        ],
+        "card": [
+            ("G/90",     "g90"),
+            ("G+A/90",   "ga90"),
+            ("NP-xG/90", "np_xg90"),
+        ],
+    },
+    "nicolo-tresoldi": {
+        "name": "Nicolò Tresoldi",
+        "fotmob_id": 1334552,
+        "position": "fw",
+        "signals": [
+            ("npxG/90",     "np_xg90"),
+            ("Goals − xG",  "goals_minus_xg"),
+            ("Shots/90",    "shots90"),
+        ],
+        "card": [
+            ("G/90",     "g90"),
+            ("G+A/90",   "ga90"),
+            ("NP-xG/90", "np_xg90"),
+        ],
+    },
+    "lautaro-martinez": {
+        "name": "Lautaro Martínez",
+        "fotmob_id": 690230,
+        "position": "fw",
+        "signals": [
+            ("xG / 90 (career Serie A)",     None),
+            ("xG / 90 (2025/26 Serie A)",    None),
+            ("UCL Goals vs xG Δ 2024/25",    None),
+        ],
+        "card": [
+            ("G/90",   "g90"),
+            ("G+A/90", "ga90"),
+            ("xG/90",  "xg90"),
+        ],
+    },
+    "orri-oskarsson": {
+        "name": "Orri Steinn Óskarsson",
+        "fotmob_id": 1097229,
+        "position": "fw",
+        "signals": [
+            ("Goals / 90",           "g90"),
+            ("npxG (season total)",  "npxg_total"),
+            ("Goals vs npxG Δ",      "goals_minus_npxg"),
+        ],
+        "card": [
+            ("G/90",     "g90"),
+            ("G+A/90",   "ga90"),
+            ("NP-xG/90", "np_xg90"),
+        ],
+    },
+    "julian-alvarez": {
+        "name": "Julián Álvarez",
+        "fotmob_id": 974753,
+        "position": "fw",
+        "signals": [
+            ("xG/90 · 24-25 La Liga",      None),
+            ("Goals/90 · UCL 25-26",       None),
+            ("Prog Passes/90 · 25-26",     None),
+        ],
+        "card": [
+            ("G/90",   "g90"),
+            ("G+A/90", "ga90"),
+            ("xG/90",  "xg90"),
+        ],
+    },
+    "serhou-guirassy": {
+        "name": "Serhou Guirassy",
+        "fotmob_id": 448540,
+        "position": "fw",
+        "signals": [
+            ("xG / 90 (BL 24-25)",     None),
+            ("Goals / 90 (BL 24-25)",  None),
+            ("Aerial duel won",        "aerial_pct"),
+        ],
+        "card": [
+            ("G/90",      "g90"),
+            ("xG/90",     "xg90"),
+            ("UCL goals", None),
+        ],
+    },
+    "dominik-livakovic": {
+        "name": "Dominik Livaković",
+        "fotmob_id": 383971,
+        "position": "gk",
+        "signals": [
+            ("Save % (all comps)",     "save_pct"),
+            ("Top speed km/h (EL)",    None),
+            ("Pass accuracy (EL)",     None),
+        ],
+        "card": [
+            ("Sv %",     "save_pct"),
+            ("km/h top", None),
+            ("Pass %",   "pass_pct"),
+        ],
+    },
+    "chupe": {
+        "name": "Carlos Ruiz Rubio",
+        "fotmob_id": 1669622,
+        "position": "fw",
+        "signals": [
+            ("Goals / 90",  "g90"),
+            ("xG / 90",     "xg90"),
+            ("SoT conv.",   "sot_conv"),
+        ],
+        "card": [
+            ("G/90",   "g90"),
+            ("G+A/90", "ga90"),
+            ("xG/90",  "xg90"),
+        ],
+    },
+    "george-salinas": {
+        "name": "Jorge Salinas Viadero",
+        "fotmob_id": 1670161,
+        "position": "fb",
+        "signals": [
+            ("Assists (25/26)",     None),
+            ("FotMob Avg Rating",   "rating"),
+            ("Assists / 90",        "a90"),
+        ],
+        "card": [
+            ("Assists", "assists_total"),
+            ("A/90",    "a90"),
+            ("FotMob",  "rating"),
+        ],
+    },
+    "castello-lukeba": {
+        "name": "Castello Lukeba",
+        "fotmob_id": 1253852,
+        "position": "cb",
+        "signals": [
+            ("Recoveries / 90",         "recoveries90"),
+            ("Touches / 90",            "touches90"),
+            ("Deep Progressions / 90",  None),
+        ],
+        "card": [
+            ("Rec/90",  "recoveries90"),
+            ("Prog/90", None),
+            ("FotMob",  "rating"),
+        ],
+    },
+    "goncalo-inacio": {
+        "name": "Gonçalo Inácio",
+        "fotmob_id": 1165710,
+        "position": "cb",
+        "signals": [
+            ("Prog. Passes / 90",   None),
+            ("Prog. Carries / 90",  None),
+            ("xA / 90",             "xa90"),
+        ],
+        "card": [
+            ("Prog Pass/90", None),
+            ("Prog Car/90",  None),
+            ("UCL Rating",   None),
+        ],
+    },
+    "gabriel-jesus": {
+        "name": "Gabriel Jesus",
+        "fotmob_id": 576165,
+        "position": "fw",
+        "signals": [
+            ("xG / 90",             "xg90"),
+            ("Prog. carries / 90",  None),
+            ("Career xG − goals",   None),
+        ],
+        "card": [
+            ("xG/90",           "xg90"),
+            ("Prog car/90",     None),
+            ("xG − G (career)", None),
+        ],
+    },
+}
+
+# ── FotMob client ─────────────────────────────────────────────────────────────
+
+# Counting stats that may be summed across a season's tournaments. Percentages
+# are never summed — they are recomputed from their components.
+ADDITIVE_STATS = frozenset({
+    "minutes_played", "matches_uppercase", "goals", "assists",
+    "expected_goals", "non_penalty_xg", "expected_assists",
+    "shots", "ShotsOnTarget", "chances_created",
+    "saves", "goals_conceded", "goals_prevented", "successful_passes",
+    "recoveries", "touches", "aerials_won",
+    "_pass_attempts", "_aerial_duels", "_rating_minutes",
+})
+
+# Percentages arrive per competition and cannot be summed; each is paired with
+# the counter it is a share of, so the aggregate is rebuilt from the components.
+SHARE_OF = {
+    "successful_passes_accuracy": ("successful_passes", "_pass_attempts"),
+    "aerials_won_percent":        ("aerials_won",       "_aerial_duels"),
+}
+
+# Counting stats whose per-90 rate can recover minutes when FotMob omits
+# `minutes_played` from the card (goalkeeper cards do).
+MINUTES_PROXIES = ("saves", "goals_conceded", "successful_passes")
+
+_FETCH_JS = """async (path) => {
+    const res = await fetch(path, { headers: { accept: 'application/json' } });
+    return { status: res.status, body: await res.text() };
+}"""
 
 
-def fetch_fbref(fbref_id: str, league: str, ctx: BrowserContext) -> dict:
-    """
-    Scrape current-season (2026-27) stats from a player's FBref all-comps page
-    using a real Playwright browser page (bypasses IP/UA blocking).
-    """
-    url = _fbref_player_url(fbref_id)
-    print(f"    FBref: {url}", flush=True)
+def api(page: Page, path: str):
+    """Call a fotmob.com JSON endpoint from inside the loaded page."""
+    res = page.evaluate(_FETCH_JS, path)
+    if res["status"] != 200:
+        raise RuntimeError(f"{path} → HTTP {res['status']}")
+    body = res["body"].strip()
+    return json.loads(body) if body else None
 
-    page = ctx.new_page()
+
+def _num(value) -> float | None:
     try:
-        page.goto(url, wait_until="domcontentloaded", timeout=30_000)
-        try:
-            page.wait_for_selector("table[id*='stats_standard']", timeout=15_000)
-        except Exception:
-            print("    ⚠  stats_standard table not rendered within 15s", flush=True)
-        time.sleep(REQUEST_DELAY)
-        html = page.content()
-    except Exception as exc:
-        print(f"    ✗ FBref navigation error: {exc}", flush=True)
+        return float(str(value).replace(",", "").replace("%", ""))
+    except (TypeError, ValueError):
+        return None
+
+
+def current_tournaments(player_data: dict) -> list[dict]:
+    """Club tournaments the player has current-season stats for, league first."""
+    seasons = player_data.get("statSeasons") or []
+    current = next(
+        (s for s in seasons if s.get("seasonName") == FOTMOB_SEASON), None
+    )
+    if not current:
+        return []
+    return [
+        t for t in current.get("tournaments", [])
+        if not NATIONAL_COMP_RE.search(t.get("name", ""))
+    ]
+
+
+def _entry_totals(stats: dict) -> dict:
+    """Flatten one tournament's stat payload into a {key: number} dict."""
+    if not stats:
         return {}
-    finally:
-        page.close()
+    groups = [stats.get("topStatCard") or {}]
+    groups += (stats.get("statsSection") or {}).get("items", [])
 
-    soup = BeautifulSoup(html, "lxml")
-    stats: dict = {}
+    totals: dict = {}
+    shares: dict = {}
+    rating = None
 
-    table = soup.find("table", {"id": re.compile(r"stats_standard")})
-    if not table:
-        print("    ⚠  stats_standard table not found", flush=True)
-        return stats
+    for group in groups:
+        for item in group.get("items", []):
+            key = item.get("localizedTitleId")
+            value = _num(item.get("statValue"))
+            if value is None:
+                continue
+            if key in ADDITIVE_STATS:
+                # topStatCard repeats stats-section entries: assign, never add.
+                totals[key] = value
+            elif key in SHARE_OF:
+                shares[key] = value
+            elif key == "rating":
+                rating = value
 
-    for row in table.select("tbody tr"):
-        season_cell = row.find("th", {"data-stat": "year_id"})
-        if not season_cell:
+    for share_key, (counter, attempts_key) in SHARE_OF.items():
+        share = shares.get(share_key)
+        counted = totals.get(counter)
+        if share and counted is not None:
+            totals[attempts_key] = counted * 100.0 / share
+
+    if "minutes_played" not in totals:
+        for group in groups:
+            for item in group.get("items", []):
+                if item.get("localizedTitleId") not in MINUTES_PROXIES:
+                    continue
+                per90 = item.get("per90")
+                value = _num(item.get("statValue"))
+                if per90 and value:
+                    totals["minutes_played"] = round(value * 90.0 / per90)
+                    break
+            if "minutes_played" in totals:
+                break
+
+    # A rating is an average, not a total: carry it as rating·minutes so several
+    # competitions aggregate into a minutes-weighted season rating.
+    if rating is not None and totals.get("minutes_played"):
+        totals["_rating_minutes"] = rating * totals["minutes_played"]
+
+    return totals
+
+
+def fetch_fotmob(page: Page, cfg: dict) -> tuple[dict, str | None]:
+    """Season totals across the player's club competitions, plus the league label."""
+    fotmob_id = cfg["fotmob_id"]
+    print(f"    FotMob: https://www.fotmob.com/players/{fotmob_id}", flush=True)
+
+    player_data = api(page, f"/api/data/playerData?id={fotmob_id}")
+    if not player_data:
+        print("    ✗ no playerData payload", flush=True)
+        return {}, None
+
+    tournaments = current_tournaments(player_data)
+    if not tournaments:
+        print(f"    ⚠  no {CURRENT_SEASON} club competitions", flush=True)
+        return {}, None
+
+    league_label = tournaments[0]["name"]
+    totals: dict = {}
+    for tournament in tournaments:
+        entry = _entry_totals(
+            api(
+                page,
+                f"/api/data/playerStats?playerId={fotmob_id}"
+                f"&seasonId={tournament['entryId']}",
+            )
+        )
+        if not entry:
             continue
-        season_link = season_cell.find("a")
-        season_text = season_link.text.strip() if season_link else season_cell.text.strip()
-        if season_text != FBREF_SEASON:
-            continue
+        for key, value in entry.items():
+            totals[key] = totals.get(key, 0.0) + value
+        print(
+            f"      {tournament['name']}: "
+            f"{int(entry.get('matches_uppercase', 0))} apps · "
+            f"{int(entry.get('minutes_played', 0))} min",
+            flush=True,
+        )
 
-        def cell(stat: str) -> str:
-            td = row.find("td", {"data-stat": stat})
-            return td.text.strip() if td else ""
-
-        def num(stat: str) -> float | None:
-            v = cell(stat)
-            if not v or v in ("—", ""):
-                return None
-            try:
-                return float(v.replace(",", ""))
-            except ValueError:
-                return None
-
-        mp      = num("games")
-        mins    = num("minutes")
-        mins_90 = (mins / 90.0) if mins else None
-        goals   = num("goals")
-        assists = num("assists")
-        xg      = num("xg")
-        xga     = num("xa")
-        shots   = num("shots")
-        sot     = num("shots_on_target")
-        prog_c  = num("progressive_carries")
-        prog_p  = num("progressive_passes")
-
-        if goals is not None and mins_90:
-            stats["g90"] = round(goals / mins_90, 2)
-        if assists is not None and mins_90:
-            stats["a90"] = round(assists / mins_90, 2)
-        if goals is not None and assists is not None and mins_90:
-            stats["ga90"] = round((goals + assists) / mins_90, 2)
-        if xg is not None and mins_90:
-            stats["xg90"] = round(xg / mins_90, 2)
-        if xga is not None and mins_90:
-            stats["xa90"] = round(xga / mins_90, 2)
-        if prog_c is not None and mins_90:
-            stats["prog_carries90"] = round(prog_c / mins_90, 2)
-        if prog_p is not None and mins_90:
-            stats["prog_passes90"] = round(prog_p / mins_90, 2)
-        if shots and sot is not None:
-            stats["sot_pct"] = round((sot / shots) * 100, 1)
-        if goals is not None and xg is not None:
-            diff = goals - xg
-            stats["goals_minus_xg"] = f"{'+' if diff >= 0 else ''}{diff:.1f}"
-            if mins_90:
-                stats["goals_minus_xg90"] = round((goals - xg) / mins_90, 2)
-                stats["np_xg90"] = stats.get("xg90")  # simplified
-
-        stats["_apps"]    = int(mp) if mp else 0
-        stats["_mins"]    = int(mins) if mins else 0
-        stats["_goals"]   = int(goals) if goals else 0
-        stats["_assists"] = int(assists) if assists else 0
-        break
-
-    return stats
+    return totals, league_label
 
 
-def fetch_understat(understat_id: str, ctx: BrowserContext) -> dict:
+# ── Metrics ───────────────────────────────────────────────────────────────────
+
+def _signed(value: float, places: int = 1) -> str:
+    """A delta reads as a delta: always carries its sign."""
+    return f"{'+' if value >= 0 else ''}{value:.{places}f}"
+
+
+def metrics(totals: dict, position: str) -> dict:
+    """Derive every metric a registry signal key or the metrics block names.
+
+    Per-90 rates need a defensible denominator: below MIN_RATE_MINUTES only the
+    appearance line is returned, so a cameo can't publish a 5.62 goals/90 signal.
+    Percentages carry their sign so they read the same as the baseline season.
     """
-    Fetch xG/xA/KP data from Understat by intercepting the /getPlayerData/{id}
-    XHR response that fires during page load. Aggregates match-level data for
-    the current season (UNDERSTAT_YEAR).
-    """
-    url = f"https://understat.com/player/{understat_id}"
-    data_prefix = f"https://understat.com/getPlayerData/{understat_id}"
-    print(f"    Understat: {url}", flush=True)
-
-    captured: list[dict] = []
-
-    page = ctx.new_page()
-    try:
-        def on_response(response):
-            if data_prefix in response.url and response.status == 200:
-                try:
-                    captured.append(response.json())
-                except Exception:
-                    pass
-
-        page.on("response", on_response)
-        page.goto(url, wait_until="domcontentloaded", timeout=30_000)
-        page.wait_for_timeout(2_000)   # allow XHR to complete
-    except Exception as exc:
-        print(f"    ✗ Understat navigation error: {exc}", flush=True)
-        return {}
-    finally:
-        page.close()
-
-    if not captured:
-        print("    ⚠  No getPlayerData XHR captured", flush=True)
+    minutes = totals.get("minutes_played", 0.0)
+    if minutes < 1:
         return {}
 
-    matches = captured[0].get("matches", [])
-    season_matches = [m for m in matches if m.get("season") == UNDERSTAT_YEAR]
+    goals   = totals.get("goals", 0.0)
+    assists = totals.get("assists", 0.0)
 
-    if not season_matches:
-        print(f"    ⚠  No {CURRENT_SEASON} matches (total: {len(matches)})", flush=True)
-        return {}
+    out: dict = {
+        "_apps":    int(totals.get("matches_uppercase", 0)),
+        "_mins":    int(minutes),
+        "_goals":   int(goals),
+        "_assists": int(assists),
+        "assists_total": int(assists),
+    }
+    if minutes < MIN_RATE_MINUTES:
+        return out
 
-    def fsum(key: str) -> float:
-        return sum(float(m.get(key) or 0) for m in season_matches)
+    n90   = minutes / 90.0
+    xg    = totals.get("expected_goals", 0.0)
+    npxg  = totals.get("non_penalty_xg", 0.0)
+    shots = totals.get("shots", 0.0)
+    sot   = totals.get("ShotsOnTarget", 0.0)
 
-    total_mins    = fsum("time")
-    total_goals   = fsum("goals")
-    total_xg      = fsum("xG")
-    total_npxg    = fsum("npxG")
-    total_assists  = fsum("assists")
-    total_xa      = fsum("xA")
-    total_kp      = fsum("key_passes")
+    if position != "gk":
+        out["g90"]        = round(goals / n90, 2)
+        out["a90"]        = round(assists / n90, 2)
+        out["ga90"]       = round((goals + assists) / n90, 2)
+        out["xg90"]       = round(xg / n90, 2)
+        out["np_xg90"]    = round(npxg / n90, 2)
+        out["npxg_total"] = round(npxg, 2)
+        out["xa90"]       = round(totals.get("expected_assists", 0.0) / n90, 2)
+        out["kp90"]       = round(totals.get("chances_created", 0.0) / n90, 2)
+        out["shots90"]    = round(shots / n90, 2)
+        out["sot90"]      = round(sot / n90, 2)
+        if sot:
+            out["sot_conv"] = f"{goals / sot * 100:.0f}%"
+        out["goals_minus_xg"]   = _signed(goals - xg)
+        out["goals_minus_npxg"] = _signed(goals - npxg, places=2)
+    else:
+        saves    = totals.get("saves", 0.0)
+        conceded = totals.get("goals_conceded", 0.0)
+        if saves + conceded:
+            out["save_pct"] = f"{saves / (saves + conceded) * 100:.1f}%"
+        prevented = totals.get("goals_prevented")
+        if prevented is not None:
+            out["psxg_minus_ga"] = _signed(prevented)
 
-    if total_mins < 45:
-        print(f"    ⚠  Only {int(total_mins)} mins played — skipping", flush=True)
-        return {}
+    out["recoveries90"] = round(totals.get("recoveries", 0.0) / n90, 2)
+    out["touches90"]    = round(totals.get("touches", 0.0) / n90, 2)
 
-    n90    = total_mins / 90.0
-    result: dict = {}
+    rating_minutes = totals.get("_rating_minutes", 0.0)
+    if rating_minutes:
+        out["rating"] = round(rating_minutes / minutes, 2)
 
-    result["g90"]        = round(total_goals / n90, 2)
-    result["xg90"]       = round(total_xg / n90, 2)
-    result["np_xg90"]    = round(total_npxg / n90, 2)
-    result["a90"]        = round(total_assists / n90, 2)
-    result["xa90"]       = round(total_xa / n90, 2)
-    result["kp90"]       = round(total_kp / n90, 2)
-    result["ga90"]       = round((total_goals + total_assists) / n90, 2)
+    attempts = totals.get("_pass_attempts", 0.0)
+    if attempts:
+        out["pass_pct"] = f"{totals.get('successful_passes', 0.0) / attempts * 100:.1f}"
 
-    diff = total_goals - total_xg
-    result["goals_minus_xg"] = f"{'+' if diff >= 0 else ''}{diff:.1f}"
+    duels = totals.get("_aerial_duels", 0.0)
+    if duels:
+        out["aerial_pct"] = f"{totals.get('aerials_won', 0.0) / duels * 100:.0f}%"
 
-    result["_apps"]    = len(season_matches)
-    result["_mins"]    = int(total_mins)
-    result["_goals"]   = int(total_goals)
-    result["_assists"] = int(total_assists)
-
-    return result
+    return out
 
 
 # ── Build player output ────────────────────────────────────────────────────────
@@ -372,43 +514,35 @@ def format_val(v) -> str:
     return str(v)
 
 
-def build_player_entry(player_id: str, cfg: dict, ctx: BrowserContext) -> dict:
+def build_player_entry(player_id: str, cfg: dict, page: Page) -> dict:
     """Fetch data and build the player's 2026-27 overlay entry."""
     print(f"\n  [{player_id}]", flush=True)
 
-    fbref_stats: dict = {}
-    understat_stats: dict = {}
+    try:
+        totals, league_label = fetch_fotmob(page, cfg)
+    except Exception as exc:
+        print(f"    ✗ FotMob error: {exc}", flush=True)
+        totals, league_label = {}, None
 
-    if cfg.get("fbref_id"):
-        try:
-            fbref_stats = fetch_fbref(cfg["fbref_id"], cfg["league"], ctx)
-        except Exception as exc:
-            print(f"    ✗ FBref error: {exc}", flush=True)
+    stats = metrics(totals, cfg["position"])
 
-    if cfg.get("understat_id"):
-        try:
-            understat_stats = fetch_understat(cfg["understat_id"], ctx)
-        except Exception as exc:
-            print(f"    ✗ Understat error: {exc}", flush=True)
-
-    # Merge: Understat xG/xA preferred over FBref (more precise)
-    merged = {**fbref_stats, **understat_stats}
-
-    # Build signals (3 entries matching HTML signal row)
+    # Signal row: one entry per slot, in the order the report renders them. A
+    # slot with no 2026-27 equivalent stays "—" rather than borrowing a number
+    # from a metric its caption does not name.
     signals = []
-    for key in cfg["signal_keys"]:
-        val = merged.get(key)
-        num_str = format_val(val) if val is not None else "—"
+    for _label, key in cfg["signals"]:
+        val = stats.get(key) if key else None
         signals.append({
-            "num":  num_str,
-            "pctl": f"{CURRENT_SEASON} · In progress" if val is None else f"{CURRENT_SEASON} · {cfg['league']}",
+            "num":  format_val(val) if val is not None else "—",
+            "pctl": f"{CURRENT_SEASON} · In progress" if val is None or not league_label
+                    else f"{CURRENT_SEASON} · {league_label}",
         })
 
     # Build current season metrics block
-    apps  = merged.get("_apps", 0)
-    mins  = merged.get("_mins", 0)
-    goals = merged.get("_goals", 0)
-    assts = merged.get("_assists", 0)
+    apps  = stats.get("_apps", 0)
+    mins  = stats.get("_mins", 0)
+    goals = stats.get("_goals", 0)
+    assts = stats.get("_assists", 0)
     current_block = []
 
     if apps:
@@ -422,28 +556,32 @@ def build_player_entry(player_id: str, cfg: dict, ctx: BrowserContext) -> dict:
 
     for key, label in [
         ("xg90",           "xG / 90"),
+        ("np_xg90",        "NP-xG / 90"),
         ("xa90",           "xA / 90"),
         ("g90",            "Goals / 90"),
         ("a90",            "Assists / 90"),
         ("ga90",           "G+A / 90"),
-        ("prog_carries90", "Prog. carries / 90"),
-        ("prog_passes90",  "Prog. passes / 90"),
+        ("sot90",          "Shots on target / 90"),
+        ("kp90",           "Key passes / 90"),
         ("goals_minus_xg", "Goals vs xG"),
         ("save_pct",       "Save %"),
+        ("psxg_minus_ga",  "PSxG − GA"),
+        ("pass_pct",       "Pass completion %"),
     ]:
-        v = merged.get(key)
+        v = stats.get(key)
         if v is not None:
             current_block.append({"label": label, "val": format_val(v)})
 
-    # Build card stats (3 entries matching index.html card)
-    # Default: all "—" — the signal_keys guide which go to card
-    card = [{"val": "—", "cls": ""} for _ in range(3)]
-    for i, key in enumerate(cfg["signal_keys"][:3]):
-        v = merged.get(key)
-        if v is not None:
-            card[i] = {"val": format_val(v), "cls": "good" if _is_positive(v) else ""}
+    # Hub card: same rule as the signal row, against the card's own captions.
+    card = []
+    for _label, key in cfg["card"]:
+        v = stats.get(key) if key else None
+        card.append(
+            {"val": "—", "cls": ""} if v is None
+            else {"val": format_val(v), "cls": "good" if _is_positive(v) else ""}
+        )
 
-    raw_mins = merged.get("_mins", 0)
+    raw_mins = stats.get("_mins", 0)
     entry_mins = f"{raw_mins:,} min" if raw_mins and raw_mins > 0 else "—"
 
     return {
@@ -457,9 +595,14 @@ def build_player_entry(player_id: str, cfg: dict, ctx: BrowserContext) -> dict:
 def _is_positive(v) -> bool:
     """Loose heuristic: non-negative numeric is 'good' for display."""
     try:
-        return float(str(v).replace("+", "")) > 0
+        return float(str(v).replace("+", "").replace("%", "")) > 0
     except (ValueError, TypeError):
         return False
+
+
+def _has_data(entry: dict | None) -> bool:
+    """An entry carries data once the fetch produced a current-season line."""
+    return bool(entry and entry.get("current_block"))
 
 
 # ── Database round-trip ───────────────────────────────────────────────────────
@@ -470,6 +613,36 @@ def _is_positive(v) -> bool:
 def _db_entry(conn: sqlite3.Connection, player_id: str) -> dict | None:
     """The player's stored 2026-27 entry, in `build_player_entry()`'s shape."""
     return season.entry(conn, player_id)
+
+
+def check_labels(conn: sqlite3.Connection, targets: list[str]) -> list[str]:
+    """Registry captions must still be the ones the pages render.
+
+    The stored caption is what the reader sees in both seasons; if it is edited
+    in the DB and the registry is not re-pointed, this run would publish a
+    number under a caption that no longer describes it.
+    """
+    problems = []
+    for player_id in targets:
+        cfg = PLAYERS[player_id]
+        for slot, table, column in (
+            ("signals", "signal_defs", "label"),
+            ("card",    "card_stats",  "label"),
+        ):
+            stored = [
+                row[column] for row in conn.execute(
+                    f"SELECT {column} FROM {table} WHERE player_id = ?"
+                    + (" AND season = ?" if table == "card_stats" else "")
+                    + " ORDER BY idx",
+                    (player_id, season.SEASON) if table == "card_stats" else (player_id,),
+                )
+            ]
+            expected = [label for label, _key in cfg[slot]]
+            if stored != expected:
+                problems.append(
+                    f"{player_id}.{slot}: registry {expected} ≠ stored {stored}"
+                )
+    return problems
 
 
 # ── Main ──────────────────────────────────────────────────────────────────────
@@ -491,15 +664,37 @@ def main():
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     changed = False
+    empty: list[str] = []
+
+    drift = check_labels(conn, targets)
+    if drift:
+        conn.close()
+        print("Registry no longer matches the captions in the database:")
+        for problem in drift:
+            print(f"  {problem}")
+        sys.exit(1)
+
     try:
         with sync_playwright() as pw:
             browser = pw.chromium.launch(headless=True)
-            ctx = browser.new_context(user_agent=BROWSER_UA)
+            ctx = browser.new_context(user_agent=BROWSER_UA, locale="en-US")
+            page = ctx.new_page()
+            page.goto(FOTMOB_HOME, wait_until="domcontentloaded", timeout=45_000)
 
             for player_id in targets:
                 cfg = PLAYERS[player_id]
-                entry = build_player_entry(player_id, cfg, ctx)
-                if _db_entry(conn, player_id) != entry:
+                entry = build_player_entry(player_id, cfg, page)
+                stored = _db_entry(conn, player_id)
+
+                # A failed fetch must never blank a populated row: an outage at
+                # the source would otherwise silently erase real stats.
+                if not _has_data(entry):
+                    empty.append(player_id)
+                    if _has_data(stored):
+                        print(f"  ! {player_id} no data — keeping stored values")
+                        continue
+
+                if stored != entry:
                     season.upsert_entry(conn, player_id, entry)
                     changed = True
                     print(f"  ✓ {player_id} updated")
@@ -522,6 +717,16 @@ def main():
         # build.py owns artifact emission: every page plus data/season-2627.{json,js}
         print("\nRebuilding site from the database …")
         build.main()
+
+    if len(empty) == len(targets):
+        print(
+            f"\n✗ No data for any of the {len(targets)} player(s) — "
+            "the source is unreachable or its payload shape changed.",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+    if empty:
+        print(f"\nNo current-season club data: {', '.join(empty)}")
 
 
 if __name__ == "__main__":

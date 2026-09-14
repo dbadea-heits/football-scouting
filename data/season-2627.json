@@ -1,36 +1,40 @@
 {
   "_comment": "2026-27 current season live data. Updated weekly by scripts/update-stats.py. All values start as pending and are filled in after each matchweek.",
   "season": "2026-27",
-  "updated": "2026-09-09T09:34:37Z",
-  "matchweek": 3,
+  "updated": "2026-09-14T09:17:48Z",
+  "matchweek": 4,
   "players": {
     "deniz-undav": {
       "signals": [
         {
-          "num": "0.07",
+          "num": "0.24",
           "pctl": "2026-27 · Bundesliga"
         },
         {
-          "num": "-0.1",
+          "num": "-0.9",
           "pctl": "2026-27 · Bundesliga"
         },
         {
-          "num": "—",
-          "pctl": "2026-27 · In progress"
+          "num": "1.81",
+          "pctl": "2026-27 · Bundesliga"
         }
       ],
       "current_block": [
         {
           "label": "All comps 2026-27",
-          "val": "2 apps · 145 min · 0G · 0A"
+          "val": "5 apps · 349 min · 0G · 4A"
         },
         {
           "label": "xG / 90",
-          "val": "0.07"
+          "val": "0.24"
+        },
+        {
+          "label": "NP-xG / 90",
+          "val": "0.24"
         },
         {
           "label": "xA / 90",
-          "val": "0.06"
+          "val": "0.24"
         },
         {
           "label": "Goals / 90",
@@ -38,286 +42,131 @@
         },
         {
           "label": "Assists / 90",
-          "val": "0.00"
+          "val": "1.03"
         },
         {
           "label": "G+A / 90",
-          "val": "0.00"
+          "val": "1.03"
+        },
+        {
+          "label": "Shots on target / 90",
+          "val": "0.26"
+        },
+        {
+          "label": "Key passes / 90",
+          "val": "2.84"
         },
         {
           "label": "Goals vs xG",
-          "val": "-0.1"
+          "val": "-0.9"
+        },
+        {
+          "label": "Pass completion %",
+          "val": "78.9"
         }
       ],
       "card": [
-        {
-          "val": "0.07",
-          "cls": "good"
-        },
-        {
-          "val": "-0.1",
-          "cls": ""
-        },
-        {
-          "val": "—",
-          "cls": ""
-        }
-      ],
-      "mins": "145 min"
-    },
-    "nicolo-tresoldi": {
-      "signals": [
-        {
-          "num": "0.62",
-          "pctl": "2026-27 · Jupiler Pro League"
-        },
-        {
-          "num": "-0.78",
-          "pctl": "2026-27 · Jupiler Pro League"
-        },
-        {
-          "num": "3.52",
-          "pctl": "2026-27 · Jupiler Pro League"
-        }
-      ],
-      "current_block": [
-        {
-          "label": "All comps 2026-27",
-          "val": "7 apps · 615 min · 5G · 0A"
-        },
-        {
-          "label": "xG / 90",
-          "val": "0.78"
-        },
-        {
-          "label": "xA / 90",
-          "val": "0.08"
-        },
-        {
-          "label": "Goals / 90",
-          "val": "0.62"
-        },
-        {
-          "label": "Assists / 90",
-          "val": "0.00"
-        },
-        {
-          "label": "G+A / 90",
-          "val": "0.62"
-        },
-        {
-          "label": "Goals vs xG",
-          "val": "-0.78"
-        }
-      ],
-      "card": [
-        {
-          "val": "0.62",
-          "cls": "good"
-        },
-        {
-          "val": "-0.78",
-          "cls": ""
-        },
-        {
-          "val": "3.52",
-          "cls": "good"
-        }
-      ],
-      "mins": "615 min"
-    },
-    "lautaro-martinez": {
-      "signals": [
-        {
-          "num": "0.77",
-          "pctl": "2026-27 · Serie A"
-        },
-        {
-          "num": "1.14",
-          "pctl": "2026-27 · Serie A"
-        },
-        {
-          "num": "-1.0",
-          "pctl": "2026-27 · Serie A"
-        }
-      ],
-      "current_block": [
-        {
-          "label": "All comps 2026-27",
-          "val": "3 apps · 235 min · 2G · 0A"
-        },
-        {
-          "label": "xG / 90",
-          "val": "1.14"
-        },
-        {
-          "label": "xA / 90",
-          "val": "0.18"
-        },
-        {
-          "label": "Goals / 90",
-          "val": "0.77"
-        },
-        {
-          "label": "Assists / 90",
-          "val": "0.00"
-        },
-        {
-          "label": "G+A / 90",
-          "val": "0.77"
-        },
-        {
-          "label": "Goals vs xG",
-          "val": "-1.0"
-        }
-      ],
-      "card": [
-        {
-          "val": "0.77",
-          "cls": "good"
-        },
-        {
-          "val": "1.14",
-          "cls": "good"
-        },
-        {
-          "val": "-1.0",
-          "cls": ""
-        }
-      ],
-      "mins": "235 min"
-    },
-    "orri-oskarsson": {
-      "signals": [
-        {
-          "num": "0.33",
-          "pctl": "2026-27 · La Liga"
-        },
-        {
-          "num": "—",
-          "pctl": "2026-27 · In progress"
-        },
-        {
-          "num": "-1.7",
-          "pctl": "2026-27 · La Liga"
-        }
-      ],
-      "current_block": [
-        {
-          "label": "All comps 2026-27",
-          "val": "4 apps · 273 min · 1G · 0A"
-        },
-        {
-          "label": "xG / 90",
-          "val": "0.90"
-        },
-        {
-          "label": "xA / 90",
-          "val": "0.03"
-        },
-        {
-          "label": "Goals / 90",
-          "val": "0.33"
-        },
-        {
-          "label": "Assists / 90",
-          "val": "0.00"
-        },
-        {
-          "label": "G+A / 90",
-          "val": "0.33"
-        },
-        {
-          "label": "Goals vs xG",
-          "val": "-1.7"
-        }
-      ],
-      "card": [
-        {
-          "val": "0.33",
-          "cls": "good"
-        },
-        {
-          "val": "—",
-          "cls": ""
-        },
-        {
-          "val": "-1.7",
-          "cls": ""
-        }
-      ],
-      "mins": "273 min"
-    },
-    "julian-alvarez": {
-      "signals": [
-        {
-          "num": "0.28",
-          "pctl": "2026-27 · La Liga"
-        },
-        {
-          "num": "0.00",
-          "pctl": "2026-27 · La Liga"
-        },
-        {
-          "num": "4.00",
-          "pctl": "2026-27 · La Liga"
-        }
-      ],
-      "current_block": [
-        {
-          "label": "All comps 2026-27",
-          "val": "2 apps · 45 min · 0G · 0A"
-        },
-        {
-          "label": "xG / 90",
-          "val": "0.28"
-        },
-        {
-          "label": "xA / 90",
-          "val": "0.08"
-        },
-        {
-          "label": "Goals / 90",
-          "val": "0.00"
-        },
-        {
-          "label": "Assists / 90",
-          "val": "0.00"
-        },
-        {
-          "label": "G+A / 90",
-          "val": "0.00"
-        },
-        {
-          "label": "Goals vs xG",
-          "val": "-0.1"
-        }
-      ],
-      "card": [
-        {
-          "val": "0.28",
-          "cls": "good"
-        },
         {
           "val": "0.00",
           "cls": ""
         },
         {
-          "val": "4.00",
+          "val": "1.03",
+          "cls": "good"
+        },
+        {
+          "val": "0.24",
           "cls": "good"
         }
       ],
-      "mins": "45 min"
+      "mins": "349 min"
     },
-    "serhou-guirassy": {
+    "nicolo-tresoldi": {
       "signals": [
         {
-          "num": "0.41",
-          "pctl": "2026-27 · Bundesliga"
+          "num": "0.55",
+          "pctl": "2026-27 · Belgian Pro League"
         },
         {
-          "num": "1.50",
-          "pctl": "2026-27 · Bundesliga"
+          "num": "-0.8",
+          "pctl": "2026-27 · Belgian Pro League"
+        },
+        {
+          "num": "3.66",
+          "pctl": "2026-27 · Belgian Pro League"
+        }
+      ],
+      "current_block": [
+        {
+          "label": "All comps 2026-27",
+          "val": "7 apps · 541 min · 4G · 0A"
+        },
+        {
+          "label": "xG / 90",
+          "val": "0.81"
+        },
+        {
+          "label": "NP-xG / 90",
+          "val": "0.55"
+        },
+        {
+          "label": "xA / 90",
+          "val": "0.08"
+        },
+        {
+          "label": "Goals / 90",
+          "val": "0.67"
+        },
+        {
+          "label": "Assists / 90",
+          "val": "0.00"
+        },
+        {
+          "label": "G+A / 90",
+          "val": "0.67"
+        },
+        {
+          "label": "Shots on target / 90",
+          "val": "1.33"
+        },
+        {
+          "label": "Key passes / 90",
+          "val": "0.83"
+        },
+        {
+          "label": "Goals vs xG",
+          "val": "-0.8"
+        },
+        {
+          "label": "Pass completion %",
+          "val": "80.4"
+        }
+      ],
+      "card": [
+        {
+          "val": "0.67",
+          "cls": "good"
+        },
+        {
+          "val": "0.67",
+          "cls": "good"
+        },
+        {
+          "val": "0.55",
+          "cls": "good"
+        }
+      ],
+      "mins": "541 min"
+    },
+    "lautaro-martinez": {
+      "signals": [
+        {
+          "num": "—",
+          "pctl": "2026-27 · In progress"
+        },
+        {
+          "num": "—",
+          "pctl": "2026-27 · In progress"
         },
         {
           "num": "—",
@@ -327,19 +176,254 @@
       "current_block": [
         {
           "label": "All comps 2026-27",
-          "val": "2 apps · 180 min · 2G · 1A"
+          "val": "4 apps · 324 min · 2G · 1A"
         },
         {
           "label": "xG / 90",
-          "val": "0.41"
+          "val": "0.94"
+        },
+        {
+          "label": "NP-xG / 90",
+          "val": "0.94"
         },
         {
           "label": "xA / 90",
-          "val": "0.21"
+          "val": "0.20"
         },
         {
           "label": "Goals / 90",
-          "val": "1.00"
+          "val": "0.56"
+        },
+        {
+          "label": "Assists / 90",
+          "val": "0.28"
+        },
+        {
+          "label": "G+A / 90",
+          "val": "0.83"
+        },
+        {
+          "label": "Shots on target / 90",
+          "val": "1.39"
+        },
+        {
+          "label": "Key passes / 90",
+          "val": "1.67"
+        },
+        {
+          "label": "Goals vs xG",
+          "val": "-1.4"
+        },
+        {
+          "label": "Pass completion %",
+          "val": "84.2"
+        }
+      ],
+      "card": [
+        {
+          "val": "0.56",
+          "cls": "good"
+        },
+        {
+          "val": "0.83",
+          "cls": "good"
+        },
+        {
+          "val": "0.94",
+          "cls": "good"
+        }
+      ],
+      "mins": "324 min"
+    },
+    "orri-oskarsson": {
+      "signals": [
+        {
+          "num": "0.32",
+          "pctl": "2026-27 · LaLiga"
+        },
+        {
+          "num": "2.16",
+          "pctl": "2026-27 · LaLiga"
+        },
+        {
+          "num": "-1.16",
+          "pctl": "2026-27 · LaLiga"
+        }
+      ],
+      "current_block": [
+        {
+          "label": "All comps 2026-27",
+          "val": "5 apps · 283 min · 1G · 0A"
+        },
+        {
+          "label": "xG / 90",
+          "val": "0.69"
+        },
+        {
+          "label": "NP-xG / 90",
+          "val": "0.69"
+        },
+        {
+          "label": "xA / 90",
+          "val": "0.02"
+        },
+        {
+          "label": "Goals / 90",
+          "val": "0.32"
+        },
+        {
+          "label": "Assists / 90",
+          "val": "0.00"
+        },
+        {
+          "label": "G+A / 90",
+          "val": "0.32"
+        },
+        {
+          "label": "Shots on target / 90",
+          "val": "1.27"
+        },
+        {
+          "label": "Key passes / 90",
+          "val": "0.64"
+        },
+        {
+          "label": "Goals vs xG",
+          "val": "-1.2"
+        },
+        {
+          "label": "Pass completion %",
+          "val": "63.0"
+        }
+      ],
+      "card": [
+        {
+          "val": "0.32",
+          "cls": "good"
+        },
+        {
+          "val": "0.32",
+          "cls": "good"
+        },
+        {
+          "val": "0.69",
+          "cls": "good"
+        }
+      ],
+      "mins": "283 min"
+    },
+    "julian-alvarez": {
+      "signals": [
+        {
+          "num": "—",
+          "pctl": "2026-27 · In progress"
+        },
+        {
+          "num": "—",
+          "pctl": "2026-27 · In progress"
+        },
+        {
+          "num": "—",
+          "pctl": "2026-27 · In progress"
+        }
+      ],
+      "current_block": [
+        {
+          "label": "All comps 2026-27",
+          "val": "3 apps · 145 min · 0G · 1A"
+        },
+        {
+          "label": "xG / 90",
+          "val": "0.16"
+        },
+        {
+          "label": "NP-xG / 90",
+          "val": "0.16"
+        },
+        {
+          "label": "xA / 90",
+          "val": "0.17"
+        },
+        {
+          "label": "Goals / 90",
+          "val": "0.00"
+        },
+        {
+          "label": "Assists / 90",
+          "val": "0.62"
+        },
+        {
+          "label": "G+A / 90",
+          "val": "0.62"
+        },
+        {
+          "label": "Shots on target / 90",
+          "val": "1.86"
+        },
+        {
+          "label": "Key passes / 90",
+          "val": "0.62"
+        },
+        {
+          "label": "Goals vs xG",
+          "val": "-0.3"
+        },
+        {
+          "label": "Pass completion %",
+          "val": "81.2"
+        }
+      ],
+      "card": [
+        {
+          "val": "0.00",
+          "cls": ""
+        },
+        {
+          "val": "0.62",
+          "cls": "good"
+        },
+        {
+          "val": "0.16",
+          "cls": "good"
+        }
+      ],
+      "mins": "145 min"
+    },
+    "serhou-guirassy": {
+      "signals": [
+        {
+          "num": "—",
+          "pctl": "2026-27 · In progress"
+        },
+        {
+          "num": "—",
+          "pctl": "2026-27 · In progress"
+        },
+        {
+          "num": "50%",
+          "pctl": "2026-27 · Bundesliga"
+        }
+      ],
+      "current_block": [
+        {
+          "label": "All comps 2026-27",
+          "val": "4 apps · 357 min · 4G · 2A"
+        },
+        {
+          "label": "xG / 90",
+          "val": "1.07"
+        },
+        {
+          "label": "NP-xG / 90",
+          "val": "0.87"
+        },
+        {
+          "label": "xA / 90",
+          "val": "0.14"
+        },
+        {
+          "label": "Goals / 90",
+          "val": "1.01"
         },
         {
           "label": "Assists / 90",
@@ -347,20 +431,32 @@
         },
         {
           "label": "G+A / 90",
-          "val": "1.50"
+          "val": "1.51"
+        },
+        {
+          "label": "Shots on target / 90",
+          "val": "2.52"
+        },
+        {
+          "label": "Key passes / 90",
+          "val": "2.02"
         },
         {
           "label": "Goals vs xG",
-          "val": "+1.2"
+          "val": "-0.2"
+        },
+        {
+          "label": "Pass completion %",
+          "val": "73.7"
         }
       ],
       "card": [
         {
-          "val": "0.41",
+          "val": "1.01",
           "cls": "good"
         },
         {
-          "val": "1.50",
+          "val": "1.07",
           "cls": "good"
         },
         {
@@ -368,7 +464,7 @@
           "cls": ""
         }
       ],
-      "mins": "180 min"
+      "mins": "357 min"
     },
     "dominik-livakovic": {
       "signals": [
@@ -405,34 +501,79 @@
     "chupe": {
       "signals": [
         {
-          "num": "—",
-          "pctl": "2026-27 · In progress"
+          "num": "0.20",
+          "pctl": "2026-27 · LaLiga"
         },
         {
-          "num": "—",
-          "pctl": "2026-27 · In progress"
+          "num": "0.60",
+          "pctl": "2026-27 · LaLiga"
         },
         {
-          "num": "—",
-          "pctl": "2026-27 · In progress"
+          "num": "33%",
+          "pctl": "2026-27 · LaLiga"
         }
       ],
-      "current_block": [],
+      "current_block": [
+        {
+          "label": "All comps 2026-27",
+          "val": "5 apps · 450 min · 1G · 0A"
+        },
+        {
+          "label": "xG / 90",
+          "val": "0.60"
+        },
+        {
+          "label": "NP-xG / 90",
+          "val": "0.29"
+        },
+        {
+          "label": "xA / 90",
+          "val": "0.02"
+        },
+        {
+          "label": "Goals / 90",
+          "val": "0.20"
+        },
+        {
+          "label": "Assists / 90",
+          "val": "0.00"
+        },
+        {
+          "label": "G+A / 90",
+          "val": "0.20"
+        },
+        {
+          "label": "Shots on target / 90",
+          "val": "0.60"
+        },
+        {
+          "label": "Key passes / 90",
+          "val": "0.60"
+        },
+        {
+          "label": "Goals vs xG",
+          "val": "-2.0"
+        },
+        {
+          "label": "Pass completion %",
+          "val": "63.4"
+        }
+      ],
       "card": [
         {
-          "val": "—",
-          "cls": ""
+          "val": "0.20",
+          "cls": "good"
         },
         {
-          "val": "—",
-          "cls": ""
+          "val": "0.20",
+          "cls": "good"
         },
         {
-          "val": "—",
-          "cls": ""
+          "val": "0.60",
+          "cls": "good"
         }
       ],
-      "mins": "—"
+      "mins": "450 min"
     },
     "george-salinas": {
       "signals": [
@@ -441,58 +582,107 @@
           "pctl": "2026-27 · In progress"
         },
         {
-          "num": "—",
-          "pctl": "2026-27 · In progress"
+          "num": "7.37",
+          "pctl": "2026-27 · LaLiga"
         },
         {
-          "num": "—",
-          "pctl": "2026-27 · In progress"
-        }
-      ],
-      "current_block": [],
-      "card": [
-        {
-          "val": "—",
-          "cls": ""
-        },
-        {
-          "val": "—",
-          "cls": ""
-        },
-        {
-          "val": "—",
-          "cls": ""
-        }
-      ],
-      "mins": "—"
-    },
-    "castello-lukeba": {
-      "signals": [
-        {
-          "num": "—",
-          "pctl": "2026-27 · In progress"
-        },
-        {
-          "num": "—",
-          "pctl": "2026-27 · In progress"
-        },
-        {
-          "num": "0.00",
-          "pctl": "2026-27 · Bundesliga"
+          "num": "0.20",
+          "pctl": "2026-27 · LaLiga"
         }
       ],
       "current_block": [
         {
           "label": "All comps 2026-27",
-          "val": "1 apps · 90 min · 0G · 0A"
+          "val": "5 apps · 450 min · 0G · 1A"
         },
         {
           "label": "xG / 90",
-          "val": "0.02"
+          "val": "0.04"
+        },
+        {
+          "label": "NP-xG / 90",
+          "val": "0.04"
         },
         {
           "label": "xA / 90",
+          "val": "0.20"
+        },
+        {
+          "label": "Goals / 90",
           "val": "0.00"
+        },
+        {
+          "label": "Assists / 90",
+          "val": "0.20"
+        },
+        {
+          "label": "G+A / 90",
+          "val": "0.20"
+        },
+        {
+          "label": "Shots on target / 90",
+          "val": "0.20"
+        },
+        {
+          "label": "Key passes / 90",
+          "val": "0.60"
+        },
+        {
+          "label": "Goals vs xG",
+          "val": "-0.2"
+        },
+        {
+          "label": "Pass completion %",
+          "val": "75.3"
+        }
+      ],
+      "card": [
+        {
+          "val": "1",
+          "cls": "good"
+        },
+        {
+          "val": "0.20",
+          "cls": "good"
+        },
+        {
+          "val": "7.37",
+          "cls": "good"
+        }
+      ],
+      "mins": "450 min"
+    },
+    "castello-lukeba": {
+      "signals": [
+        {
+          "num": "4.72",
+          "pctl": "2026-27 · Bundesliga"
+        },
+        {
+          "num": "97.87",
+          "pctl": "2026-27 · Bundesliga"
+        },
+        {
+          "num": "—",
+          "pctl": "2026-27 · In progress"
+        }
+      ],
+      "current_block": [
+        {
+          "label": "All comps 2026-27",
+          "val": "4 apps · 343 min · 0G · 0A"
+        },
+        {
+          "label": "xG / 90",
+          "val": "0.06"
+        },
+        {
+          "label": "NP-xG / 90",
+          "val": "0.06"
+        },
+        {
+          "label": "xA / 90",
+          "val": "0.08"
         },
         {
           "label": "Goals / 90",
@@ -507,25 +697,37 @@
           "val": "0.00"
         },
         {
+          "label": "Shots on target / 90",
+          "val": "0.00"
+        },
+        {
+          "label": "Key passes / 90",
+          "val": "0.26"
+        },
+        {
           "label": "Goals vs xG",
-          "val": "-0.0"
+          "val": "-0.2"
+        },
+        {
+          "label": "Pass completion %",
+          "val": "94.0"
         }
       ],
       "card": [
         {
-          "val": "—",
-          "cls": ""
+          "val": "4.72",
+          "cls": "good"
         },
         {
           "val": "—",
           "cls": ""
         },
         {
-          "val": "0.00",
-          "cls": ""
+          "val": "7.16",
+          "cls": "good"
         }
       ],
-      "mins": "90 min"
+      "mins": "343 min"
     },
     "goncalo-inacio": {
       "signals": [
@@ -538,11 +740,56 @@
           "pctl": "2026-27 · In progress"
         },
         {
-          "num": "—",
-          "pctl": "2026-27 · In progress"
+          "num": "0.02",
+          "pctl": "2026-27 · Liga Portugal"
         }
       ],
-      "current_block": [],
+      "current_block": [
+        {
+          "label": "All comps 2026-27",
+          "val": "6 apps · 540 min · 0G · 0A"
+        },
+        {
+          "label": "xG / 90",
+          "val": "0.01"
+        },
+        {
+          "label": "NP-xG / 90",
+          "val": "0.01"
+        },
+        {
+          "label": "xA / 90",
+          "val": "0.02"
+        },
+        {
+          "label": "Goals / 90",
+          "val": "0.00"
+        },
+        {
+          "label": "Assists / 90",
+          "val": "0.00"
+        },
+        {
+          "label": "G+A / 90",
+          "val": "0.00"
+        },
+        {
+          "label": "Shots on target / 90",
+          "val": "0.00"
+        },
+        {
+          "label": "Key passes / 90",
+          "val": "0.17"
+        },
+        {
+          "label": "Goals vs xG",
+          "val": "-0.1"
+        },
+        {
+          "label": "Pass completion %",
+          "val": "89.6"
+        }
+      ],
       "card": [
         {
           "val": "—",
@@ -557,7 +804,7 @@
           "cls": ""
         }
       ],
-      "mins": "—"
+      "mins": "540 min"
     },
     "gabriel-jesus": {
       "signals": [
@@ -574,7 +821,12 @@
           "pctl": "2026-27 · In progress"
         }
       ],
-      "current_block": [],
+      "current_block": [
+        {
+          "label": "All comps 2026-27",
+          "val": "2 apps · 16 min · 1G · 0A"
+        }
+      ],
       "card": [
         {
           "val": "—",
@@ -589,7 +841,7 @@
           "cls": ""
         }
       ],
-      "mins": "—"
+      "mins": "16 min"
     }
   }
 }
