@@ -83,7 +83,6 @@ CREATE TABLE season_signals (
     season    TEXT NOT NULL,
     idx       INTEGER NOT NULL,
     num       TEXT NOT NULL,
-    bar       INTEGER NOT NULL,
     pctl      TEXT NOT NULL,
     PRIMARY KEY (player_id, season, idx)
 );
@@ -133,7 +132,6 @@ CREATE TABLE site_meta (
 CREATE TABLE reports (
     player_id         TEXT PRIMARY KEY,
     pos_class         TEXT,
-    kicker            TEXT NOT NULL,
     date_line         TEXT NOT NULL,
     posline           TEXT NOT NULL,
     heading_name      TEXT,             -- <h1>/<title>; NULL ⇒ players.name

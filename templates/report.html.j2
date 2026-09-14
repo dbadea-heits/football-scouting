@@ -35,22 +35,20 @@
 
 <div class="col">
 
+<aside class="rail rail-id">
   <!-- 1 · MASTHEAD -->
-  <header class="masthead">
-    <span class="label">{{ kicker }}</span><br>
-    <span class="label">{{ date_line }}</span>
-  </header>
+  <header class="masthead label">{{ date_line }}</header>
 
   <!-- 2 · IDENTITY -->
   <h1>{{ heading }}</h1>
   <p class="posline">{{ posline }}</p>
   <div class="facts">
 {%- for f in facts %}
-    <div><span class="label">{{ f.label }}</span><span class="val{{ ' ' ~ f.risk_cls if f.risk_cls else '' }}">{{ f.val }}</span></div>
+    <span class="fact"><span class="label">{{ f.label }}</span><span class="val{{ ' ' ~ f.risk_cls if f.risk_cls else '' }}">{{ f.val }}</span></span>
 {%- endfor %}
   </div>
 {%- if facts_footnote %}
-  <p class="footnote" style="font-size:0.72rem;margin-top:-4px;">{{ facts_footnote }}</p>
+  <p class="footnote">{{ facts_footnote }}</p>
 {%- endif %}
 
   <!-- 3 · VERDICT BAND -->
@@ -74,7 +72,6 @@
     <div>
       <span class="num">{{ s.num }}</span>
       <span class="label">{{ s.label }}</span>
-      <div class="bar"><i style="width:{{ s.bar }}%"></i></div>
       <span class="pctl">{{ s.pctl }}</span>
     </div>
 {%- endfor %}
@@ -82,6 +79,10 @@
 {%- if signals_footnote %}
   <p class="footnote">{{ signals_footnote }}</p>
 {%- endif %}
+
+</aside>
+
+<main class="rail rail-detail">
 
   <!-- 5 · DORMANT POTENTIAL -->
   <details>
@@ -233,6 +234,8 @@
 {%- if closing_footnote %}
   <p class="footnote">{{ closing_footnote }}</p>
 {%- endif %}
+
+</main>
 
 </div>
 

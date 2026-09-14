@@ -63,10 +63,8 @@
     /* Signal row on report pages */
     document.querySelectorAll('.signals > div').forEach(function (div, i) {
       var n = div.querySelector('.num');
-      var b = div.querySelector('.bar i');
       var p = div.querySelector('.pctl');
       if (n) _originals['sig-' + i + '-num']  = n.textContent;
-      if (b) _originals['sig-' + i + '-bar']  = b.style.width;
       if (p) _originals['sig-' + i + '-pctl'] = p.textContent;
     });
 
@@ -88,13 +86,10 @@
 
     document.querySelectorAll('.signals > div').forEach(function (div, i) {
       var n = div.querySelector('.num');
-      var b = div.querySelector('.bar i');
       var p = div.querySelector('.pctl');
       var vn = _originals['sig-' + i + '-num'];
-      var vb = _originals['sig-' + i + '-bar'];
       var vp = _originals['sig-' + i + '-pctl'];
       if (n && vn != null) n.textContent = vn;
-      if (b && vb != null) b.style.width = vb;
       if (p && vp != null) p.textContent = vp;
     });
 
@@ -122,10 +117,8 @@
       var sig = pd.signals && pd.signals[i];
       if (!sig) return;
       var n = div.querySelector('.num');
-      var b = div.querySelector('.bar i');
       var p = div.querySelector('.pctl');
       if (n) n.textContent = sig.num;
-      if (b) b.style.width = sig.bar + '%';
       if (p) p.textContent = sig.pctl;
     });
 

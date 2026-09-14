@@ -401,7 +401,6 @@ def build_player_entry(player_id: str, cfg: dict, ctx: BrowserContext) -> dict:
         num_str = format_val(val) if val is not None else "—"
         signals.append({
             "num":  num_str,
-            "bar":  0,   # percentile bars need cohort data — set manually or extend script
             "pctl": f"{CURRENT_SEASON} · In progress" if val is None else f"{CURRENT_SEASON} · {cfg['league']}",
         })
 

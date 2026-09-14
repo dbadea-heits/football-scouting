@@ -102,6 +102,10 @@ def _override(value: str, inherited: str) -> str | None:
 def _split(col) -> tuple[dict[int, list], dict[int, list[str]], dict[int, str]]:
     """Split `div.col` into its numbered sections.
 
+    The sections are spread over two rails — identity (1-4) and detail (5-11) —
+    so both are walked in document order, and the section numbering stays
+    global across them.
+
     Returns the element children of each section, the hand-written annotation
     comments inside it, and the verbatim text of each section marker.
     """
@@ -109,16 +113,17 @@ def _split(col) -> tuple[dict[int, list], dict[int, list[str]], dict[int, str]]:
     notes: dict[int, list[str]] = {}
     markers: dict[int, str] = {}
     section = 0
-    for node in col.children:
-        if isinstance(node, Comment):
-            found = MARKER.match(str(node))
-            if found:
-                section = int(found.group(1))
-                markers[section] = _restore(str(node))
-            else:
-                notes.setdefault(section, []).append(_restore(str(node)))
-        elif node.name:
-            elements.setdefault(section, []).append(node)
+    for rail in col.select("div.col > .rail"):
+        for node in rail.children:
+            if isinstance(node, Comment):
+                found = MARKER.match(str(node))
+                if found:
+                    section = int(found.group(1))
+                    markers[section] = _restore(str(node))
+                else:
+                    notes.setdefault(section, []).append(_restore(str(node)))
+            elif node.name:
+                elements.setdefault(section, []).append(node)
     return elements, notes, markers
 
 
@@ -143,11 +148,11 @@ def _seed_page(conn: sqlite3.Connection, pid: str) -> None:
     assert not notes.keys() - NOTE_KEYS.keys(), sorted(notes)
 
     # ── 1 · masthead, 2 · identity ──────────────────────────────────────────
-    kicker, date_line = (_inner(s) for s in elements[1][0].select("span.label"))
+    date_line = _inner(elements[1][0])
     heading, posline, facts_div, *rest = elements[2]
     facts_footnote = _inner(rest[0]) if rest else None
-    facts = facts_div.select("div")
-    assert len(facts) == 6, f"{pid}: {len(facts)} facts"
+    facts = facts_div.select("span.fact")
+    assert len(facts) == 5, f"{pid}: {len(facts)} facts"
     for idx, fact in enumerate(facts):
         val = fact.select_one("span.val")
         conn.execute(
@@ -168,21 +173,17 @@ def _seed_page(conn: sqlite3.Connection, pid: str) -> None:
         )
 
     # ── 4 · signal row ──────────────────────────────────────────────────────
-    signals = [
-        d for d in elements[4][0].select("div") if "bar" not in d.get("class", [])
-    ]
+    signals = elements[4][0].select("div")
     assert len(signals) == 3, f"{pid}: {len(signals)} signals"
     for idx, sig in enumerate(signals):
-        width = sig.select_one("div.bar i")["style"]
         conn.execute(
             "INSERT INTO signal_defs (player_id, idx, label) VALUES (?,?,?)",
             (pid, idx, _inner(sig.select_one("span.label"))),
         )
         conn.execute(
-            "INSERT INTO season_signals (player_id, season, idx, num, bar, pctl)"
-            " VALUES (?,?,?,?,?,?)",
+            "INSERT INTO season_signals (player_id, season, idx, num, pctl)"
+            " VALUES (?,?,?,?,?)",
             (pid, BASE_SEASON, idx, _inner(sig.select_one("span.num")),
-             int(width.removeprefix("width:").removesuffix("%")),
              _inner(sig.select_one("span.pctl"))),
         )
     signals_footnote = _inner(elements[4][1]) if len(elements[4]) > 1 else None
@@ -323,14 +324,14 @@ def _seed_page(conn: sqlite3.Connection, pid: str) -> None:
     assert mini_label.casefold() == hub["verdict_label"].casefold(), pid
     assert tier_label.casefold() == hub["verdict_label"].casefold(), pid
     conn.execute(
-        "INSERT INTO reports (player_id, pos_class, kicker, date_line, posline,"
+        "INSERT INTO reports (player_id, pos_class, date_line, posline,"
         " heading_name, crumb_name, tier_label, mini_name, mini_chip_cls,"
         " mini_chip_label, dormant_chip_cls, dormant_chip_label, philosophy_tally,"
         " philosophy_chip_cls, sumright_inline, srcline, facts_footnote,"
         " signals_footnote, closing_footnote, liveobs_html, nextstep_html,"
         " philosophy_html, bg_chip1_cls, bg_chip1_label, bg_chip2_cls, bg_chip2_label)"
-        " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-        (pid, pos_class, kicker, date_line, _inner(posline),
+        " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+        (pid, pos_class, date_line, _inner(posline),
          _override(_inner(heading), hub["name"]),
          _override(crumb, hub["name"]),
          _override(tier_label, hub["verdict_label"]),
@@ -416,7 +417,7 @@ def context(conn: sqlite3.Connection, pid: str) -> dict:
         ),
         "signals": _rows(
             conn,
-            "SELECT d.label, s.num, s.bar, s.pctl FROM signal_defs d"
+            "SELECT d.label, s.num, s.pctl FROM signal_defs d"
             " JOIN season_signals s ON s.player_id = d.player_id AND s.idx = d.idx"
             " WHERE d.player_id = ? AND s.season = ? ORDER BY d.idx",
             pid,

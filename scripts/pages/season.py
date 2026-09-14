@@ -63,9 +63,9 @@ def seed(conn: sqlite3.Connection) -> None:
     for pid, entry in data["players"].items():
         for idx, signal in enumerate(entry["signals"]):
             conn.execute(
-                "INSERT INTO season_signals (player_id, season, idx, num, bar, pctl)"
-                " VALUES (?,?,?,?,?,?)",
-                (pid, SEASON, idx, signal["num"], signal["bar"], signal["pctl"]),
+                "INSERT INTO season_signals (player_id, season, idx, num, pctl)"
+                " VALUES (?,?,?,?,?)",
+                (pid, SEASON, idx, signal["num"], signal["pctl"]),
             )
         for idx, metric in enumerate(entry["current_block"]):
             conn.execute(
@@ -110,9 +110,9 @@ def entry(conn: sqlite3.Connection, player_id: str) -> dict | None:
         return None
     return {
         "signals": [
-            {"num": r["num"], "bar": r["bar"], "pctl": r["pctl"]}
+            {"num": r["num"], "pctl": r["pctl"]}
             for r in conn.execute(
-                "SELECT num, bar, pctl FROM season_signals WHERE player_id = ?"
+                "SELECT num, pctl FROM season_signals WHERE player_id = ?"
                 " AND season = ? ORDER BY idx",
                 (player_id, SEASON),
             )
@@ -155,9 +155,9 @@ def upsert_entry(conn: sqlite3.Connection, player_id: str, values: dict) -> None
 
     for idx, signal in enumerate(values["signals"]):
         conn.execute(
-            "INSERT INTO season_signals (player_id, season, idx, num, bar, pctl)"
-            " VALUES (?,?,?,?,?,?)",
-            (player_id, SEASON, idx, signal["num"], signal["bar"], signal["pctl"]),
+            "INSERT INTO season_signals (player_id, season, idx, num, pctl)"
+            " VALUES (?,?,?,?,?)",
+            (player_id, SEASON, idx, signal["num"], signal["pctl"]),
         )
     for idx, metric in enumerate(values["current_block"]):
         conn.execute(

@@ -5,9 +5,14 @@
  *
  * Palette: dark / amber
  * Typography: Syne (display) · DM Sans (body) · DM Mono (mono/data)
+ *
+ * One type scale only — --fs-micro … --fs-xl. Rules reference the tokens,
+ * never raw px, so the mobile breakpoint re-points the tokens instead of
+ * restating sizes. DM Mono ships 400/500 only: never ask it for 600+, that
+ * is synthetic bold.
  */
 
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700&family=DM+Mono:wght@400;500&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;1,9..40,400&display=swap');
 
 /* ── TOKENS ──────────────────────────────────────────────── */
 :root {
@@ -18,10 +23,21 @@
   --ink:      #fdf6e3;
   --muted:    #8d969b;
 
-  --accent:   #ff5b04;   /* orange — verdict tier, accent chips, bar fill */
+  --accent:   #ff5b04;   /* orange — verdict tier, accent chips, controls */
   --strong:   #f4d47c;   /* sand yellow — Strong rating */
   --adequate: #8d969b;   /* same as --muted — Adequate rating */
   --concern:  #e74c3c;   /* red — Concern rating, divergence */
+
+  --display: 'Syne', sans-serif;
+  --sans:    'DM Sans', sans-serif;
+  --mono:    'DM Mono', monospace;
+
+  --fs-micro: 10px;   /* labels, chips, footnotes */
+  --fs-sm:    12px;   /* mono data lines */
+  --fs-md:    14px;   /* secondary prose, emphasis lines */
+  --fs-base:  16px;   /* body prose */
+  --fs-lg:    24px;   /* signal numbers, verdict tier */
+  --fs-xl:    34px;   /* player name */
 }
 
 /* ── POSITION PALETTE — override --accent per report body class ── */
@@ -48,14 +64,37 @@ html { scroll-behavior: smooth; }
 body {
   background: var(--paper);
   color: var(--ink);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 16px;
+  font-family: var(--sans);
+  font-size: var(--fs-base);
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
 }
 
 /* ── LAYOUT ──────────────────────────────────────────────── */
+/* Narrow screens: one column, rails stacked in document order.
+   From 1080px the dossier splits into a sticky identity rail (masthead →
+   signal row) and a scrolling detail rail (the accordions), so the wide
+   viewport carries the page instead of two empty gutters. */
 .col { max-width: 480px; margin: 0 auto; padding: 0 24px 48px; }
+
+@media (min-width: 1080px) {
+  .col {
+    max-width: 1192px;
+    display: grid;
+    grid-template-columns: minmax(380px, 480px) minmax(0, 640px);
+    column-gap: 72px;
+    align-items: start;
+    justify-content: center;
+  }
+  .rail-id {
+    position: sticky;
+    top: 24px;
+    padding-bottom: 24px;
+  }
+  /* The identity rail already holds the name: the sticky mini-header is a
+     small-screen device only. */
+  #mini { display: none; }
+}
 
 /* ── TOPNAV ──────────────────────────────────────────────── */
 .topnav {
@@ -69,8 +108,8 @@ body {
   gap: 24px;
 }
 .topnav a {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
+  font-family: var(--mono);
+  font-size: var(--fs-micro);
   letter-spacing: .12em;
   text-transform: uppercase;
   color: var(--muted);
@@ -82,20 +121,20 @@ body {
 }
 .topnav a:hover { color: var(--accent); }
 .topnav-brand {
-  font-family: 'Syne', sans-serif;
-  font-size: 12px;
+  font-family: var(--display);
+  font-size: var(--fs-sm);
   font-weight: 700;
   color: var(--ink);
   letter-spacing: .04em;
 }
-.topnav-sep { color: var(--border2); font-family: 'DM Mono', monospace; font-size: 12px; }
-.topnav-crumb { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: .08em; }
+.topnav-sep { color: var(--border2); font-family: var(--mono); font-size: var(--fs-sm); }
+.topnav-crumb { font-family: var(--mono); font-size: var(--fs-micro); color: var(--muted); letter-spacing: .08em; }
 
 /* ── TYPE UTILITIES ──────────────────────────────────────── */
-.mono  { font-family: 'DM Mono', monospace; font-variant-numeric: tabular-nums; }
+.mono  { font-family: var(--mono); font-variant-numeric: tabular-nums; }
 .label {
-  font-family: 'DM Mono', monospace;
-  font-size: 11px;
+  font-family: var(--mono);
+  font-size: var(--fs-micro);
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: .08em;
@@ -117,49 +156,58 @@ body {
   transition: transform .15s ease;
 }
 #mini.pinned { transform: translateY(0); }
-#mini .name { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; }
+#mini .name { font-family: var(--display); font-size: var(--fs-md); font-weight: 700; }
 
 /* ── MASTHEAD ────────────────────────────────────────────── */
-.masthead { padding-top: 32px; color: var(--muted); }
+/* One dateline only — "Scout Report · Full Profile" already lives in the
+   topnav crumb and the document title. */
+.masthead { padding-top: 32px; color: var(--muted); display: block; }
 
 h1 {
-  font-family: 'Syne', sans-serif;
-  font-size: 34px;
+  font-family: var(--display);
+  font-size: var(--fs-xl);
   line-height: 1.1;
   font-weight: 700;
-  margin-top: 16px;
+  margin-top: 10px;
 }
 
 .posline {
-  font-family: 'DM Mono', monospace;
-  font-size: 12px;
+  font-family: var(--mono);
+  font-size: var(--fs-sm);
   color: var(--muted);
-  margin: 6px 0 16px;
+  margin: 6px 0 14px;
 }
 
-/* ── FACTS GRID ──────────────────────────────────────────── */
+/* ── FACTS LINE ──────────────────────────────────────────── */
+/* One contracted data strip: label/value pairs at the micro size, told apart
+   by colour, not by rules. Sized so every dossier's five facts hold one line
+   at the 480px measure; only the longest deal terms wrap. */
 .facts {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px 8px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 11px;
   border-top: 1px solid var(--hairline);
-  padding: 14px 0 20px;
+  border-bottom: 1px solid var(--hairline);
+  padding: 10px 0;
+  font-family: var(--mono);
+  font-size: var(--fs-micro);
 }
-.facts .label { font-size: 10px; color: var(--muted); display: block; margin-bottom: 2px; }
-.facts .val   { font-family: 'DM Mono', monospace; font-size: 14px; font-weight: 500; color: var(--ink); }
+.facts .fact  { display: inline-flex; align-items: baseline; gap: 4px; }
+.facts .label { color: var(--muted); letter-spacing: 0; }
+.facts .val   { font-weight: 500; color: var(--ink); }
 .risk-low  { color: var(--strong);   }
 .risk-med  { color: var(--adequate); }
 .risk-high { color: var(--concern);  }
 
 /* ── VERDICT BAND ────────────────────────────────────────── */
 .verdict {
-  border-top: 2px solid var(--ink);
   border-bottom: 2px solid var(--ink);
   padding: 18px 0;
 }
 .tier {
-  font-family: 'Syne', sans-serif;
-  font-size: 28px;
+  font-family: var(--display);
+  font-size: var(--fs-lg);
   font-weight: 700;
   letter-spacing: .02em;
   display: inline-block;
@@ -171,8 +219,8 @@ h1 {
 .tier-shortlist { color: var(--accent); border-color: var(--accent); }
 .tier-recommend { color: var(--accent); border-color: var(--accent); }
 
-.nextstep { font-family: 'DM Mono', monospace; font-size: 13px; margin-top: 10px; }
-.liveobs  { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); margin-top: 8px; }
+.nextstep { font-family: var(--mono); font-size: var(--fs-md); margin-top: 10px; }
+.liveobs  { font-family: var(--mono); font-size: var(--fs-sm); color: var(--muted); margin-top: 8px; }
 
 /* ── ACCORDIONS ──────────────────────────────────────────── */
 details { border-bottom: 1px solid var(--hairline); }
@@ -187,14 +235,33 @@ summary {
   padding: 12px 0;
 }
 summary::-webkit-details-marker { display: none; }
+summary:hover { color: var(--accent); }
+summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* Boxed chevron — the expand affordance has to read as a control, not as
+   punctuation. */
 summary .chev {
-  color: var(--muted);
-  font-size: 14px;
-  display: inline-block;
-  transition: transform .15s ease;
   flex: none;
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: var(--fs-md);
+  line-height: 1;
+  color: var(--muted);
+  border: 1px solid var(--border2);
+  border-radius: 3px;
+  background: var(--surface);
+  transition: transform .15s ease, color .15s, border-color .15s, background .15s;
 }
-details[open] summary .chev { transform: rotate(90deg); }
+summary:hover .chev { color: var(--accent); border-color: var(--accent); }
+details[open] summary .chev {
+  transform: rotate(90deg);
+  color: var(--accent);
+  border-color: var(--accent);
+}
 
 .body {
   padding: 0 14px 18px 12px;
@@ -208,9 +275,9 @@ details[open] .body { background: var(--surface); }
 
 /* ── CHIPS ───────────────────────────────────────────────── */
 .chip {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  font-weight: 600;
+  font-family: var(--mono);
+  font-size: var(--fs-micro);
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: .06em;
   border: 1px solid;
@@ -224,18 +291,18 @@ details[open] .body { background: var(--surface); }
 .chip-ink      { color: var(--ink);      border-color: var(--ink);      }
 
 /* ── SIGNAL ROW ──────────────────────────────────────────── */
+/* Number · what it is · where it ranks. No bar: the percentile bar restated
+   the pctl text and read as 0% on live-season data. */
 .signals {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
-  padding: 20px 0;
+  padding: 18px 0;
   border-bottom: 1px solid var(--hairline);
 }
-.signals .num   { font-family: 'DM Mono', monospace; font-size: 24px; font-weight: 600; }
-.signals .label { font-size: 10px; color: var(--muted); margin: 2px 0 6px; display: block; }
-.bar { height: 3px; background: var(--hairline); position: relative; }
-.bar i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--accent); }
-.pctl { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); margin-top: 3px; display: block; }
+.signals .num   { font-family: var(--mono); font-size: var(--fs-lg); font-weight: 500; display: block; }
+.signals .label { color: var(--muted); display: block; margin-top: 2px; }
+.pctl { font-family: var(--mono); font-size: var(--fs-micro); color: var(--muted); margin-top: 2px; display: block; }
 
 /* ── FOUR CORNERS ────────────────────────────────────────── */
 .fc-head {
@@ -244,17 +311,17 @@ details[open] .body { background: var(--surface); }
   justify-content: space-between;
   padding: 16px 0 4px;
 }
-.dots { font-size: 13px; letter-spacing: 3px; }
+.dots { font-size: var(--fs-md); letter-spacing: 3px; }
 .dot-strong   { color: var(--strong);   }
 .dot-adequate { color: var(--adequate); }
 .dot-concern  { color: var(--concern);  }
-.srcline { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); margin-top: 6px; }
+.srcline { font-family: var(--mono); font-size: var(--fs-sm); color: var(--muted); margin-top: 6px; }
 
 /* ── METRIC TABLES ───────────────────────────────────────── */
 .mgroup {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  font-weight: 600;
+  font-family: var(--mono);
+  font-size: var(--fs-micro);
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: .08em;
   color: var(--muted);
@@ -265,27 +332,27 @@ details[open] .body { background: var(--surface); }
   justify-content: space-between;
   align-items: baseline;
   gap: 12px;
-  font-family: 'DM Mono', monospace;
-  font-size: 13px;
+  font-family: var(--mono);
+  font-size: var(--fs-sm);
   padding: 4px 0;
 }
 .mrow > span:first-child { flex: 1; min-width: 0; overflow-wrap: break-word; }
 .mrow .mv { font-weight: 500; white-space: nowrap; flex-shrink: 0; text-align: right; }
 .diverge      { color: var(--concern); }
-.diverge-note { font-size: 12px; color: var(--concern); font-family: 'DM Sans', sans-serif; font-style: italic; padding: 2px 0 6px; }
+.diverge-note { font-size: var(--fs-sm); color: var(--concern); font-family: var(--sans); font-style: italic; padding: 2px 0 6px; }
 .na           { color: var(--muted); }
 
 /* ── EYE TEST ────────────────────────────────────────────── */
-.eyes { font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 600; letter-spacing: 4px; }
+.eyes { font-family: var(--mono); font-size: var(--fs-sm); font-weight: 500; letter-spacing: 4px; }
 .e-s { color: var(--strong);   }
 .e-a { color: var(--adequate); }
 .e-c { color: var(--concern);  }
 .eyerow { padding: 8px 0; }
 .eyerow .top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-.eyerow .obs { font-size: 14px; margin-top: 3px; }
+.eyerow .obs { font-size: var(--fs-md); margin-top: 3px; }
 .cornertag {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
+  font-family: var(--mono);
+  font-size: var(--fs-micro);
   color: var(--muted);
   text-transform: uppercase;
   letter-spacing: .06em;
@@ -293,14 +360,14 @@ details[open] .body { background: var(--surface); }
 
 /* ── PHILOSOPHY / CHECKLISTS ─────────────────────────────── */
 .philosophy { font-style: italic; color: var(--ink); }
-.check { display: flex; gap: 10px; padding: 6px 0; font-size: 14px; }
-.check .mark { font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 600; flex: none; }
+.check { display: flex; gap: 10px; padding: 6px 0; font-size: var(--fs-md); }
+.check .mark { font-family: var(--mono); font-size: var(--fs-sm); font-weight: 500; flex: none; }
 .fit    { color: var(--accent);   }
 .misfit { color: var(--concern);  }
 .warn   { color: var(--adequate); }
 
 /* ── SOURCED SIGNAL BULLETS ──────────────────────────────── */
-.sig { font-family: 'DM Mono', monospace; font-size: 12px; padding: 4px 0; display: flex; gap: 8px; }
+.sig { font-family: var(--mono); font-size: var(--fs-sm); padding: 4px 0; display: flex; gap: 8px; }
 .sig .src { color: var(--muted); flex: none; }
 
 /* ── METHODS FOOTER ──────────────────────────────────────── */
@@ -308,8 +375,8 @@ details[open] .body { background: var(--surface); }
 .m-on { color: var(--ink);  }
 .m-off { color: var(--muted); }
 .footnote {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
+  font-family: var(--mono);
+  font-size: var(--fs-micro);
   color: var(--muted);
   margin-top: 10px;
   text-transform: uppercase;
@@ -317,7 +384,13 @@ details[open] .body { background: var(--surface); }
 }
 
 /* ── RESPONSIVE ──────────────────────────────────────────── */
+/* Re-point the scale; no rule restates a size. */
 @media (max-width: 700px) {
+  :root {
+    --fs-lg: 20px;
+    --fs-xl: 26px;
+  }
+
   /* Nav: ← Hub + season toggle is enough — breadcrumb redundant when h1 is visible */
   .topnav       { padding: 0 16px; }
   .topnav-brand { display: none; }
@@ -332,13 +405,6 @@ details[open] .body { background: var(--surface); }
 
   /* Above-fold: shorten dead space before player name */
   .masthead { padding-top: 16px; }
-  h1 { font-size: 26px; margin-top: 10px; }
-
-  /* Signal row: tighter numbers fit the 3-col grid without pctl overflow */
-  .signals .num { font-size: 20px; }
-
-  /* Verdict tier: proportional to reduced h1 */
-  .tier { font-size: 22px; }
 }
 
 /* ── SEASON TOGGLE ──────────────────────────────────────────── */
@@ -352,8 +418,8 @@ details[open] .body { background: var(--surface); }
 }
 
 .season-btn {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
+  font-family: var(--mono);
+  font-size: var(--fs-micro);
   font-weight: 500;
   letter-spacing: .1em;
   text-transform: uppercase;
@@ -393,8 +459,8 @@ details[open] .body { background: var(--surface); }
   padding: 7px 24px;
   background: rgba(255, 91, 4, .07);
   border-bottom: 1px solid rgba(255, 91, 4, .18);
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
+  font-family: var(--mono);
+  font-size: var(--fs-micro);
   color: var(--accent);
   letter-spacing: .09em;
   text-transform: uppercase;

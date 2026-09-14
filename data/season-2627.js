@@ -9,17 +9,14 @@ window.FI_SEASON_DATA = {
       "signals": [
         {
           "num": "0.07",
-          "bar": 0,
           "pctl": "2026-27 · Bundesliga"
         },
         {
           "num": "-0.1",
-          "bar": 0,
           "pctl": "2026-27 · Bundesliga"
         },
         {
           "num": "—",
-          "bar": 0,
           "pctl": "2026-27 · In progress"
         }
       ],
@@ -73,17 +70,14 @@ window.FI_SEASON_DATA = {
       "signals": [
         {
           "num": "0.62",
-          "bar": 0,
           "pctl": "2026-27 · Jupiler Pro League"
         },
         {
           "num": "-0.78",
-          "bar": 0,
           "pctl": "2026-27 · Jupiler Pro League"
         },
         {
           "num": "3.52",
-          "bar": 0,
           "pctl": "2026-27 · Jupiler Pro League"
         }
       ],
@@ -137,17 +131,14 @@ window.FI_SEASON_DATA = {
       "signals": [
         {
           "num": "0.77",
-          "bar": 0,
           "pctl": "2026-27 · Serie A"
         },
         {
           "num": "1.14",
-          "bar": 0,
           "pctl": "2026-27 · Serie A"
         },
         {
           "num": "-1.0",
-          "bar": 0,
           "pctl": "2026-27 · Serie A"
         }
       ],
@@ -201,17 +192,14 @@ window.FI_SEASON_DATA = {
       "signals": [
         {
           "num": "0.33",
-          "bar": 0,
           "pctl": "2026-27 · La Liga"
         },
         {
           "num": "—",
-          "bar": 0,
           "pctl": "2026-27 · In progress"
         },
         {
           "num": "-1.7",
-          "bar": 0,
           "pctl": "2026-27 · La Liga"
         }
       ],
@@ -265,17 +253,14 @@ window.FI_SEASON_DATA = {
       "signals": [
         {
           "num": "0.28",
-          "bar": 0,
           "pctl": "2026-27 · La Liga"
         },
         {
           "num": "0.00",
-          "bar": 0,
           "pctl": "2026-27 · La Liga"
         },
         {
           "num": "4.00",
-          "bar": 0,
           "pctl": "2026-27 · La Liga"
         }
       ],
@@ -329,17 +314,14 @@ window.FI_SEASON_DATA = {
       "signals": [
         {
           "num": "0.41",
-          "bar": 0,
           "pctl": "2026-27 · Bundesliga"
         },
         {
           "num": "1.50",
-          "bar": 0,
           "pctl": "2026-27 · Bundesliga"
         },
         {
           "num": "—",
-          "bar": 0,
           "pctl": "2026-27 · In progress"
         }
       ],
@@ -393,17 +375,14 @@ window.FI_SEASON_DATA = {
       "signals": [
         {
           "num": "—",
-          "bar": 0,
           "pctl": "2026-27 · In progress"
         },
         {
           "num": "—",
-          "bar": 0,
           "pctl": "2026-27 · In progress"
         },
         {
           "num": "—",
-          "bar": 0,
           "pctl": "2026-27 · In progress"
         }
       ],
@@ -428,17 +407,14 @@ window.FI_SEASON_DATA = {
       "signals": [
         {
           "num": "—",
-          "bar": 0,
           "pctl": "2026-27 · In progress"
         },
         {
           "num": "—",
-          "bar": 0,
           "pctl": "2026-27 · In progress"
         },
         {
           "num": "—",
-          "bar": 0,
           "pctl": "2026-27 · In progress"
         }
       ],
@@ -463,17 +439,14 @@ window.FI_SEASON_DATA = {
       "signals": [
         {
           "num": "—",
-          "bar": 0,
           "pctl": "2026-27 · In progress"
         },
         {
           "num": "—",
-          "bar": 0,
           "pctl": "2026-27 · In progress"
         },
         {
           "num": "—",
-          "bar": 0,
           "pctl": "2026-27 · In progress"
         }
       ],
@@ -498,17 +471,14 @@ window.FI_SEASON_DATA = {
       "signals": [
         {
           "num": "—",
-          "bar": 0,
           "pctl": "2026-27 · In progress"
         },
         {
           "num": "—",
-          "bar": 0,
           "pctl": "2026-27 · In progress"
         },
         {
           "num": "0.00",
-          "bar": 0,
           "pctl": "2026-27 · Bundesliga"
         }
       ],
@@ -562,17 +532,14 @@ window.FI_SEASON_DATA = {
       "signals": [
         {
           "num": "—",
-          "bar": 0,
           "pctl": "2026-27 · In progress"
         },
         {
           "num": "—",
-          "bar": 0,
           "pctl": "2026-27 · In progress"
         },
         {
           "num": "—",
-          "bar": 0,
           "pctl": "2026-27 · In progress"
         }
       ],
@@ -597,17 +564,14 @@ window.FI_SEASON_DATA = {
       "signals": [
         {
           "num": "—",
-          "bar": 0,
           "pctl": "2026-27 · In progress"
         },
         {
           "num": "—",
-          "bar": 0,
           "pctl": "2026-27 · In progress"
         },
         {
           "num": "—",
-          "bar": 0,
           "pctl": "2026-27 · In progress"
         }
       ],
