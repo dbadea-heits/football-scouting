@@ -55,7 +55,7 @@
   <section class="verdict" id="verdict">
     <span class="tier tier-{{ verdict_tier }}">{{ tier }}</span>
     <p class="nextstep">{{ nextstep_html }}</p>
-    <details>
+    <details open>
       <summary><span class="label">Rationale</span><span class="chev">›</span></summary>
       <div class="body">
 {%- for p in verdict_prose %}
@@ -236,7 +236,6 @@
 {%- endif %}
 
 </main>
-<div class="drawer-scrim" aria-hidden="true"></div>
 <aside class="rail rail-inspector" aria-label="Expanded report section" aria-hidden="true">
   <div class="panel-kicker label">Expanded section</div>
   <div class="panel-heading">

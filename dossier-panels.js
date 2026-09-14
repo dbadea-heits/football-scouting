@@ -6,7 +6,6 @@
   var panel = document.querySelector('.rail-inspector');
   if (!panel) return;
 
-  var scrim = document.querySelector('.drawer-scrim');
   var panelTitle = panel.querySelector('.panel-title');
   var panelContent = panel.querySelector('.panel-content');
   var closeButton = panel.querySelector('.panel-close');
@@ -16,10 +15,6 @@
   function setPanelState(isActive) {
     panel.classList.toggle('is-active', isActive);
     panel.setAttribute('aria-hidden', isActive ? 'false' : 'true');
-    if (scrim) {
-      scrim.classList.toggle('is-active', isActive);
-      scrim.setAttribute('aria-hidden', isActive ? 'false' : 'true');
-    }
   }
 
   function restoreActive() {
@@ -78,11 +73,6 @@
   closeButton.addEventListener('click', function () {
     if (active) active.detail.open = false;
   });
-  if (scrim) {
-    scrim.addEventListener('click', function () {
-      if (active) active.detail.open = false;
-    });
-  }
   document.addEventListener('keydown', function (event) {
     if (event.key === 'Escape' && active) active.detail.open = false;
   });

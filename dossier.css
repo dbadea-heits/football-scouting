@@ -72,11 +72,10 @@ body {
 
 /* Narrow screens: one column, rails stacked in document order.
    From 1080px the dossier splits into a sticky identity rail and a scrolling
-   detail rail. From 1280px the selected section opens as an off-canvas drawer
-   from the right edge, creating the third visible reading surface. */
+   detail rail. From 1280px a third column remains reserved for the selected
+   section's dynamic detail surface. */
 .col { max-width: 480px; margin: 0 auto; padding: 0 24px 48px; }
-.rail-inspector,
-.drawer-scrim { display: none; }
+.rail-inspector { display: none; }
 
 @media (min-width: 1080px) {
   .col {
@@ -98,44 +97,23 @@ body {
 }
 
 @media (min-width: 1280px) {
-  .drawer-scrim {
-    display: block;
-    position: fixed;
-    inset: 0;
-    z-index: 29;
-    background: rgba(0, 0, 0, .28);
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transition: opacity .24s ease, visibility 0s linear .24s;
-  }
-  .drawer-scrim.is-active {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    transition-delay: 0s;
+  .col {
+    max-width: 1480px;
+    padding-left: 32px;
+    padding-right: 32px;
+    grid-template-columns: minmax(300px, .9fr) minmax(300px, 1.05fr) minmax(360px, 1.25fr);
+    column-gap: 32px;
   }
   .rail-detail { min-width: 0; }
   .rail-inspector {
     display: block;
-    position: fixed;
-    inset: 0 0 0 auto;
-    z-index: 30;
-    width: min(520px, calc(100vw - 28px));
     min-width: 0;
-    overflow-y: auto;
-    background: var(--paper);
-    border-left: 1px solid var(--border2);
-    box-shadow: -18px 0 40px rgba(0, 0, 0, .28);
-    transform: translateX(100%);
+    min-height: 1px;
+    position: sticky;
+    top: 24px;
     visibility: hidden;
-    transition: transform .24s cubic-bezier(.22, .61, .36, 1), visibility 0s linear .24s;
   }
-  .rail-inspector.is-active {
-    transform: translateX(0);
-    visibility: visible;
-    transition-delay: 0s;
-  }
+  .rail-inspector.is-active { visibility: visible; }
 }
 
 /* ── TOPNAV ──────────────────────────────────────────────── */
