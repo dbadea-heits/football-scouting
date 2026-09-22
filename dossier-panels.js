@@ -29,10 +29,9 @@
     setPanelState(false);
   }
 
-  function openInPanel(detail) {
-    if (!breakpoint.matches) return;
-    if (active && active.detail === detail) return;
+  var SWITCH_MS = 150;
 
+  function mountDetail(detail) {
     restoreActive();
     details.forEach(function (other) {
       if (other !== detail) other.open = false;
@@ -50,8 +49,35 @@
     setPanelState(true);
   }
 
+  function fadeIn() {
+    panelContent.classList.add('is-switching');
+    void panelContent.offsetHeight; /* flush so opacity:0 commits before the class lifts */
+    requestAnimationFrame(function () {
+      panelContent.classList.remove('is-switching');
+    });
+  }
+
+  function openInPanel(detail) {
+    if (!breakpoint.matches) return;
+    if (active && active.detail === detail) return;
+
+    if (panel.classList.contains('is-active')) {
+      /* another section is already showing — fade it out, then swap and fade in */
+      panelContent.classList.add('is-switching');
+      window.setTimeout(function () {
+        mountDetail(detail);
+        fadeIn();
+      }, SWITCH_MS);
+    } else {
+      mountDetail(detail);
+      fadeIn();
+    }
+  }
+
   function closeFromDetail(detail) {
-    if (active && active.detail === detail) restoreActive();
+    if (!active || active.detail !== detail) return;
+    panelContent.classList.add('is-switching');
+    window.setTimeout(restoreActive, SWITCH_MS);
   }
 
   function syncLayout() {

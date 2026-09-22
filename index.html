@@ -106,12 +106,13 @@
     border: none;
     color: var(--muted);
     cursor: pointer;
-    transition: background .15s, color .15s;
+    transition: background .15s, color .15s, scale .15s ease-out;
     border-right: 1px solid var(--border2);
     white-space: nowrap;
   }
 
   .tab-btn:last-child { border-right: none; }
+  .tab-btn:active { scale: .96; }
 
   .tab-btn:hover { background: var(--surface); color: var(--text); }
 
@@ -251,7 +252,7 @@
     flex-direction: column;
     gap: 0;
     cursor: pointer;
-    transition: background .15s;
+    transition: background .15s, scale .15s ease-out;
     position: relative;
     overflow: hidden;
     /* default position tokens — forward/amber */
@@ -283,6 +284,7 @@
   .report-card.pos-mid { --pc: #f4d47c; --pb: rgba(244,212,124,.1); --pe: rgba(244,212,124,.25); } /* = pos-cm        */
 
   .report-card:hover { background: var(--surface); }
+  .report-card:active { scale: .96; }
 
   .card-top {
     display: flex;
@@ -603,10 +605,11 @@
     color: var(--muted);
     cursor: pointer;
     white-space: nowrap;
-    transition: background .15s, color .15s;
+    transition: background .15s, color .15s, scale .15s ease-out;
   }
 
   .season-btn:last-child { border-right: none; }
+  .season-btn:active { scale: .96; }
   .season-btn:hover { background: var(--surface); color: var(--text); }
 
   .season-btn.active {

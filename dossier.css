@@ -285,9 +285,10 @@ summary .chev {
   border: 1px solid var(--border2);
   border-radius: 3px;
   background: var(--surface);
-  transition: transform .15s ease, color .15s, border-color .15s, background .15s;
+  transition: transform .15s ease, color .15s, border-color .15s, background .15s, scale .15s ease-out;
 }
 summary:hover .chev { color: var(--accent); border-color: var(--accent); }
+summary:active .chev { scale: .96; }
 details[open] summary .chev {
   transform: rotate(90deg);
   color: var(--accent);
@@ -331,7 +332,7 @@ details[open] .body { background: var(--surface); }
   font-size: var(--fs-md);
   line-height: 1;
   cursor: pointer;
-  transition: color .15s, border-color .15s, background .15s;
+  transition: color .15s, border-color .15s, background .15s, scale .15s ease-out;
 }
 .panel-close:hover,
 .panel-close:focus-visible {
@@ -339,6 +340,7 @@ details[open] .body { background: var(--surface); }
   border-color: var(--accent);
   background: var(--surface);
 }
+.panel-close:active { scale: .96; }
 .panel-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .panel-rule { border-top: 1px solid var(--hairline); }
 .panel-content > .body {
@@ -346,6 +348,15 @@ details[open] .body { background: var(--surface); }
   padding: 0 0 0 18px;
   border-left: 2px solid var(--accent);
   background: transparent;
+}
+.panel-content {
+  transition: opacity .15s ease-out, transform .15s ease-out;
+  opacity: 1;
+  transform: translateY(0);
+}
+.panel-content.is-switching {
+  opacity: 0;
+  transform: translateY(4px);
 }
 
 /* ── CHIPS ───────────────────────────────────────────────── */
@@ -505,10 +516,11 @@ details[open] .body { background: var(--surface); }
   color: var(--muted);
   cursor: pointer;
   white-space: nowrap;
-  transition: background .15s, color .15s;
+  transition: background .15s, color .15s, scale .15s ease-out;
 }
 
 .season-btn:last-child { border-right: none; }
+.season-btn:active { scale: .96; }
 .season-btn:hover { background: var(--hairline); color: var(--ink); }
 
 .season-btn.active {

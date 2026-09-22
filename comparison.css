@@ -34,6 +34,10 @@
   --p2:      #f4d47c;
   --p2-dim:  rgba(244,212,124,.12);
   --p2-glow: rgba(244,212,124,.06);
+
+  /* dark-mode shadow-as-border — depth-only edges, never dividers */
+  --shadow-border:       0 0 0 1px oklch(1 0 0 / 0.08);
+  --shadow-border-hover: 0 0 0 1px oklch(1 0 0 / 0.13);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -130,7 +134,7 @@ body {
   display: grid; grid-template-columns: 1fr 60px 1fr; gap: 0; align-items: stretch;
 }
 .id-card {
-  background: var(--surface); border: 1px solid var(--border2); padding: 28px 32px;
+  background: var(--surface); box-shadow: var(--shadow-border); padding: 28px 32px;
 }
 .id-card.p1-card { border-left: 3px solid var(--p1); }
 .id-card.p2-card { border-right: 3px solid var(--p2); }
@@ -176,7 +180,7 @@ body {
 /* ── FOUR CORNERS MATRIX ──────────────────────────── */
 .fc-grid {
   display: grid; grid-template-columns: 1fr 1fr;
-  gap: 1px; background: var(--border2); border: 1px solid var(--border2);
+  gap: 1px; background: var(--border2); box-shadow: var(--shadow-border);
 }
 .fc-cell { background: var(--surface); padding: 24px 28px; }
 .fc-cell.header-cell {
@@ -258,7 +262,7 @@ canvas { max-width: 460px; width: 100%; height: auto; }
 
 /* ── DIVERGENCE ───────────────────────────────────── */
 .divg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.divg-card { background: var(--surface); border: 1px solid var(--border2); padding: 22px 26px; }
+.divg-card { background: var(--surface); box-shadow: var(--shadow-border); padding: 22px 26px; }
 .divg-card.key { border-left: 3px solid var(--p1); }
 .divg-title {
   font-family: var(--mono); font-size: 9px; letter-spacing: .16em;
@@ -271,7 +275,7 @@ canvas { max-width: 460px; width: 100%; height: auto; }
 
 /* ── ACQUISITION ──────────────────────────────────── */
 .acq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.acq-card { background: var(--surface); border: 1px solid var(--border2); padding: 24px 28px; }
+.acq-card { background: var(--surface); box-shadow: var(--shadow-border); padding: 24px 28px; }
 .acq-card.p1-card { border-top: 3px solid var(--p1); }
 .acq-card.p2-card { border-top: 3px solid var(--p2); }
 .acq-player { font-family: var(--display); font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 14px; }
@@ -288,7 +292,7 @@ canvas { max-width: 460px; width: 100%; height: auto; }
 
 /* ── VERDICT BOX ──────────────────────────────────── */
 .verdict-section { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.verdict-box { background: var(--surface); border: 1px solid var(--border2); padding: 28px 32px; }
+.verdict-box { background: var(--surface); box-shadow: var(--shadow-border); padding: 28px 32px; }
 .verdict-box.p1-box { border-top: 3px solid var(--p1); }
 .verdict-box.p2-box { border-top: 3px solid var(--p2); }
 .verdict-player {
@@ -305,7 +309,7 @@ canvas { max-width: 460px; width: 100%; height: auto; }
 
 /* rec box — accent border uses p2 by default (the actionable pick) */
 .rec-box {
-  background: var(--surface); border: 1px solid var(--border2);
+  background: var(--surface); box-shadow: var(--shadow-border);
   border-left: 3px solid var(--p2); padding: 28px 32px;
 }
 .rec-label {
