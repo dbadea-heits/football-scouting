@@ -104,7 +104,8 @@ def _split(col) -> tuple[dict[int, list], dict[int, list[str]], dict[int, str]]:
 
     The sections are spread over two rails — identity (1-4) and detail (5-11) —
     so both are walked in document order, and the section numbering stays
-    global across them.
+    global across them. The inspector rail is an empty drawer shell the
+    template renders itself, so it holds no seeded content and is skipped.
 
     Returns the element children of each section, the hand-written annotation
     comments inside it, and the verbatim text of each section marker.
@@ -113,7 +114,7 @@ def _split(col) -> tuple[dict[int, list], dict[int, list[str]], dict[int, str]]:
     notes: dict[int, list[str]] = {}
     markers: dict[int, str] = {}
     section = 0
-    for rail in col.select("div.col > .rail"):
+    for rail in col.select("div.col > .rail:not(.rail-inspector)"):
         for node in rail.children:
             if isinstance(node, Comment):
                 found = MARKER.match(str(node))
