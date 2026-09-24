@@ -31,7 +31,8 @@ SCHEMA = """
 -- verdict_tier doubles as the hub card class ('shortlist'|'watch') and the
 -- report tier suffix ('tier-watch'…). potential stores 'None'|'Age Gap'|
 -- 'System Gap' (templates prefix 'Potential: '). The hub href is DERIVED as
--- {id}-report.html (verified: all 12 match), never stored.
+-- {id}-report.html (verified: all 13 match), never stored. nextgen = 1 marks
+-- an U18 prospect: hub card badge + report identity chip.
 CREATE TABLE players (
     id          TEXT PRIMARY KEY,
     name        TEXT NOT NULL,
@@ -43,7 +44,8 @@ CREATE TABLE players (
     verdict_label TEXT NOT NULL,
     potential   TEXT NOT NULL,
     mins_base   TEXT NOT NULL,
-    sort        INTEGER NOT NULL
+    sort        INTEGER NOT NULL,
+    nextgen     INTEGER NOT NULL DEFAULT 0
 );
 
 CREATE TABLE card_stats (

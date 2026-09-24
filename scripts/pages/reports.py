@@ -1,7 +1,7 @@
-"""Report archetype: the 12 `{player}-report.html` player dossiers.
+"""Report archetype: the 13 `{player}-report.html` player dossiers.
 
 Every dossier is the same 11-section skeleton, delimited by `<!-- N · TITLE -->`
-comment markers, so one template renders all 12. Per-page deviations are stored
+comment markers, so one template renders all 13. Per-page deviations are stored
 as data — nullable override columns, `report_notes` rows, the
 `sumright_inline` layout flag — rather than branched on by name, which keeps
 today's hand-written pages reproducible byte-for-byte.
@@ -131,6 +131,10 @@ def _seed_page(conn: sqlite3.Connection, pid: str) -> None:
     text = _protect(read_text(f"{pid}-report.html"))
     lines = text.splitlines()
     soup = BeautifulSoup(text, "html.parser")
+    # The NextGen chip is rendered from players.nextgen (seeded by the hub),
+    # so it is dropped here rather than stored as part of the identity block.
+    for chip in soup.select(".nextgen-chip"):
+        chip.decompose()
     body = soup.body
     assert body["data-player"] == pid, body["data-player"]
     pos_class = " ".join(body.get("class", [])) or None
@@ -365,7 +369,7 @@ def _seed_page(conn: sqlite3.Connection, pid: str) -> None:
 
 def seed(conn: sqlite3.Connection) -> None:
     players = [r[0] for r in conn.execute("SELECT id FROM players ORDER BY sort")]
-    assert len(players) == 12, f"expected 12 report players, found {len(players)}"
+    assert len(players) == 13, f"expected 13 report players, found {len(players)}"
     for pid in players:
         _seed_page(conn, pid)
 
@@ -377,7 +381,7 @@ def _rows(conn: sqlite3.Connection, sql: str, *args) -> list[dict]:
 def context(conn: sqlite3.Connection, pid: str) -> dict:
     report = dict(
         conn.execute(
-            "SELECT r.*, p.verdict_tier,"
+            "SELECT r.*, p.verdict_tier, p.nextgen,"
             " COALESCE(r.heading_name, p.name) AS heading,"
             " COALESCE(r.crumb_name, p.name) AS crumb,"
             " COALESCE(r.tier_label, p.verdict_label) AS tier,"

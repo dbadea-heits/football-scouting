@@ -106,12 +106,13 @@
     border: none;
     color: var(--muted);
     cursor: pointer;
-    transition: background .15s, color .15s;
+    transition: background .15s, color .15s, scale .15s ease-out;
     border-right: 1px solid var(--border2);
     white-space: nowrap;
   }
 
   .tab-btn:last-child { border-right: none; }
+  .tab-btn:active { scale: .96; }
 
   .tab-btn:hover { background: var(--surface); color: var(--text); }
 
@@ -251,7 +252,7 @@
     flex-direction: column;
     gap: 0;
     cursor: pointer;
-    transition: background .15s;
+    transition: background .15s, scale .15s ease-out;
     position: relative;
     overflow: hidden;
     /* default position tokens — forward/amber */
@@ -283,6 +284,7 @@
   .report-card.pos-mid { --pc: #f4d47c; --pb: rgba(244,212,124,.1); --pe: rgba(244,212,124,.25); } /* = pos-cm        */
 
   .report-card:hover { background: var(--surface); }
+  .report-card:active { scale: .96; }
 
   .card-top {
     display: flex;
@@ -318,6 +320,22 @@
     border: 1px solid var(--pe);
     white-space: nowrap;
     flex-shrink: 0;
+  }
+
+  /* U18 prospect marker; auto margin groups it with the verdict badge */
+  .nextgen-badge {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 2px;
+    color: #4ade80;
+    background: rgba(74,222,128,.1);
+    border: 1px solid rgba(74,222,128,.25);
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-left: auto;
   }
 
   .card-link { color: var(--pc); }
@@ -603,10 +621,11 @@
     color: var(--muted);
     cursor: pointer;
     white-space: nowrap;
-    transition: background .15s, color .15s;
+    transition: background .15s, color .15s, scale .15s ease-out;
   }
 
   .season-btn:last-child { border-right: none; }
+  .season-btn:active { scale: .96; }
   .season-btn:hover { background: var(--surface); color: var(--text); }
 
   .season-btn.active {
@@ -835,6 +854,9 @@
     <a href="{{ p.id }}-report.html" class="report-card {{ p.verdict_tier }} {{ p.pos_class }}" data-player="{{ p.id }}">
       <div class="card-top">
         <span class="pos-badge">{{ p.pos_badge }}</span>
+{%- if p.nextgen %}
+        <span class="nextgen-badge">🌱 NextGen</span>
+{%- endif %}
         <span class="verdict-badge {{ p.verdict_tier }}">{{ p.verdict_label }}</span>
       </div>
       <div class="card-info">

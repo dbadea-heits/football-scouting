@@ -322,6 +322,22 @@
     flex-shrink: 0;
   }
 
+  /* U18 prospect marker; auto margin groups it with the verdict badge */
+  .nextgen-badge {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 2px;
+    color: #4ade80;
+    background: rgba(74,222,128,.1);
+    border: 1px solid rgba(74,222,128,.25);
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+
   .card-link { color: var(--pc); }
 
   .card-name {
@@ -794,7 +810,7 @@
     <button class="season-btn" data-season="2025-26" onclick="setSeason('2025-26')">2025-26</button>
     <button class="season-btn" data-season="2026-27" onclick="setSeason('2026-27')">2026-27 <span class="season-live" aria-label="live"></span></button>
   </div>
-  <div class="nav-meta" id="navMeta">12 reports · 6 comparisons</div>
+  <div class="nav-meta" id="navMeta">13 reports · 6 comparisons</div>
 </nav>
 <div class="season-banner">2026-27 Season · Data updated weekly after matchday · Values replace 2025-26 figures when available</div>
 
@@ -808,7 +824,7 @@
   </p>
   <div class="hero-stats">
     <div class="hero-stat">
-      <div class="hero-stat-val" id="statReports">12</div>
+      <div class="hero-stat-val" id="statReports">13</div>
       <div class="hero-stat-label">Full Reports</div>
     </div>
     <div class="hero-divider"></div>
@@ -818,7 +834,7 @@
     </div>
     <div class="hero-divider"></div>
     <div class="hero-stat">
-      <div class="hero-stat-val">17</div>
+      <div class="hero-stat-val">18</div>
       <div class="hero-stat-label">Players Tracked</div>
     </div>
   </div>
@@ -829,7 +845,7 @@
 
   <div class="section-header">
     <h2 class="section-title">Individual Reports</h2>
-    <span class="section-count">12 reports · Branch A full profiles</span>
+    <span class="section-count">13 reports · Branch A full profiles</span>
   </div>
 
   <div class="card-grid">
@@ -1202,6 +1218,38 @@
       </div>
       <div class="card-footer">
         <span class="potential-chip">Potential: System Gap</span>
+        <span class="card-link">View Report →</span>
+      </div>
+    </a>
+
+    <!-- JJ Gabriel -->
+    <a href="jj-gabriel-report.html" class="report-card watch pos-fw" data-player="jj-gabriel">
+      <div class="card-top">
+        <span class="pos-badge">AM / CF</span>
+        <span class="nextgen-badge">🌱 NextGen</span>
+        <span class="verdict-badge watch">Watch</span>
+      </div>
+      <div class="card-info">
+        <div class="card-name">JJ Gabriel</div>
+        <div class="card-club">Man Utd U18 · U18 PL · 15 yrs · 🏴󠁧󠁢󠁥󠁮󠁧󠁿</div>
+        <div class="card-mins">1,969 min</div>
+      </div>
+      <div class="card-stats">
+        <div class="card-stat">
+          <div class="card-stat-label">G/90</div>
+          <div class="card-stat-val good">1.05</div>
+        </div>
+        <div class="card-stat">
+          <div class="card-stat-label">G+A/90</div>
+          <div class="card-stat-val good">1.23</div>
+        </div>
+        <div class="card-stat">
+          <div class="card-stat-label">Shots/90</div>
+          <div class="card-stat-val">4.25</div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span class="potential-chip">Potential: Age Gap</span>
         <span class="card-link">View Report →</span>
       </div>
     </a>

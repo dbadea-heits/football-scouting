@@ -41,6 +41,9 @@
 
   <!-- 2 · IDENTITY -->
   <h1>{{ heading }}</h1>
+{%- if nextgen %}
+  <span class="chip nextgen-chip">🌱 NextGen</span>
+{%- endif %}
   <p class="posline">{{ posline }}</p>
   <div class="facts">
 {%- for f in facts %}

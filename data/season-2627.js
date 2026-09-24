@@ -843,6 +843,59 @@ window.FI_SEASON_DATA = {
         }
       ],
       "mins": "16 min"
+    },
+    "jj-gabriel": {
+      "signals": [
+        {
+          "num": "2.14",
+          "pctl": "2026-27 · PL2 + UEFA Youth League"
+        },
+        {
+          "num": "3.00",
+          "pctl": "2026-27 · PL2 + UEFA Youth League"
+        },
+        {
+          "num": "9.43",
+          "pctl": "2026-27 · PL2 + UEFA Youth League"
+        }
+      ],
+      "current_block": [
+        {
+          "label": "All comps 2026-27",
+          "val": "3 apps · 210 min · 5G · 2A"
+        },
+        {
+          "label": "Goals / 90",
+          "val": "2.14"
+        },
+        {
+          "label": "Assists / 90",
+          "val": "0.86"
+        },
+        {
+          "label": "G+A / 90",
+          "val": "3.00"
+        },
+        {
+          "label": "Shots on target / 90",
+          "val": "3.43"
+        }
+      ],
+      "card": [
+        {
+          "val": "2.14",
+          "cls": "good"
+        },
+        {
+          "val": "3.00",
+          "cls": "good"
+        },
+        {
+          "val": "9.43",
+          "cls": "good"
+        }
+      ],
+      "mins": "210 min"
     }
   }
 };

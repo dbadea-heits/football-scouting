@@ -375,6 +375,10 @@ details[open] .body { background: var(--surface); }
 .chip-concern  { color: var(--concern);  border-color: var(--concern);  }
 .chip-accent   { color: var(--accent);   border-color: var(--accent);   }
 .chip-ink      { color: var(--ink);      border-color: var(--ink);      }
+.nextgen-chip {
+  color: #4ade80;
+  border-color: #4ade80;
+}
 
 /* ── SIGNAL ROW ──────────────────────────────────────────── */
 /* Number · what it is · where it ranks. No bar: the percentile bar restated

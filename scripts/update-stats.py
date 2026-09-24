@@ -271,6 +271,21 @@ PLAYERS = {
             ("xG − G (career)", None),
         ],
     },
+    "jj-gabriel": {
+        "name": "JJ Gabriel",
+        "fotmob_id": 1737914,
+        "position": "fw",
+        "signals": [
+            ("Goals / 90",  "g90"),
+            ("G+A / 90",    "ga90"),
+            ("Shots / 90",  "shots90"),
+        ],
+        "card": [
+            ("G/90",     "g90"),
+            ("G+A/90",   "ga90"),
+            ("Shots/90", "shots90"),
+        ],
+    },
 }
 
 # ── FotMob client ─────────────────────────────────────────────────────────────
