@@ -1,7 +1,7 @@
-"""Report archetype: the 13 `{player}-report.html` player dossiers.
+"""Report archetype: the 14 `{player}-report.html` player dossiers.
 
 Every dossier is the same 11-section skeleton, delimited by `<!-- N · TITLE -->`
-comment markers, so one template renders all 13. Per-page deviations are stored
+comment markers, so one template renders all 14. Per-page deviations are stored
 as data — nullable override columns, `report_notes` rows, the
 `sumright_inline` layout flag — rather than branched on by name, which keeps
 today's hand-written pages reproducible byte-for-byte.
@@ -370,7 +370,7 @@ def _seed_page(conn: sqlite3.Connection, pid: str) -> None:
 
 def seed(conn: sqlite3.Connection) -> None:
     players = [r[0] for r in conn.execute("SELECT id FROM players ORDER BY sort")]
-    assert len(players) == 13, f"expected 13 report players, found {len(players)}"
+    assert len(players) == 14, f"expected 14 report players, found {len(players)}"
     for pid in players:
         _seed_page(conn, pid)
 

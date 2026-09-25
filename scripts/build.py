@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Render every page of the site from data/football.db.
 
-    python scripts/build.py                # all 19 pages + data/season-2627.*
+    python scripts/build.py                # all 20 pages + data/season-2627.*
     python scripts/build.py --only reports # one archetype (iteration aid)
 
 The database is the single source of truth; every *.html at the repo root and

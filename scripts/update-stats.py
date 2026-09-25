@@ -286,6 +286,21 @@ PLAYERS = {
             ("Shots/90", "shots90"),
         ],
     },
+    "jesse-bisiwu": {
+        "name": "Jesse Bisiwu",
+        "fotmob_id": 1656591,
+        "position": "fw",
+        "signals": [
+            ("Succ. dribbles / 90", None),
+            ("xA / 90",             "xa90"),
+            ("Def. actions / 90",   None),
+        ],
+        "card": [
+            ("Drb/90", None),
+            ("xA/90",  "xa90"),
+            ("Def/90", None),
+        ],
+    },
 }
 
 # ── FotMob client ─────────────────────────────────────────────────────────────

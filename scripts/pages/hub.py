@@ -17,8 +17,8 @@ ORDER = 10
 PAGE = "index.html"
 BASE_SEASON = "2025-26"
 
-# 13 report players + 5 comparison-only players; not derivable from the tables.
-PLAYERS_TRACKED = "18"
+# 14 report players + 5 comparison-only players; not derivable from the tables.
+PLAYERS_TRACKED = "19"
 
 
 def _comment_above(tag) -> str:
@@ -41,7 +41,7 @@ def seed(conn: sqlite3.Connection) -> None:
     soup = BeautifulSoup(read_text(PAGE), "html.parser")
 
     cards = soup.select("a.report-card")
-    assert len(cards) == 13, f"expected 13 report cards, found {len(cards)}"
+    assert len(cards) == 14, f"expected 14 report cards, found {len(cards)}"
     for sort, card in enumerate(cards):
         pid = card["data-player"]
         classes = card.get("class", [])

@@ -896,6 +896,38 @@ window.FI_SEASON_DATA = {
         }
       ],
       "mins": "210 min"
+    },
+    "jesse-bisiwu": {
+      "signals": [
+        {
+          "num": "—",
+          "pctl": "2026-27 · In progress"
+        },
+        {
+          "num": "—",
+          "pctl": "2026-27 · In progress"
+        },
+        {
+          "num": "—",
+          "pctl": "2026-27 · In progress"
+        }
+      ],
+      "current_block": [],
+      "card": [
+        {
+          "val": "—",
+          "cls": ""
+        },
+        {
+          "val": "—",
+          "cls": ""
+        },
+        {
+          "val": "—",
+          "cls": ""
+        }
+      ],
+      "mins": "—"
     }
   }
 };
